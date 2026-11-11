@@ -13,6 +13,8 @@
   · 제목/설명에 스킨·시즌·미리보기·찾아옵니다 가 있는 영상만
   · KEL·마스터즈 같은 대회 영상은 제외
 - 보낸 기록은 state.json에 저장 (중복 방지)
+- 디스코드 명령어 봇(worker.js)이 읽을 모음 데이터는 data.json에 저장
+  (쿠폰과 기한, 스킨 공지·쇼츠, 패치노트·핫픽스, 스킨·시즌 영상)
 - 표준 라이브러리만 사용 → pip install 필요 없음
 
 사용법
@@ -31,7 +33,7 @@
   SEASON_WINDOW_DAYS    새 시즌 소식을 받을 기간(일) (기본: 21, 0이면 끔)
   YOUTUBE_CHANNELS      채널 주소/@핸들/채널 ID, 쉼표로 여러 개 (기본: 이터널 리턴 한국 채널). off면 끔
   YOUTUBE_KEYWORDS      제목/설명에 이 단어가 있으면 보냄 (기본: 스킨,시즌,미리보기,미리 보기,찾아옵니다)
-  YOUTUBE_EXCLUDE       제목에 이 단어가 있으면 건너뜀 (기본: KEL,마스터즈,서포트 패키지,비하인드)
+  YOUTUBE_EXCLUDE       제목에 이 단어가 있으면 건너뜀 (기본: KEL,마스터즈,서포트 패키지,비하인드,슈퍼컵,Masters,내셔널 리그)
   YOUTUBE_SHORTS        off면 쇼츠 제외 (기본: 쇼츠 포함)
 
   키워드 목록은 쉼표로 구분. * 를 쓰면 전부 보냄, none 을 쓰면 키워드로는 아무것도 안 보냄.
@@ -48,7 +50,7 @@ import time
 import urllib.error
 import urllib.request
 import xml.etree.ElementTree as ET
-from datetime import datetime, timezone
+from datetime import datetime, timedelta, timezone
 from pathlib import Path
 
 APP_ID = 1049590  # 이터널 리턴 Steam 앱 ID
@@ -67,12 +69,41 @@ DEFAULTS = {
     "SEASON_WINDOW_DAYS": "21",
     "YOUTUBE_CHANNELS": "UCEOaB76vS9RfiAwEzxB8QGw",  # 이터널 리턴 한국 채널 (@EternalReturnKR)
     "YOUTUBE_KEYWORDS": "스킨,시즌,미리보기,미리 보기,찾아옵니다",
-    "YOUTUBE_EXCLUDE": "KEL,마스터즈,서포트 패키지,비하인드",
+    "YOUTUBE_EXCLUDE": "KEL,마스터즈,서포트 패키지,비하인드,슈퍼컵,Masters,내셔널 리그",
     "YOUTUBE_SHORTS": "on",
 }
 
 STATE_FILE = Path(__file__).with_name("state.json")
-USER_AGENT = "Mozilla/5.0 (compatible; ER-News-Discord-Bot/1.2)"
+DATA_FILE = Path(__file__).with_name("data.json")  # 디스코드 명령어 봇(worker.js)이 읽는 모음 데이터
+USER_AGENT = "Mozilla/5.0 (compatible; ER-News-Discord-Bot/1.3)"
+DISCORD_USER_AGENT = "DiscordBot (https://github.com, 1.3)"
+KST = timezone(timedelta(hours=9))
+DATA_LIMITS = {"coupons": 60, "skins": 300, "patches": 40, "videos": 60}
+# 스킨 모음(/스킨)에 넣을 유튜브 영상: 제목에 '스킨'이 있거나, 설명에 스킨 소개 문구가 있는 것.
+# (대회 영상 설명의 "뉴스레터 구독하고 '○○' 스킨도 받아가세요", 보상 목록의 "스킨 데이터 세트" 같은 건 안 걸리게)
+_SKIN_DESC_RE = re.compile(
+    r"찾아옵니다|#신규\s*스킨|#신스킨"
+    r"|(?:특별한?|보너스|영웅|신규|새로운|첫(?:\s*번째)?|두\s*번째|세\s*번째|ER\s*(?:Pass|패스)(?::\s*\w+)?의?)\s*(?:등급\s*)?스킨"
+    r"|스킨을\s*지급",
+    re.I,
+)
+_SKIN_TITLE_EXCLUDE = re.compile(r"신규\s*캐릭터|신규\s*실험체|실험체|신캐|\bMV\b")
+# "새로운 실험체 ○○가 여러분을 찾아옵니다" 같은 캐릭터 소개는 스킨이 아님
+_CHARACTER_DESC = re.compile(r"새로운\s*실험체|신규\s*실험체|신규\s*캐릭터|오리지널\s*캐릭터")
+# Steam 스킨 공지 중 모음에서 뺄 것 (스킨 박스 판매, 환불, 사용 제한 같은 운영 공지)
+SKIN_NOTICE_EXCLUDE = ("당첨자", "오류", "박스", "환불", "제한", "중단", "비활성화", "원복", "교환권",
+                       "확률", "후속", "정상화", "보급권", "선택권", "현상", "소개 페이지", "전체 스킨", "올 스킨")
+
+
+def is_skin_video(title, desc):
+    desc = desc or ""
+    if _SKIN_TITLE_EXCLUDE.search(title):
+        return False
+    if "스킨" in title:
+        return True
+    if _SKIN_DESC_RE.search(desc) and not _CHARACTER_DESC.search(desc):
+        return True
+    return bool(re.search(r"미리\s*보기", title)) and "스킨" in desc
 CLAN_IMAGE_BASE = "https://clan.fastly.steamstatic.com/images"
 BOT_NAME = "이터널 리턴 알리미"
 MAX_SEEN = 300
@@ -362,8 +393,10 @@ def build_news_payload(item, coupons, seen_videos, mention="", season_news=False
     return payload, videos
 
 
-def run_steam(state, deliver, cfg, mode="normal"):
+def run_steam(state, deliver, cfg, mode="normal", data=None):
     items = fetch_news()
+    if data is not None:
+        collect_steam(data, items)
     if not items:
         print("Steam: 가져온 공지가 없어요.")
         return
@@ -511,12 +544,14 @@ def video_payload(video):
     }
 
 
-def run_youtube(state, deliver, cfg, mode="normal"):
+def run_youtube(state, deliver, cfg, mode="normal", data=None):
     """채널 하나가 실패해도 나머지는 계속한다."""
     for spec in cfg["channels"]:
         try:
             cid = resolve_channel_id(spec, state["yt_ids"])
             videos = fetch_videos(cid)
+            if data is not None:
+                collect_youtube(data, videos, cfg)
         except Exception as e:  # 유튜브 RSS는 가끔 일시적으로 실패함 → 다음 실행 때 다시 시도
             print(f"[경고] 유튜브 {spec}: {e}")
             continue
@@ -565,6 +600,118 @@ def run_youtube(state, deliver, cfg, mode="normal"):
             print(f"유튜브 {name}: 보낼 새 영상 없음.")
 
 
+# ---------------------------------------------------------------- 명령어용 모음 데이터 (data.json)
+
+
+def parse_expiry(text, posted_ts=None):
+    """'2026.11.10(화) 23:59 (KST)까지', '10월 19일 05:00 (KST)까지', '~ 2026년 11월 26일(목) 점검 전까지'
+    같은 기한 문장 → 유닉스 시각. 시간이 없으면 그날 23:59, 못 읽으면 None."""
+    if not text:
+        return None
+    posted = datetime.fromtimestamp(posted_ts, KST) if posted_ts else datetime.now(KST)
+    m = re.search(r"(20\d{2})\s*(?:[./-]|년)\s*(\d{1,2})\s*(?:[./-]|월)\s*(\d{1,2})", text)
+    has_year = bool(m)
+    if m:
+        y, mo, d = map(int, m.groups())
+    else:
+        m = re.search(r"(\d{1,2})\s*월\s*(\d{1,2})\s*일", text) or re.search(r"(?<![\d.:])(\d{1,2})[./](\d{1,2})(?![\d.:])", text)
+        if not m:
+            return None
+        mo, d = map(int, m.groups())
+        y = posted.year
+    t = re.search(r"(\d{1,2}):(\d{2})", text[m.end():])
+    hh, mm = (int(t.group(1)), int(t.group(2))) if t else (23, 59)
+    tz = timezone.utc if re.search(r"\bUTC\b", text) else KST
+    try:
+        dt = datetime(y, mo, d, min(hh, 23), min(mm, 59), tzinfo=tz)
+    except ValueError:
+        return None
+    if not has_year and dt < posted - timedelta(days=7):
+        dt = dt.replace(year=dt.year + 1)  # 12월 공지에 '1월 5일까지' 같은 경우
+    return int(dt.timestamp())
+
+
+def _upsert(items, key_name, item):
+    """같은 키가 있으면 빈 칸만 채우고, 없으면 추가."""
+    for old in items:
+        if old.get(key_name) == item[key_name]:
+            for k, v in item.items():
+                if v not in (None, "") and old.get(k) in (None, ""):
+                    old[k] = v
+            return old
+    items.append(item)
+    return item
+
+
+def collect_steam(data, items):
+    for i in items:
+        title, raw, gid = i["title"], i.get("contents", ""), i["gid"]
+        text = bbcode_to_text(raw)
+        for c in extract_coupons(text):
+            _upsert(data["coupons"], "code", {
+                "code": c["code"], "reward": c["reward"], "valid": c["valid"],
+                "expires": parse_expiry(c["valid"], i["date"]),
+                "date": i["date"], "title": title, "url": i["url"],
+            })
+        if "스킨" in title and not any(w in title for w in SKIN_NOTICE_EXCLUDE):
+            _upsert(data["skins"], "id", {
+                "id": f"steam:{gid}", "title": title, "url": i["url"], "date": i["date"],
+                "source": "steam", "kind": "공지", "text": _clip(text, 300),
+            })
+        kind = "핫픽스" if "핫픽스" in title else "패치노트" if re.search(r"패치\s*노트", title) else None
+        if kind:
+            _upsert(data["patches"], "id", {"id": gid, "title": title, "url": i["url"], "date": i["date"], "kind": kind})
+        for vid in youtube_ids_in(raw):
+            _upsert(data["videos"], "id", {
+                "id": vid, "title": title, "url": watch_url(vid), "date": i["date"], "kind": "영상", "source": "steam",
+            })
+
+
+def _iso_ts(s):
+    try:
+        return int(datetime.fromisoformat(s).timestamp())
+    except (TypeError, ValueError):
+        return 0
+
+
+def collect_youtube(data, videos, cfg):
+    for v in videos:
+        kind = "쇼츠" if v["is_short"] else "영상"
+        date = _iso_ts(v["published"])
+        if decide_video(v, cfg)[0]:
+            entry = {"id": v["id"], "title": v["title"], "url": v["url"], "date": date, "kind": kind, "source": "youtube"}
+            old = _upsert(data["videos"], "id", entry)
+            if old.get("source") == "steam":  # Steam 공지 제목 대신 실제 영상 제목으로
+                old.update(entry)
+        excluded = contains_any(v["title"], cfg["yt_exclude"]) if cfg["yt_exclude"] else None
+        if is_skin_video(v["title"], v.get("description", "")) and not excluded:
+            _upsert(data["skins"], "id", {
+                "id": f"yt:{v['id']}", "title": v["title"], "url": v["url"], "date": date,
+                "source": "youtube", "kind": kind, "text": _clip(v.get("description", ""), 300),
+            })
+
+
+def load_data():
+    data = json.loads(DATA_FILE.read_text(encoding="utf-8")) if DATA_FILE.exists() else {}
+    for key in DATA_LIMITS:
+        data.setdefault(key, [])
+    return data
+
+
+def save_data(data, state):
+    """내용이 바뀌었을 때만 저장 (30분마다 쓸데없는 커밋 방지)."""
+    out = {"season": state.get("season")}
+    for key, limit in DATA_LIMITS.items():
+        out[key] = sorted(data[key], key=lambda x: x.get("date") or 0, reverse=True)[:limit]
+    old = json.loads(DATA_FILE.read_text(encoding="utf-8")) if DATA_FILE.exists() else {}
+    old.pop("updated", None)
+    if old == out:
+        return False
+    out = {"updated": int(time.time()), **out}
+    DATA_FILE.write_text(json.dumps(out, ensure_ascii=False, indent=1) + "\n", encoding="utf-8")
+    return True
+
+
 # ---------------------------------------------------------------- 보내기 / 기록
 
 
@@ -575,7 +722,7 @@ def send_webhook(url, payload):
             url,
             data=data,
             method="POST",
-            headers={"Content-Type": "application/json", "User-Agent": USER_AGENT},
+            headers={"Content-Type": "application/json", "User-Agent": DISCORD_USER_AGENT},
         )
         try:
             with urllib.request.urlopen(req, timeout=20):
@@ -653,18 +800,21 @@ def main(argv=None):
             send_webhook(webhook, payload)
 
     state = load_state()
+    data = load_data()
     steam_error = None
     try:
         try:
-            run_steam(state, deliver, cfg, mode)
+            run_steam(state, deliver, cfg, mode, data)
         except Exception as e:
             steam_error = e
             print(f"[오류] Steam: {e}")
         if cfg["channels"]:
-            run_youtube(state, deliver, cfg, mode)
+            run_youtube(state, deliver, cfg, mode, data)
     finally:
         if mode == "normal" and not args.dry_run:
             save_state(state)
+            if save_data(data, state):
+                print("data.json 갱신 (명령어 봇용 모음 데이터)")
 
     if steam_error:
         sys.exit(1)

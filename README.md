@@ -3,6 +3,19 @@
 30분마다 이터널 리턴 소식을 확인해서 **스킨 · 새 시즌 · 쿠폰 · 점검 · 패치노트** 소식만 디스코드 채널로 보내 줘요.
 서버 없이 GitHub Actions로 돌아가고(무료), 설치할 패키지도 없어요.
 
+디스코드에서 `/쿠폰`, `/스킨`, `/패치`, `/영상` 명령어도 쓸 수 있어요 → [디스코드 명령어](#디스코드-명령어-쿠폰-스킨-패치-영상)
+
+## 파일 구성
+
+```
+bot.py                                   알림 봇 (30분마다 실행)
+.github/workflows/er-news.yml            알림 봇 예약 실행
+register_commands.py                     디스코드에 명령어 등록 (처음 한 번)
+.github/workflows/register-commands.yml  명령어 등록 실행용
+worker.js                                명령어 봇 (Cloudflare에 붙여넣음, GitHub에는 안 올려도 됨)
+state.json, data.json                    (자동 생성) 보낸 기록 / 명령어용 모음 데이터
+```
+
 ## 무엇이 오나요
 
 **Steam 한국어 공지** (store.steampowered.com/news/app/1049590 에 올라오는 것)
@@ -58,7 +71,7 @@
 | `SEASON_WINDOW_DAYS` | `21` | 새 시즌 소식을 받을 기간(일). `0`이면 새 시즌 소식 끔 |
 | `YOUTUBE_CHANNELS` | 이터널 리턴 한국 채널 | 채널 주소를 쉼표로 여러 개. `off`면 유튜브 알림 끔 |
 | `YOUTUBE_KEYWORDS` | `스킨,시즌,미리보기,미리 보기,찾아옵니다` | 제목/설명에 이 단어가 있는 영상을 보냄 |
-| `YOUTUBE_EXCLUDE` | `KEL,마스터즈,서포트 패키지,비하인드` | 제목에 이 단어가 있으면 안 보냄 |
+| `YOUTUBE_EXCLUDE` | `KEL,마스터즈,서포트 패키지,비하인드,슈퍼컵,Masters,내셔널 리그` | 제목에 이 단어가 있으면 안 보냄 (대회 영상) |
 | `YOUTUBE_SHORTS` | `on` | `off`면 쇼츠 제외 |
 
 키워드 칸에 `*`를 넣으면 전부 보내고, `none`을 넣으면 키워드로는 아무것도 안 보내요. 예를 들어 `STEAM_KEYWORDS`를 `none`으로 두면 Steam에서 스킨 공지는 빠지고 쿠폰·점검·패치노트·새 시즌 소식만 와요.
@@ -71,6 +84,64 @@
 3. **normal** → 첫 실행은 지금 있는 공지·영상을 **기록만** 하고 알림은 안 보내요 (채널 도배 방지). `state.json`이 생기면 준비 끝.
 
 이후로는 30분마다 알아서 돌아요. 실행 로그에서 무엇을 보내고 무엇을 왜 건너뛰었는지 볼 수 있어요.
+
+## 디스코드 명령어 (/쿠폰 /스킨 /패치 /영상)
+
+| 명령어 | 답장 |
+|---|---|
+| `/쿠폰` | 지금 쓸 수 있는 쿠폰 코드, 보상, 남은 기한 (기한 임박한 순) |
+| `/스킨` | 최근 스킨 공지·쇼츠 10개 |
+| `/스킨 캐릭터:아야` | 제목·설명에 '아야'가 들어간 스킨 소식만 |
+| `/패치` | 최근 패치노트·핫픽스 10개 |
+| `/영상` | 최근 스킨·시즌 영상 10개 (맨 위 영상은 바로 재생) |
+
+알림 봇이 30분마다 모은 `data.json`을 Cloudflare 무료 서버(Worker)가 읽어서 답해요. PC를 꺼 둬도 동작해요.
+모음은 알림 봇이 돌 때마다 쌓여요. **예전 것까지 채워 둔 `data.json`**(스킨 233개: Steam 스킨 공지 2023년 9월~, 유튜브 스킨 쇼츠·미리보기 2021년~ / 패치노트·핫픽스 40개 / 스킨·시즌 영상 60개)을 저장소 최상단에 올려 두면 처음부터 꽉 찬 상태로 시작해요. 올린 뒤에도 봇이 새 소식을 그 위에 계속 더해요.
+
+**스킨 모음 기준**
+- Steam: 제목에 '스킨'이 있는 공지. 단 스킨 박스 판매, 환불, 사용 제한, 교환권, 확률 같은 운영 공지는 뺌
+- 유튜브: 제목에 '스킨'이 있거나, 설명에 스킨 소개 문구("○○가 루미아 섬에 찾아옵니다", `#신규스킨`, "특별/보너스/첫번째 스킨", "ER Pass 스킨" 등)가 있는 쇼츠·영상. 신규 캐릭터 소개와 대회 영상은 뺌
+
+> 위의 알림 설치(1~5)를 먼저 끝내고, **새 `bot.py`와 `er-news.yml`로 한 번 실행해서 저장소에 `data.json`이 생긴 걸 확인**한 다음 진행하세요.
+
+### 1. 디스코드 앱 만들기
+1. https://discord.com/developers/applications → **New Application** → 이름(예: 이터널 리턴 알리미) 입력 → 만들기
+2. **General Information** 화면에서 두 값을 복사해 둬요.
+   - `APPLICATION ID`
+   - `PUBLIC KEY`
+3. 왼쪽 **Bot** → **Reset Token** → 나온 토큰 복사 (한 번만 보여 줘요)
+
+### 2. 명령어 등록 (GitHub)
+1. `register_commands.py`를 저장소 최상단에 올리고, **Add file → Create new file**로 `.github/workflows/register-commands.yml`을 만들어 내용을 붙여넣어요.
+2. 저장소 **Settings → Secrets and variables → Actions**
+   - **Secrets** 탭 → `DISCORD_BOT_TOKEN` = 복사한 봇 토큰
+   - **Variables** 탭 → `DISCORD_APP_ID` = APPLICATION ID
+3. **Actions** 탭 → 왼쪽 `디스코드 명령어 등록` → **Run workflow**
+   로그에 `등록된 명령어: /쿠폰, /스킨, /패치, /영상`이 나오면 성공
+
+### 3. Cloudflare에 명령어 봇 올리기
+1. https://dash.cloudflare.com 가입/로그인 → 왼쪽 **Workers & Pages** → **Create** → **Create Worker**(Hello World 시작) → 이름(예: `er-bot`) → **Deploy**
+2. **Edit code** → 원래 코드를 전부 지우고 `worker.js` 내용을 붙여넣기 → **Deploy**
+3. 그 Worker의 **Settings → Variables and Secrets** → **Add**로 두 개 추가하고 저장(Deploy)
+
+   | 이름 | 값 |
+   |---|---|
+   | `DISCORD_PUBLIC_KEY` | 1번에서 복사한 PUBLIC KEY |
+   | `DATA_URL` | `https://raw.githubusercontent.com/GitHub아이디/저장소이름/main/data.json` |
+
+   > `DATA_URL`은 GitHub에서 `data.json`을 열고 **Raw** 버튼을 눌렀을 때 주소창에 뜨는 주소예요. 저장소가 Public이어야 읽을 수 있어요.
+4. Worker 주소(`https://er-bot.내아이디.workers.dev`)를 복사해 둬요. 브라우저로 열었을 때 "명령어 봇이 동작 중이에요"가 보이면 정상이에요.
+
+### 4. 디스코드와 연결
+1. 개발자 포털 → **General Information** → **Interactions Endpoint URL** 칸에 Worker 주소를 붙여넣고 **Save Changes**
+   - 저장이 되면 연결 성공이에요. "could not be verified" 오류가 나면 `DISCORD_PUBLIC_KEY` 값을 다시 확인해 주세요.
+2. 왼쪽 **Installation** → Install Link를 **Discord Provided Link**로 두고, **Guild Install**의 Scopes에 `applications.commands`가 있는지 확인 → 위쪽 **Install Link**를 복사해서 브라우저로 열기 → 내 서버 선택
+3. 디스코드 채팅창에 `/쿠폰`을 쳐 보세요.
+
+### 명령어 봇 문제 해결
+- **"정보를 불러오지 못했어요"**: `DATA_URL`이 틀렸거나 저장소에 아직 `data.json`이 없어요. 주소를 브라우저로 열어 JSON이 보이는지 확인해 보세요.
+- **"상호작용 실패" / 응답 없음**: Interactions Endpoint URL이 저장됐는지, Worker를 Deploy했는지 확인해 보세요.
+- **명령어가 안 보임**: 2번 등록을 다시 실행하고 디스코드를 새로고침(Ctrl+R)해 보세요.
 
 ## 내 PC에서 돌려 보기
 
