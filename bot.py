@@ -163,7 +163,7 @@ def is_skin_video(title, desc):
         return True
     return bool(re.search(r"미리\s*보기", title)) and "스킨" in desc
 CLAN_IMAGE_BASE = "https://clan.fastly.steamstatic.com/images"
-BOT_NAME = "코렐랄루"
+BOT_NAME = "이터널 리턴 알리미"
 MAX_SEEN = 300
 COLOR_NEWS = 0x5865F2
 COLOR_SEASON = 0x2ECC71
