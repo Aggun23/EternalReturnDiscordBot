@@ -1,1 +1,21 @@
+name: 디스코드 명령어 등록
 
+# 처음 한 번, 그리고 명령어 목록을 바꿨을 때만 Actions 탭에서 직접 실행
+on:
+  workflow_dispatch:
+
+jobs:
+  register:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: /쿠폰 /스킨 /패치 /영상 등록
+        env:
+          DISCORD_APP_ID: ${{ vars.DISCORD_APP_ID }}
+          DISCORD_BOT_TOKEN: ${{ secrets.DISCORD_BOT_TOKEN }}
+        run: python register_commands.py
