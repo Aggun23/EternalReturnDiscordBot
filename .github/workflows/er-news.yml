@@ -40,6 +40,9 @@ jobs:
           YOUTUBE_KEYWORDS: ${{ vars.YOUTUBE_KEYWORDS }}
           YOUTUBE_EXCLUDE: ${{ vars.YOUTUBE_EXCLUDE }}
           YOUTUBE_SHORTS: ${{ vars.YOUTUBE_SHORTS }}
+          COUPON_REMIND_HOURS: ${{ vars.COUPON_REMIND_HOURS }}
+          WORKER_URL: ${{ vars.WORKER_URL }}
+          YOUTUBE_NOTIFY: ${{ vars.YOUTUBE_NOTIFY }}
         run: python bot.py ${{ inputs.mode == 'test' && '--test' || inputs.mode == 'check' && '--check' || '' }}
 
       - name: 보낸 기록 · 명령어 데이터 저장
