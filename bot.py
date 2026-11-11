@@ -68,6 +68,9 @@ STEAM_EVENTS_URL = (
 )
 STEAM_VIEW_URL = f"https://store.steampowered.com/news/app/{APP_ID}/view/{{}}?l=koreana"
 YOUTUBE_FEED_URL = "https://www.youtube.com/feeds/videos.xml?channel_id={}"
+INNERTUBE_URL = "https://www.youtube.com/youtubei/v1/{}?prettyPrint=false"  # RSS 고장 때 쓰는 예비 경로
+INNERTUBE_CLIENT = {"clientName": "WEB", "clientVersion": "2.20261106.00.00", "hl": "ko", "gl": "KR"}
+BROWSER_UA = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Safari/537.36"
 
 DEFAULTS = {
     "STEAM_KEYWORDS": "스킨",
@@ -106,7 +109,7 @@ SKIN_NOTICE_EXCLUDE = ("당첨자", "오류", "박스", "환불", "제한", "중
 
 # 실험체 이름 (나무위키 '분류:이터널 리턴/실험체' 기준). 새 캐릭터는 공지 제목에서 자동으로 배움(data.json의 chars_extra).
 CHARACTERS = (
-    "가넷 나딘 나타폰 니아 니키 다니엘 다르코 데비&마를렌 띠아 라우라 레녹스 레니 레온 로지 루치아 루크 르노어 "
+    "JP 가넷 나딘 나타폰 니아 니키 다니엘 다르코 데비&마를렌 띠아 라우라 레녹스 레니 레온 로지 루치아 루크 르노어 "
     "리 다이린 리오 마르티나 마이 마커스 매그너스 미르카 바냐 바바라 버니스 블레어 비앙카 비형 샬럿 세레스 셀린 쇼우 "
     "쇼이치 수아 슈린 시셀라 실비아 아델라 아드리아나 아디나 아르다 아비게일 아야 아이솔 아이작 알렉스 알론소 얀 에스텔 "
     "에이든 에키온 엘레나 엠마 요한 윌리엄 유민 유스티나 유키 이렘 이바 이슈트반 이안 일레븐 자히르 재키 제니 츠바메 "
@@ -115,7 +118,7 @@ CHARACTERS = (
 ).replace("리 다이린", "리_다이린").split()
 CHARACTERS = [c.replace("_", " ") for c in CHARACTERS]
 _CHAR_ALIASES = {
-    "데비&마를렌": ["데비&마를렌", "데비 & 마를렌", "데비마를렌", "데비와 마를렌", "데비", "마를렌", "뎁마", "데마", "데비 마를렌"],
+    "데비&마를렌": ["데비&마를렌", "데비 & 마를렌", "데비마를렌", "데비와 마를렌", "데비", "마를렌"],
     "리 다이린": ["리 다이린", "리다이린", "다이린"],
     "자히르": ["자히르", "부자히르"],   # 스킨 이름 말장난 (부자 + 자히르)
     "쇼우": ["쇼우", "판다왔쇼우"],
@@ -583,8 +586,71 @@ def parse_youtube_feed(xml_bytes):
     return sorted(videos, key=lambda v: v["published"])
 
 
+def innertube(endpoint, body):
+    req = urllib.request.Request(
+        INNERTUBE_URL.format(endpoint),
+        data=json.dumps({"context": {"client": INNERTUBE_CLIENT}, **body}).encode("utf-8"),
+        method="POST",
+        headers={"Content-Type": "application/json", "User-Agent": BROWSER_UA, "Accept-Language": "ko-KR,ko;q=0.9"},
+    )
+    with urllib.request.urlopen(req, timeout=20) as resp:
+        return resp.read().decode("utf-8")
+
+
+def _to_utc_iso(s):
+    try:
+        dt = datetime.fromisoformat(s)
+    except (TypeError, ValueError):
+        return ""
+    if dt.tzinfo is None:
+        dt = dt.replace(tzinfo=timezone.utc)
+    return dt.astimezone(timezone.utc).isoformat()
+
+
+def fetch_videos_fallback(channel_id, limit=15):
+    """RSS가 고장 났을 때: 채널 업로드 목록 + 영상 정보(YouTube 내부 API)로 RSS와 같은 모양의 목록을 만든다."""
+    page = innertube("browse", {"browseId": "VLUU" + channel_id[2:]})
+    ids = []
+    for pattern in (r'"contentId":"([\w-]{11})","contentType":"LOCKUP_CONTENT_TYPE_VIDEO"', r'"videoId":"([\w-]{11})"'):
+        for vid in re.findall(pattern, page):
+            if vid not in ids:
+                ids.append(vid)
+            if len(ids) >= limit:
+                break
+        if ids:
+            break
+    videos = []
+    for vid in ids:
+        try:
+            pj = json.loads(innertube("player", {"videoId": vid}))
+        except Exception as e:
+            print(f"[경고] 영상 정보 실패 {vid}: {e}")
+            continue
+        d = pj.get("videoDetails") or {}
+        mf = (pj.get("microformat") or {}).get("playerMicroformatRenderer") or {}
+        if d.get("channelId") != channel_id:
+            continue
+        short = "/shorts/" in (mf.get("canonicalUrl") or "")
+        videos.append({
+            "id": vid,
+            "title": d.get("title", ""),
+            "description": d.get("shortDescription", ""),
+            "url": f"https://www.youtube.com/shorts/{vid}" if short else watch_url(vid),
+            "published": _to_utc_iso(mf.get("publishDate") or mf.get("uploadDate") or ""),
+            "channel": d.get("author") or mf.get("ownerChannelName") or "",
+            "is_short": short,
+        })
+    if not videos:
+        raise RuntimeError("예비 경로로도 영상 정보를 못 가져왔어요")
+    return sorted(videos, key=lambda v: v["published"])
+
+
 def fetch_videos(channel_id):
-    return parse_youtube_feed(http_get(YOUTUBE_FEED_URL.format(channel_id)))
+    try:
+        return parse_youtube_feed(http_get(YOUTUBE_FEED_URL.format(channel_id), retries=2))
+    except Exception as e:  # YouTube RSS는 몇 시간씩 404가 나는 일이 잦음
+        print(f"[경고] 유튜브 RSS 실패 ({e}) → 예비 경로로 확인")
+        return fetch_videos_fallback(channel_id)
 
 
 def decide_video(video, cfg):
