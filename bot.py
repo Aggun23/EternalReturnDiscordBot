@@ -39,6 +39,7 @@
   YOUTUBE_EXCLUDE       제목에 이 단어가 있으면 건너뜀 (기본: KEL,마스터즈,서포트 패키지,비하인드,슈퍼컵,Masters,내셔널 리그)
   YOUTUBE_SHORTS        off면 쇼츠 제외 (기본: 쇼츠 포함)
   COUPON_REMIND_HOURS   쿠폰 마감 몇 시간 전에 한 번 더 알릴지 (기본: 24, 0이면 끔)
+  YOUTUBE_WEBHOOK_URL   (선택) 유튜브 알림 채널 웹후크. Worker가 디스코드 전송에 계속 실패한 영상을 여기서 대신 보냄
   WORKER_URL            명령어 봇(Cloudflare Worker) 주소. 넣으면 /쿠폰추가 로 직접 등록한 쿠폰도 마감 알림에 넣고,
                         Worker가 유튜브 새 영상을 따로 올리고 있으면 여기서는 유튜브 알림을 안 보냄 (겹침 방지)
   YOUTUBE_NOTIFY        auto(기본) = 위처럼 자동 / on = 항상 여기서도 보냄 / off = 여기서는 유튜브 알림 안 보냄
@@ -109,7 +110,7 @@ SKIN_NOTICE_EXCLUDE = ("당첨자", "오류", "박스", "환불", "제한", "중
 
 # 실험체 이름 (나무위키 '분류:이터널 리턴/실험체' 기준). 새 캐릭터는 공지 제목에서 자동으로 배움(data.json의 chars_extra).
 CHARACTERS = (
-    "JP 가넷 나딘 나타폰 니아 니키 다니엘 다르코 데비&마를렌 띠아 라우라 레녹스 레니 레온 로지 루치아 루크 르노어 "
+    "가넷 나딘 나타폰 니아 니키 다니엘 다르코 데비&마를렌 띠아 라우라 레녹스 레니 레온 로지 루치아 루크 르노어 "
     "리 다이린 리오 마르티나 마이 마커스 매그너스 미르카 바냐 바바라 버니스 블레어 비앙카 비형 샬럿 세레스 셀린 쇼우 "
     "쇼이치 수아 슈린 시셀라 실비아 아델라 아드리아나 아디나 아르다 아비게일 아야 아이솔 아이작 알렉스 알론소 얀 에스텔 "
     "에이든 에키온 엘레나 엠마 요한 윌리엄 유민 유스티나 유키 이렘 이바 이슈트반 이안 일레븐 자히르 재키 제니 츠바메 "
@@ -118,7 +119,7 @@ CHARACTERS = (
 ).replace("리 다이린", "리_다이린").split()
 CHARACTERS = [c.replace("_", " ") for c in CHARACTERS]
 _CHAR_ALIASES = {
-    "데비&마를렌": ["데비&마를렌", "데비 & 마를렌", "데비마를렌", "데비와 마를렌", "데비", "마를렌"],
+    "데비&마를렌": ["데비&마를렌", "데비 & 마를렌", "데비마를렌", "데비와 마를렌", "데비", "마를렌", "뎁마", "데마", "데비 마를렌"],
     "리 다이린": ["리 다이린", "리다이린", "다이린"],
     "자히르": ["자히르", "부자히르"],   # 스킨 이름 말장난 (부자 + 자히르)
     "쇼우": ["쇼우", "판다왔쇼우"],
@@ -166,7 +167,7 @@ def is_skin_video(title, desc):
         return True
     return bool(re.search(r"미리\s*보기", title)) and "스킨" in desc
 CLAN_IMAGE_BASE = "https://clan.fastly.steamstatic.com/images"
-BOT_NAME = "이터널 리턴 알리미"
+# 봇 이름·프로필 사진은 코드에서 정하지 않아요. 디스코드 채널 설정 → 연동 → 웹후크에서 바꾸면 그대로 나와요.
 MAX_SEEN = 300
 COLOR_NEWS = 0x5865F2
 COLOR_SEASON = 0x2ECC71
@@ -442,7 +443,7 @@ def build_news_payload(item, coupons, seen_videos, mention="", season_news=False
     text = bbcode_to_text(raw)
     videos = [v for v in youtube_ids_in(raw) if v not in seen_videos][:MAX_VIDEOS_PER_POST]
 
-    payload = {"username": BOT_NAME, "embeds": [], "allowed_mentions": {"parse": []}}
+    payload = {"embeds": [], "allowed_mentions": {"parse": []}}
     content = []
     if coupons:
         codes = ", ".join(f"`{c['code']}`" for c in coupons)
@@ -645,10 +646,34 @@ def fetch_videos_fallback(channel_id, limit=15):
     return sorted(videos, key=lambda v: v["published"])
 
 
-def fetch_videos(channel_id):
+def _worker_video(v):
+    """Worker(/coupons.json)의 영상 → RSS와 같은 모양."""
+    return {
+        "id": v["id"],
+        "title": v.get("title") or "",
+        "description": v.get("description") or "",
+        "url": v.get("url") or watch_url(v["id"]),
+        "published": _to_utc_iso(v.get("published") or ""),
+        "channel": v.get("author") or "",
+        "is_short": bool(v.get("isShort")),
+    }
+
+
+def worker_videos(info, channel_id):
+    """명령어 봇(Worker)이 YouTube에서 직접 확인한 새 영상 (GitHub에서 YouTube가 막힐 때 대신 씀)."""
+    if not info or info.get("channel") != channel_id:
+        return []
+    return sorted((_worker_video(v) for v in info.get("videos") or [] if isinstance(v, dict) and v.get("id")),
+                  key=lambda v: v["published"])
+
+
+def fetch_videos(channel_id, worker=None):
     try:
         return parse_youtube_feed(http_get(YOUTUBE_FEED_URL.format(channel_id), retries=2))
     except Exception as e:  # YouTube RSS는 몇 시간씩 404가 나는 일이 잦음
+        if worker:
+            print(f"[경고] 유튜브 RSS 실패 ({e}) → 명령어 봇(Worker)이 확인한 영상 {len(worker)}개로 대신")
+            return worker
         print(f"[경고] 유튜브 RSS 실패 ({e}) → 예비 경로로 확인")
         return fetch_videos_fallback(channel_id)
 
@@ -669,10 +694,9 @@ def video_payload(video, coupons=None, mention=""):
     kind = "쇼츠" if video["is_short"] else "영상"
     head = f"📺 **{_clip(video['channel'], 80)}** 새 {kind}\n{_clip(video['title'], 300)}\n{video['url']}"
     if not coupons:
-        return {"username": BOT_NAME, "content": head, "allowed_mentions": {"parse": []}}
+        return {"content": head, "allowed_mentions": {"parse": []}}
     codes = ", ".join(f"`{c['code']}`" for c in coupons)
     return {
-        "username": BOT_NAME,
         "content": f"{mention} 🎁 새 쿠폰: {codes}".strip() + "\n" + head,
         "embeds": [coupon_embed(coupons)],
         "allowed_mentions": {"parse": ["everyone", "roles"]} if mention else {"parse": []},
@@ -683,13 +707,14 @@ def video_coupons(video, seen_codes=()):
     return [c for c in extract_coupons(video.get("description", "")) if c["code"] not in seen_codes]
 
 
-def run_youtube(state, deliver, cfg, mode="normal", data=None, notify=True):
+def run_youtube(state, deliver, cfg, mode="normal", data=None, notify=True, info=None):
     """채널 하나가 실패해도 나머지는 계속한다.
     notify=False: 유튜브는 Worker가 따로 보내는 중 → 여기서는 기록과 모음 데이터만 (보내지 않음)."""
     for spec in cfg["channels"]:
         try:
             cid = resolve_channel_id(spec, state["yt_ids"])
-            videos = fetch_videos(cid)
+            wv = worker_videos(info, cid)
+            videos = fetch_videos(cid, wv) if wv else fetch_videos(cid)
             if data is not None:
                 collect_youtube(data, videos, cfg)
         except Exception as e:  # 유튜브 RSS는 가끔 일시적으로 실패함 → 다음 실행 때 다시 시도
@@ -968,6 +993,27 @@ def youtube_notify(cfg, info, state):
     return not state.get("worker_youtube", False)  # Worker 확인이 잠깐 실패하면 지난번 상태대로
 
 
+def run_handoff(state, info, deliver_yt, cfg, mode="normal"):
+    """Worker가 디스코드 전송에 30분 넘게 실패해서 넘긴 유튜브 영상을 여기서 대신 보냄.
+    (디스코드가 Cloudflare 서버 IP를 잠시 막는 일이 있음. GitHub 서버에서는 보통 됨)"""
+    done = set(state["handoff_sent"])
+    todo = [v for v in (info or {}).get("unsent") or [] if isinstance(v, dict) and v.get("id") and v["id"] not in done]
+    if mode == "check":
+        for v in todo:
+            print(f"  📮 Worker 대신 보낼 영상: {v.get('title')} ({v['id']})")
+        return
+    if mode == "test":
+        return
+    for v in todo:
+        video = _worker_video(v)
+        coupons = video_coupons(video)
+        deliver_yt(video_payload(video, coupons, cfg["mention"]))
+        state["handoff_sent"].append(v["id"])
+        state["seen_codes"] += [c["code"] for c in coupons]
+        print(f"유튜브 대신 전송 (Worker가 못 보낸 영상): {video['title']}")
+        time.sleep(1)
+
+
 # ---------------------------------------------------------------- 쿠폰 마감 알림
 
 
@@ -998,7 +1044,6 @@ def reminder_payload(c, mention="", now=None):
         lines.append(f"[{'영상 보기' if 'youtu' in c['url'] else '공지 보기'}]({c['url']})")
     lines.append("입력: 게임 안 [옵션] → [서비스] → [쿠폰]")
     return {
-        "username": BOT_NAME,
         "content": f"{mention} ⏰ 쿠폰 마감 {left}시간 전: `{c['code']}`".strip(),
         "embeds": [{"title": "⏰ 쿠폰 마감 임박", "description": "\n".join(lines), "color": COLOR_COUPON}],
         "allowed_mentions": {"parse": ["everyone", "roles"]} if mention else {"parse": []},
@@ -1056,14 +1101,14 @@ def load_state():
     state.setdefault("steam_ready", False)
     state.setdefault("steam_source", None)
     state.setdefault("season", {"num": 0, "since": 0})
-    for key in ("seen_gids", "seen_codes", "seen_videos", "yt_ready", "reminded"):
+    for key in ("seen_gids", "seen_codes", "seen_videos", "yt_ready", "reminded", "handoff_sent"):
         state.setdefault(key, [])
     state.setdefault("yt_ids", {})
     return state
 
 
 def save_state(state):
-    for key in ("seen_gids", "seen_codes", "seen_videos", "reminded"):
+    for key in ("seen_gids", "seen_codes", "seen_videos", "reminded", "handoff_sent"):
         state[key] = list(dict.fromkeys(state[key]))[-MAX_SEEN:]
     STATE_FILE.write_text(json.dumps(state, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
 
@@ -1117,6 +1162,14 @@ def main(argv=None):
         else:
             send_webhook(webhook, payload)
 
+    yt_webhook = os.environ.get("YOUTUBE_WEBHOOK_URL", "").strip() or webhook  # 유튜브 채널 웹후크 (없으면 원래 채널)
+
+    def deliver_yt(payload):
+        if args.dry_run:
+            print(json.dumps(payload, ensure_ascii=False, indent=2))
+        else:
+            send_webhook(yt_webhook, payload)
+
     state = load_state()
     data = load_data()
     steam_error = None
@@ -1133,7 +1186,9 @@ def main(argv=None):
                 print(f"── 명령어 봇(Worker): 직접 등록 쿠폰 {n}개, 유튜브 알림 {'Worker가 보냄' if info.get('youtube') else '꺼짐'}")
         run_coupon_reminders(state, data, deliver, cfg, mode)
         if cfg["channels"]:
-            run_youtube(state, deliver, cfg, mode, data, notify=youtube_notify(cfg, info, state))
+            run_youtube(state, deliver, cfg, mode, data, notify=youtube_notify(cfg, info, state), info=info)
+        if info is not None:
+            run_handoff(state, info, deliver_yt, cfg, mode)
     finally:
         if mode == "normal" and not args.dry_run:
             save_state(state)
