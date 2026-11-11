@@ -1,5 +1,5 @@
 {
- "updated": 1794384885,
+ "updated": 1794414618,
  "season": {
   "num": 13,
   "since": 1793606942
@@ -2932,6 +2932,13 @@
  ],
  "patches": [
   {
+   "id": "708914333639245856",
+   "title": "2026.11.12 - 13.0 패치노트",
+   "url": "https://store.steampowered.com/news/app/1049590/view/708914333639245856?l=koreana",
+   "date": 1794385320,
+   "kind": "패치노트"
+  },
+  {
    "id": "680765564125184349",
    "title": "2026.10.29 - 12.7 패치노트",
    "url": "https://store.steampowered.com/news/app/1049590/view/680765564125184349?l=koreana",
@@ -3203,13 +3210,6 @@
    "url": "https://store.steampowered.com/news/app/1049590/view/701016542742053540?l=koreana",
    "date": 1778814000,
    "kind": "핫픽스"
-  },
-  {
-   "id": "701016542742052895",
-   "title": "2026.05.14 - 11.2패치노트",
-   "url": "https://store.steampowered.com/news/app/1049590/view/701016542742052895?l=koreana",
-   "date": 1778641200,
-   "kind": "패치노트"
   }
  ],
  "videos": [
