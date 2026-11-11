@@ -30,8 +30,11 @@ jobs:
 
       - name: 새 공지·영상 확인 후 전송
         env:
+          DISCORD_CHANNEL_ID: ${{ vars.DISCORD_CHANNEL_ID }}             # 봇 계정으로 올릴 알림 채널
+          DISCORD_VIDEO_CHANNEL_ID: ${{ vars.DISCORD_VIDEO_CHANNEL_ID }} # 봇 계정으로 올릴 유튜브 채널
           DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
           YOUTUBE_WEBHOOK_URL: ${{ secrets.YOUTUBE_WEBHOOK_URL }}
+          DISCORD_BOT_TOKEN: ${{ secrets.DISCORD_BOT_TOKEN }}   # 봇 계정으로 올리기 (채널 ID와 같이)
           MENTION: ${{ vars.MENTION }}
           STEAM_KEYWORDS: ${{ vars.STEAM_KEYWORDS }}
           STEAM_PATCH_KEYWORDS: ${{ vars.STEAM_PATCH_KEYWORDS }}
