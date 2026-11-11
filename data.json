@@ -1,0 +1,2962 @@
+{
+ "updated": 1794362182,
+ "season": {
+  "num": 13,
+  "since": 1793588400
+ },
+ "coupons": [
+  {
+   "code": "SEASON13GLORY",
+   "reward": null,
+   "valid": "2026.11.10(화) 23:59 (KST)까지",
+   "expires": 1794322740,
+   "date": 1793674800,
+   "title": "개발팀과의 만남 쿠폰 안내",
+   "url": "https://store.steampowered.com/news/app/1049590/view/680765564125187187?l=koreana"
+  },
+  {
+   "code": "DEVGIFT2U",
+   "reward": "히스이 털썩 이모티콘 + Eternal World (Piano ver. by Samsol Sound) + 기본 (Piano ver. by Samsol Sound) BGM",
+   "valid": "2026.11.10(화) 23:59 (KST)까지",
+   "expires": 1794322740,
+   "date": 1793674800,
+   "title": "히스이 털썩 이모티콘 + Eternal World BGM 쿠폰 안내",
+   "url": "https://store.steampowered.com/news/app/1049590/view/680765564125187075?l=koreana"
+  },
+  {
+   "code": "BUNNYSUA1015",
+   "reward": "200이벤트NP(3일) + 연구소 데이터 박스 + A-coin 부스트(1일) + XP 부스트 (1일)",
+   "valid": "10월 19일 05:00 (KST)까지",
+   "expires": 1792353600,
+   "date": 1791946800,
+   "title": "미스틱 퓨어 바니 수아의 선물 쿠폰 공개!",
+   "url": "https://store.steampowered.com/news/app/1049590/view/669505296465395743?l=koreana"
+  },
+  {
+   "code": "ERGIFTBOX",
+   "reward": null,
+   "valid": null,
+   "expires": null,
+   "date": 1790046000,
+   "title": "한가위처럼 풍성한 보름달 특별 이벤트 및 패키지 출시 안내",
+   "url": "https://store.steampowered.com/news/app/1049590/view/698776157349217313?l=koreana"
+  },
+  {
+   "code": "GOS12SAILING",
+   "reward": "High Light (feat. Haesoo) OST, High Light (Inst.) OST, 200 이벤트 NP (7일), XP 부스트 7일, A-Coin 부스트 7일, 일반 시즌 조각팩 5개 (즉시 개봉)",
+   "valid": "9월 10일 09:00 (KST)",
+   "expires": 1788998400,
+   "date": 1788404400,
+   "title": "시즌 12 세일링 시즌 스타트 쿠폰 기간 임박!",
+   "url": "https://store.steampowered.com/news/app/1049590/view/708907988310556854?l=koreana"
+  },
+  {
+   "code": "S12RANKFIXED",
+   "reward": null,
+   "valid": null,
+   "expires": null,
+   "date": 1786590000,
+   "title": "12.1a 핫픽스",
+   "url": "https://store.steampowered.com/news/app/1049590/view/671751488532382425?l=koreana"
+  },
+  {
+   "code": "S12SAILING",
+   "reward": null,
+   "valid": "2026.8.4(화) 23:59 (KST)까지",
+   "expires": 1785855540,
+   "date": 1785207600,
+   "title": "개발팀과의 만남 쿠폰 안내",
+   "url": "https://store.steampowered.com/news/app/1049590/view/680756685198855294?l=koreana"
+  },
+  {
+   "code": "GOODGOOD",
+   "reward": null,
+   "valid": "2026.8.4(화) 23:59 (KST)까지",
+   "expires": 1785855540,
+   "date": 1785207600,
+   "title": "다니엘 따봉 이모티콘 쿠폰 안내",
+   "url": "https://store.steampowered.com/news/app/1049590/view/680756685198855275?l=koreana"
+  },
+  {
+   "code": "ERBW2026",
+   "reward": "3주년 CN 크리에이터 공동 창작 기념 팀 슬롯 배경, 2000 A-Coin, 연구소 데이터 박스 * 1개",
+   "valid": "8월 6일 11:00 (KST)",
+   "expires": 1785981600,
+   "date": 1784775600,
+   "title": "Bilibili World 2026 기념 선물 쿠폰 공개!",
+   "url": "https://store.steampowered.com/news/app/1049590/view/680756685198852719?l=koreana"
+  },
+  {
+   "code": "SPECIALWEEK3RD",
+   "reward": null,
+   "valid": null,
+   "expires": null,
+   "date": 1784170800,
+   "title": "3주년 스페셜 위크!",
+   "url": "https://store.steampowered.com/news/app/1049590/view/711155348639056052?l=koreana"
+  }
+ ],
+ "skins": [
+  {
+   "id": "yt:jjW1HlevyZs",
+   "title": "창 끝에 나의 신념을 모아... #이터널리턴 #시즌13 #glory",
+   "url": "https://www.youtube.com/shorts/jjW1HlevyZs",
+   "date": 1794279600,
+   "source": "youtube",
+   "kind": "쇼츠",
+   "text": "곧 시작됩니다. 신념의 창 이슈트반이 여러분을 찾아옵니다"
+  },
+  {
+   "id": "yt:nBJqYuWx31s",
+   "title": "빛을 위해 헌신하는.. #이터널리턴 #시즌13 #glory",
+   "url": "https://www.youtube.com/shorts/nBJqYuWx31s",
+   "date": 1794193200,
+   "source": "youtube",
+   "kind": "쇼츠",
+   "text": "곧 시작됩니다. 헌신하는 빛 아비게일이 여러분을 찾아옵니다"
+  },
+  {
+   "id": "yt:pwvf1aQtv0M",
+   "title": "항해(Sailing) 를 마치고 다시 영예(Glory)를 찾아.. #이터널리턴 #시즌13 #glory",
+   "url": "https://www.youtube.com/shorts/pwvf1aQtv0M",
+   "date": 1794106800,
+   "source": "youtube",
+   "kind": "쇼츠",
+   "text": "곧 시작됩니다. 성역의 구원 코렐라인이 여러분을 찾아옵니다"
+  },
+  {
+   "id": "steam:680765564125184526",
+   "title": "[수정] 사냥꾼의 솥단지 스킨 & 신규 패키지 출시 안내",
+   "url": "https://store.steampowered.com/news/app/1049590/view/680765564125184526?l=koreana",
+   "date": 1793242800,
+   "source": "steam",
+   "kind": "공지",
+   "text": ""
+  },
+  {
+   "id": "yt:F9SbKX9Uonk",
+   "title": "가보자고! 카우보이! #이터널리턴 #시즌12 #신규스킨",
+   "url": "https://www.youtube.com/shorts/F9SbKX9Uonk",
+   "date": 1792810800,
+   "source": "youtube",
+   "kind": "쇼츠",
+   "text": ""
+  },
+  {
+   "id": "steam:669505296465396223",
+   "title": "미스틱 퓨어 바니 수아 - 신규 제작소 스킨 출시 안내",
+   "url": "https://store.steampowered.com/news/app/1049590/view/669505296465396223?l=koreana",
+   "date": 1792033200,
+   "source": "steam",
+   "kind": "공지",
+   "text": ""
+  },
+  {
+   "id": "steam:703281660030881252",
+   "title": "[신규 스킨] 미스틱 퓨어 바니 수아 미리 보기",
+   "url": "https://store.steampowered.com/news/app/1049590/view/703281660030881252?l=koreana",
+   "date": 1791860400,
+   "source": "steam",
+   "kind": "공지",
+   "text": ""
+  },
+  {
+   "id": "yt:qqyZXu0gyIQ",
+   "title": "미스틱 퓨어 바니 수아 미리보기",
+   "url": "https://www.youtube.com/watch?v=qqyZXu0gyIQ",
+   "date": 1791860400,
+   "source": "youtube",
+   "kind": "영상",
+   "text": "후 만나실 수 있습니다. #이터널리턴 #시즌12 #신규스킨"
+  },
+  {
+   "id": "yt:Sy9sFe2rX7Y",
+   "title": "뒷골목에서 심판자로! #이터널리턴 #시즌12 #신규스킨",
+   "url": "https://www.youtube.com/shorts/Sy9sFe2rX7Y",
+   "date": 1791774000,
+   "source": "youtube",
+   "kind": "쇼츠",
+   "text": ""
+  },
+  {
+   "id": "yt:YebHex_xYM4",
+   "title": "평범한 마법소녀의 하루 #이터널리턴 #시즌12 #신규스킨",
+   "url": "https://www.youtube.com/shorts/YebHex_xYM4",
+   "date": 1791601200,
+   "source": "youtube",
+   "kind": "쇼츠",
+   "text": ""
+  },
+  {
+   "id": "yt:ZmOJ_IViA2c",
+   "title": "미스틱 퓨어 바니! 당신의 부름에 응해, 이곳에 등장!",
+   "url": "https://www.youtube.com/shorts/ZmOJ_IViA2c",
+   "date": 1791514800,
+   "source": "youtube",
+   "kind": "쇼츠",
+   "text": "수아가 소중한 이야기를 지키기 위해 루미아 섬에 찾아옵니다"
+  },
+  {
+   "id": "yt:KEig0xAeJX8",
+   "title": "운동하기 딱 좋은 날씨죠? #이터널리턴 #시즌12 #신규스킨",
+   "url": "https://www.youtube.com/shorts/KEig0xAeJX8",
+   "date": 1790391600,
+   "source": "youtube",
+   "kind": "쇼츠",
+   "text": ""
+  },
+  {
+   "id": "yt:xqWN2ONsgKI",
+   "title": "청춘, 한컷..남기실래요? / #이터널리턴 #시즌12 #신규스킨",
+   "url": "https://www.youtube.com/shorts/xqWN2ONsgKI",
+   "date": 1789182000,
+   "source": "youtube",
+   "kind": "쇼츠",
+   "text": ""
+  },
+  {
+   "id": "steam:708907988310556852",
+   "title": "치어풀 펀치! 니키 - 신규 제작소 스킨 출시 안내",
+   "url": "https://store.steampowered.com/news/app/1049590/view/708907988310556852?l=koreana",
+   "date": 1788404400,
+   "source": "steam",
+   "kind": "공지",
+   "text": ""
+  },
+  {
+   "id": "steam:708907354451608525",
+   "title": "[신규 스킨] 치어풀 펀치! 니키 미리 보기",
+   "url": "https://store.steampowered.com/news/app/1049590/view/708907354451608525?l=koreana",
+   "date": 1788231600,
+   "source": "steam",
+   "kind": "공지",
+   "text": ""
+  },
+  {
+   "id": "yt:VEZ84k1lnjI",
+   "title": "치어풀 펀치 니키 미리보기 #이터널리턴 #시즌12 #신규스킨",
+   "url": "https://www.youtube.com/watch?v=VEZ84k1lnjI",
+   "date": 1788231600,
+   "source": "youtube",
+   "kind": "영상",
+   "text": ""
+  },
+  {
+   "id": "yt:3WLStVzT3NA",
+   "title": "치어풀 니키가 생존자 여러분을 응원합니다! #이터널리턴 #시즌12 #신규스킨",
+   "url": "https://www.youtube.com/shorts/3WLStVzT3NA",
+   "date": 1787972400,
+   "source": "youtube",
+   "kind": "쇼츠",
+   "text": ""
+  },
+  {
+   "id": "yt:FY1WimoNRGA",
+   "title": "V.I.C.T.O.R.Y! 내 응원, 제대로 전해졌지?",
+   "url": "https://www.youtube.com/shorts/FY1WimoNRGA",
+   "date": 1787886000,
+   "source": "youtube",
+   "kind": "쇼츠",
+   "text": "9월 3일, 치어풀 펀치! 니키가 루미아 섬에 찾아옵니다"
+  },
+  {
+   "id": "yt:i_l3chYVPL8",
+   "title": "쇼이치와 거래에 응하시겠습니까? #이터널리턴 #시즌12 #신규스킨",
+   "url": "https://www.youtube.com/shorts/i_l3chYVPL8",
+   "date": 1786849200,
+   "source": "youtube",
+   "kind": "쇼츠",
+   "text": ""
+  },
+  {
+   "id": "yt:NF0Zq7JLGso",
+   "title": "가넷의 달콤함에 빠져보시겠습니까? #이터널리턴 #시즌12 #신규스킨",
+   "url": "https://www.youtube.com/shorts/NF0Zq7JLGso",
+   "date": 1786762800,
+   "source": "youtube",
+   "kind": "쇼츠",
+   "text": ""
+  },
+  {
+   "id": "yt:9QKfTbw9D4k",
+   "title": "지금 안 받으면 손해🔥스킨 2종 무료로 드려요",
+   "url": "https://www.youtube.com/shorts/9QKfTbw9D4k",
+   "date": 1784862000,
+   "source": "youtube",
+   "kind": "쇼츠",
+   "text": ""
+  },
+  {
+   "id": "steam:680756685198852657",
+   "title": "영겁의 푸른 망령 비앙카 스킨 출시 이벤트",
+   "url": "https://store.steampowered.com/news/app/1049590/view/680756685198852657?l=koreana",
+   "date": 1784775600,
+   "source": "steam",
+   "kind": "공지",
+   "text": ""
+  },
+  {
+   "id": "steam:711155348639057695",
+   "title": "[신규 스킨] 영겁의 푸른 망령 비앙카 미리 보기",
+   "url": "https://store.steampowered.com/news/app/1049590/view/711155348639057695?l=koreana",
+   "date": 1784602800,
+   "source": "steam",
+   "kind": "공지",
+   "text": ""
+  },
+  {
+   "id": "yt:i5EeakEpvJU",
+   "title": "마지막 바퀴(Final Lap) 인가요? #이터널리턴 #시즌11 #신규스킨",
+   "url": "https://www.youtube.com/shorts/i5EeakEpvJU",
+   "date": 1784516400,
+   "source": "youtube",
+   "kind": "쇼츠",
+   "text": ""
+  },
+  {
+   "id": "yt:tL0bJeqUjxU",
+   "title": "넌 착한 권속이로구나 #이터널리턴 #시즌11 #신규스킨",
+   "url": "https://www.youtube.com/shorts/tL0bJeqUjxU",
+   "date": 1784343600,
+   "source": "youtube",
+   "kind": "쇼츠",
+   "text": ""
+  },
+  {
+   "id": "steam:688635449342694450",
+   "title": "[신규 스킨] 3rd Anniversary 하트&리오 미리 보기",
+   "url": "https://store.steampowered.com/news/app/1049590/view/688635449342694450?l=koreana",
+   "date": 1783393200,
+   "source": "steam",
+   "kind": "공지",
+   "text": ""
+  },
+  {
+   "id": "yt:eW7LOdz6ZDc",
+   "title": "영겁의 시간을 지나... 이곳에 도래했도다!",
+   "url": "https://www.youtube.com/shorts/eW7LOdz6ZDc",
+   "date": 1782702000,
+   "source": "youtube",
+   "kind": "쇼츠",
+   "text": "23일, 영겁의 푸른 망령 비앙카가 루미아 섬에 찾아옵니다"
+  },
+  {
+   "id": "yt:zYOCy8r-gig",
+   "title": "경력 있는 신입 메이드 #이터널리턴 #시즌11 #스킨케어",
+   "url": "https://www.youtube.com/shorts/zYOCy8r-gig",
+   "date": 1782010800,
+   "source": "youtube",
+   "kind": "쇼츠",
+   "text": ""
+  },
+  {
+   "id": "yt:YKHDJoltdl8",
+   "title": "다시 설레이기 시작했어 #이터널리턴 #시즌11 #신규스킨",
+   "url": "https://www.youtube.com/shorts/YKHDJoltdl8",
+   "date": 1781924400,
+   "source": "youtube",
+   "kind": "쇼츠",
+   "text": ""
+  },
+  {
+   "id": "yt:TTYcDNN3PKw",
+   "title": "펜리르! 여기는 골목길이다. #이터널리턴 #시즌11 #신규스킨",
+   "url": "https://www.youtube.com/shorts/TTYcDNN3PKw",
+   "date": 1780714800,
+   "source": "youtube",
+   "kind": "쇼츠",
+   "text": ""
+  },
+  {
+   "id": "steam:668366713382765101",
+   "title": "당신과 나의 네코마츠리 이렘 스킨 출시 이벤트",
+   "url": "https://store.steampowered.com/news/app/1049590/view/668366713382765101?l=koreana",
+   "date": 1779937200,
+   "source": "steam",
+   "kind": "공지",
+   "text": ""
+  },
+  {
+   "id": "steam:670617878982034886",
+   "title": "[신규 스킨] 당신과 나의 네코마츠리 이렘 미리 보기",
+   "url": "https://store.steampowered.com/news/app/1049590/view/670617878982034886?l=koreana",
+   "date": 1779764400,
+   "source": "steam",
+   "kind": "공지",
+   "text": ""
+  },
+  {
+   "id": "yt:UQEAOFfEzYo",
+   "title": "당신과 나의 네코마츠리 이렘 미리보기 #이터널리턴 #시즌11 #신규스킨",
+   "url": "https://www.youtube.com/watch?v=UQEAOFfEzYo",
+   "date": 1779764400,
+   "source": "youtube",
+   "kind": "영상",
+   "text": ""
+  },
+  {
+   "id": "yt:BsNLTsp4Qus",
+   "title": "메이드, 때때로 폭발.. #이터널리턴 #시즌11 #신규스킨",
+   "url": "https://www.youtube.com/shorts/BsNLTsp4Qus",
+   "date": 1779591600,
+   "source": "youtube",
+   "kind": "쇼츠",
+   "text": ""
+  },
+  {
+   "id": "yt:7x9gEU751CQ",
+   "title": "당신과 나의... #이터널리턴 #시즌11 #신규스킨",
+   "url": "https://www.youtube.com/shorts/7x9gEU751CQ",
+   "date": 1779505200,
+   "source": "youtube",
+   "kind": "쇼츠",
+   "text": ""
+  },
+  {
+   "id": "yt:ytEomWWdtB0",
+   "title": "8번째 고스트헌터? #이터널리턴 #시즌11 #신규스킨",
+   "url": "https://www.youtube.com/shorts/ytEomWWdtB0",
+   "date": 1778382000,
+   "source": "youtube",
+   "kind": "쇼츠",
+   "text": ""
+  },
+  {
+   "id": "yt:zV6YLdr8jyw",
+   "title": "꿈은 이루어지겠지..? #이터널리턴 #시즌11 #신규스킨",
+   "url": "https://www.youtube.com/shorts/zV6YLdr8jyw",
+   "date": 1778295600,
+   "source": "youtube",
+   "kind": "쇼츠",
+   "text": ""
+  },
+  {
+   "id": "yt:52jRtzoyL1s",
+   "title": "시즌 11: 쁘띠 미뇽이 찾아옵니다.",
+   "url": "https://www.youtube.com/watch?v=52jRtzoyL1s",
+   "date": 1776740400,
+   "source": "youtube",
+   "kind": "영상",
+   "text": "의 시즌 11 쁘띠 미뇽이 04/30에 여러분을 찾아옵니다"
+  },
+  {
+   "id": "yt:LUORkGMWzKQ",
+   "title": "시즌11 업데이트! / 과거 토큰 스킨의 전용 춤 추가",
+   "url": "https://www.youtube.com/shorts/LUORkGMWzKQ",
+   "date": 1776740400,
+   "source": "youtube",
+   "kind": "쇼츠",
+   "text": ""
+  },
+  {
+   "id": "yt:puRtrs0Fcx0",
+   "title": "새로운 메이드를 소개합니다? #이터널리턴 #시즌10 #신규스킨",
+   "url": "https://www.youtube.com/shorts/puRtrs0Fcx0",
+   "date": 1775790000,
+   "source": "youtube",
+   "kind": "쇼츠",
+   "text": ""
+  },
+  {
+   "id": "steam:507357952986841831",
+   "title": "이터널 리턴 X 페르소나5 더 로열 콜라보 퀸 실비아, 팬서 라우라 스킨 상품 안내",
+   "url": "https://store.steampowered.com/news/app/1049590/view/507357952986841831?l=koreana",
+   "date": 1775098800,
+   "source": "steam",
+   "kind": "공지",
+   "text": ""
+  },
+  {
+   "id": "steam:507357952986841837",
+   "title": "퀸 실비아 제작소 스킨 출시 안내",
+   "url": "https://store.steampowered.com/news/app/1049590/view/507357952986841837?l=koreana",
+   "date": 1775098800,
+   "source": "steam",
+   "kind": "공지",
+   "text": ""
+  },
+  {
+   "id": "steam:507357952986841129",
+   "title": "[신규 스킨] 퀸 실비아 미리 보기",
+   "url": "https://store.steampowered.com/news/app/1049590/view/507357952986841129?l=koreana",
+   "date": 1775012400,
+   "source": "steam",
+   "kind": "공지",
+   "text": ""
+  },
+  {
+   "id": "steam:507357499795439926",
+   "title": "[신규 스킨] 팬서 라우라 미리 보기",
+   "url": "https://store.steampowered.com/news/app/1049590/view/507357499795439926?l=koreana",
+   "date": 1774839600,
+   "source": "steam",
+   "kind": "공지",
+   "text": ""
+  },
+  {
+   "id": "steam:503978984819654989",
+   "title": "이터널 리턴 X 페르소나5 더 로열 콜라보 크로우 카밀로 스킨 패키지 출시",
+   "url": "https://store.steampowered.com/news/app/1049590/view/503978984819654989?l=koreana",
+   "date": 1773889200,
+   "source": "steam",
+   "kind": "공지",
+   "text": ""
+  },
+  {
+   "id": "steam:502852451136701392",
+   "title": "[신규 스킨] 크로우 카밀로 미리 보기",
+   "url": "https://store.steampowered.com/news/app/1049590/view/502852451136701392?l=koreana",
+   "date": 1773716400,
+   "source": "steam",
+   "kind": "공지",
+   "text": ""
+  },
+  {
+   "id": "yt:C5ME4aa4czY",
+   "title": "평화를 추구하는 아이작 #이터널리턴 #시즌10 #신규스킨",
+   "url": "https://www.youtube.com/shorts/C5ME4aa4czY",
+   "date": 1773457200,
+   "source": "youtube",
+   "kind": "쇼츠",
+   "text": ""
+  },
+  {
+   "id": "steam:519740319207522509",
+   "title": "이터널 리턴 X 페르소나5 더 로열 콜라보 바이올렛 엘레나 스킨 패키지 출시",
+   "url": "https://store.steampowered.com/news/app/1049590/view/519740319207522509?l=koreana",
+   "date": 1772679600,
+   "source": "steam",
+   "kind": "공지",
+   "text": ""
+  },
+  {
+   "id": "steam:538879983385314350",
+   "title": "[신규 스킨] 바이올렛 엘레나 미리 보기",
+   "url": "https://store.steampowered.com/news/app/1049590/view/538879983385314350?l=koreana",
+   "date": 1772506800,
+   "source": "steam",
+   "kind": "공지",
+   "text": ""
+  },
+  {
+   "id": "yt:sVuai2_Z03M",
+   "title": "일단 감식반 부터 불러! #이터널리턴 #시즌10 #신규스킨",
+   "url": "https://www.youtube.com/shorts/sVuai2_Z03M",
+   "date": 1772247600,
+   "source": "youtube",
+   "kind": "쇼츠",
+   "text": ""
+  },
+  {
+   "id": "steam:538879349212840742",
+   "title": "포디엄 피니시 블레어 신규 스킨 출시 일정 안내",
+   "url": "https://store.steampowered.com/news/app/1049590/view/538879349212840742?l=koreana",
+   "date": 1771470000,
+   "source": "steam",
+   "kind": "공지",
+   "text": ""
+  },
+  {
+   "id": "steam:538879349212840716",
+   "title": "조커 알렉스 스킨 출시 이벤트 안내",
+   "url": "https://store.steampowered.com/news/app/1049590/view/538879349212840716?l=koreana",
+   "date": 1771470000,
+   "source": "steam",
+   "kind": "공지",
+   "text": ""
+  },
+  {
+   "id": "steam:742666698308452860",
+   "title": "[신규 스킨] 조커 알렉스 미리 보기",
+   "url": "https://store.steampowered.com/news/app/1049590/view/742666698308452860?l=koreana",
+   "date": 1771210800,
+   "source": "steam",
+   "kind": "공지",
+   "text": ""
+  },
+  {
+   "id": "yt:i0C9qRvyvIE",
+   "title": "네 최고의 속도를 내게 보여줘. / 포디엄 피니시 블레어 #이터널리턴 #시즌10 #로얄",
+   "url": "https://www.youtube.com/shorts/i0C9qRvyvIE",
+   "date": 1771038000,
+   "source": "youtube",
+   "kind": "쇼츠",
+   "text": "블레어의 첫번째 스킨"
+  },
+  {
+   "id": "yt:mysuP1Oqq9E",
+   "title": "선생님이 오셨다구요? #이터널리턴 #시즌10 #신규스킨",
+   "url": "https://www.youtube.com/shorts/mysuP1Oqq9E",
+   "date": 1769828400,
+   "source": "youtube",
+   "kind": "쇼츠",
+   "text": ""
+  },
+  {
+   "id": "yt:ZgbJDcIXEgk",
+   "title": "골드 서브젝트를 달성하고 사관후보생 나딘을 만나보세요! #이터널리턴 #랭크매치 #시즌9",
+   "url": "https://www.youtube.com/shorts/ZgbJDcIXEgk",
+   "date": 1768100400,
+   "source": "youtube",
+   "kind": "쇼츠",
+   "text": "이상의 티어로 마감할 경우 \"사관후보생 나딘\" 스킨을 지급"
+  },
+  {
+   "id": "yt:mV2kjWfRY3o",
+   "title": "헨리가 돌아가야 할 곳은 어디일까? / #이터널리턴 #마츠리 #신규스킨",
+   "url": "https://www.youtube.com/shorts/mV2kjWfRY3o",
+   "date": 1767409200,
+   "source": "youtube",
+   "kind": "쇼츠",
+   "text": ""
+  },
+  {
+   "id": "steam:518606895910486034",
+   "title": "윈터 홀리데이 이벤트 시작 및 겨울 스킨 번들 출시!",
+   "url": "https://store.steampowered.com/news/app/1049590/view/518606895910486034?l=koreana",
+   "date": 1765422000,
+   "source": "steam",
+   "kind": "공지",
+   "text": ""
+  },
+  {
+   "id": "yt:3kh1EdVzP9I",
+   "title": "추운 겨울 아드리아나와 함께 따뜻하게 / 이터널 리턴 #이터널리턴 #시즌9 #신규스킨",
+   "url": "https://www.youtube.com/shorts/3kh1EdVzP9I",
+   "date": 1764990000,
+   "source": "youtube",
+   "kind": "쇼츠",
+   "text": ""
+  },
+  {
+   "id": "yt:HHskDRpZasg",
+   "title": "(현묵청화) 슈린이라고 합니다. #이터널리턴 #마츠리 #신규스킨",
+   "url": "https://www.youtube.com/shorts/HHskDRpZasg",
+   "date": 1763866800,
+   "source": "youtube",
+   "kind": "쇼츠",
+   "text": ""
+  },
+  {
+   "id": "yt:Y6uKYTrMuw4",
+   "title": "고스트헌터 히스이 / 돌아온 수험생 혜진과 얀 신규 스킨 / 시즌9 유니온 대전 오픈 / 가젯볼트 UXUI 옵션 추가 / 9.3 업데이트 / 패치노트 다이제스트",
+   "url": "https://www.youtube.com/watch?v=Y6uKYTrMuw4",
+   "date": 1763089200,
+   "source": "youtube",
+   "kind": "영상",
+   "text": ""
+  },
+  {
+   "id": "steam:590661965751255056",
+   "title": "고스트헌터 히스이 스킨 출시 이벤트 안내",
+   "url": "https://store.steampowered.com/news/app/1049590/view/590661965751255056?l=koreana",
+   "date": 1763002800,
+   "source": "steam",
+   "kind": "공지",
+   "text": ""
+  },
+  {
+   "id": "yt:I-dOsUcNQ9I",
+   "title": "7번째 고스트헌터 #이터널리턴 #시즌9 #신규스킨",
+   "url": "https://www.youtube.com/shorts/I-dOsUcNQ9I",
+   "date": 1762657200,
+   "source": "youtube",
+   "kind": "쇼츠",
+   "text": ""
+  },
+  {
+   "id": "yt:T1SdmPNnsbI",
+   "title": "두번째 언더보스가 나타났다! #이터널리턴 #마츠리 #신규스킨",
+   "url": "https://www.youtube.com/shorts/T1SdmPNnsbI",
+   "date": 1762570800,
+   "source": "youtube",
+   "kind": "쇼츠",
+   "text": ""
+  },
+  {
+   "id": "steam:588409432234263117",
+   "title": "[신규 스킨] 고스트헌터 히스이 미리 보기",
+   "url": "https://store.steampowered.com/news/app/1049590/view/588409432234263117?l=koreana",
+   "date": 1762484400,
+   "source": "steam",
+   "kind": "공지",
+   "text": ""
+  },
+  {
+   "id": "yt:xIcalbp4APw",
+   "title": "고스트헌터 히스이 미리보기 / 이터널 리턴",
+   "url": "https://www.youtube.com/watch?v=xIcalbp4APw",
+   "date": 1762484400,
+   "source": "youtube",
+   "kind": "영상",
+   "text": "#신규스킨"
+  },
+  {
+   "id": "yt:8HWdR-UlENE",
+   "title": "루미아 섬에 카페가 있었나요? #이터널리턴 #신규스킨 #시즌9",
+   "url": "https://www.youtube.com/shorts/8HWdR-UlENE",
+   "date": 1761361200,
+   "source": "youtube",
+   "kind": "쇼츠",
+   "text": ""
+  },
+  {
+   "id": "yt:Oxkj2XGQkAg",
+   "title": "어때, 잘 어울려? #이터널리턴 #시즌9 #마츠리",
+   "url": "https://www.youtube.com/shorts/Oxkj2XGQkAg",
+   "date": 1760151600,
+   "source": "youtube",
+   "kind": "쇼츠",
+   "text": "시즌 마츠리가 곧 시작 됩니다. 마츠리 시즌팩 특별 스킨"
+  },
+  {
+   "id": "yt:zKgrGmwdEus",
+   "title": "니아의 첫 번째 스킨 출시, 전투 연구실 내 부활 금지, 캐릭터 순차 선택 옵션 추가 등 / 8.7 업데이트 / 패치노트 다이제스트",
+   "url": "https://www.youtube.com/watch?v=zKgrGmwdEus",
+   "date": 1759374000,
+   "source": "youtube",
+   "kind": "영상",
+   "text": ""
+  },
+  {
+   "id": "yt:yYGxEiXtYA4",
+   "title": "니아의 첫번째 스킨을 만날 시간! #이터널리턴 #니아 #신규스킨",
+   "url": "https://www.youtube.com/shorts/yYGxEiXtYA4",
+   "date": 1759028400,
+   "source": "youtube",
+   "kind": "쇼츠",
+   "text": ""
+  },
+  {
+   "id": "yt:Vmp2dm6fXL4",
+   "title": "Mk.VIII Destroyer M.A.G 매그너스 다시보기 / #이터널리턴 #신규스킨",
+   "url": "https://www.youtube.com/shorts/Vmp2dm6fXL4",
+   "date": 1758942000,
+   "source": "youtube",
+   "kind": "쇼츠",
+   "text": ""
+  },
+  {
+   "id": "steam:510717896817639571",
+   "title": "매그너스 신규 스킨 Mk.VIII Destroyer M.A.G 이벤트 안내",
+   "url": "https://store.steampowered.com/news/app/1049590/view/510717896817639571?l=koreana",
+   "date": 1758164400,
+   "source": "steam",
+   "kind": "공지",
+   "text": ""
+  },
+  {
+   "id": "yt:smp0M8RxaTc",
+   "title": "신규 제작소 스킨, 아이템 동적 추천 시스템, 제작소 상자 일괄 개봉 기능 / 8.6 업데이트 / 패치노트 다이제스트",
+   "url": "https://www.youtube.com/watch?v=smp0M8RxaTc",
+   "date": 1758164400,
+   "source": "youtube",
+   "kind": "영상",
+   "text": ""
+  },
+  {
+   "id": "steam:760667222802695166",
+   "title": "[신규 스킨] Mk.VIII Destroyer M.A.G 미리 보기",
+   "url": "https://store.steampowered.com/news/app/1049590/view/760667222802695166?l=koreana",
+   "date": 1757991600,
+   "source": "steam",
+   "kind": "공지",
+   "text": ""
+  },
+  {
+   "id": "yt:vJjydtdf474",
+   "title": "..그림은 계속 그려야죠 #이터널리턴 #게임 #신규스킨",
+   "url": "https://www.youtube.com/shorts/vJjydtdf474",
+   "date": 1756522800,
+   "source": "youtube",
+   "kind": "쇼츠",
+   "text": ""
+  },
+  {
+   "id": "yt:NOHFimG1_V0",
+   "title": "다시 일할 시간인가.. #이터널리턴 #신규스킨 #이슈트반",
+   "url": "https://www.youtube.com/shorts/NOHFimG1_V0",
+   "date": 1755313200,
+   "source": "youtube",
+   "kind": "쇼츠",
+   "text": ""
+  },
+  {
+   "id": "steam:524224889691832784",
+   "title": "[신규 스킨] 한여름의 휴가 다르코 미리 보기",
+   "url": "https://store.steampowered.com/news/app/1049590/view/524224889691832784?l=koreana",
+   "date": 1754622000,
+   "source": "steam",
+   "kind": "공지",
+   "text": ""
+  },
+  {
+   "id": "yt:IusnTwv796A",
+   "title": "해변 같이 갈래요?",
+   "url": "https://www.youtube.com/shorts/IusnTwv796A",
+   "date": 1754622000,
+   "source": "youtube",
+   "kind": "쇼츠",
+   "text": "션 아비게일을 만나보세요! #이터널리턴 #아비게일 #신스킨"
+  },
+  {
+   "id": "yt:EDfRKw4KUhM",
+   "title": "한여름의 휴가 다르코 미리보기 / 이터널 리턴",
+   "url": "https://www.youtube.com/watch?v=EDfRKw4KUhM",
+   "date": 1754622000,
+   "source": "youtube",
+   "kind": "영상",
+   "text": "#신스킨"
+  },
+  {
+   "id": "steam:524224255263508724",
+   "title": "[신규 스킨] 트로피컬 디멘션 아비게일 미리 보기",
+   "url": "https://store.steampowered.com/news/app/1049590/view/524224255263508724?l=koreana",
+   "date": 1754362800,
+   "source": "steam",
+   "kind": "공지",
+   "text": ""
+  },
+  {
+   "id": "yt:_kbyGxsxL6o",
+   "title": "트로피컬 디멘션 아비게일 미리보기 / 이터널 리턴",
+   "url": "https://www.youtube.com/watch?v=_kbyGxsxL6o",
+   "date": 1754362800,
+   "source": "youtube",
+   "kind": "영상",
+   "text": "#이터널리턴 #아비게일 #신스킨"
+  },
+  {
+   "id": "yt:3D5crUJ7U1A",
+   "title": "수박 깨기 대결을 위한 준비 #이터널리턴 #신스킨 #아비게일",
+   "url": "https://www.youtube.com/shorts/3D5crUJ7U1A",
+   "date": 1754190000,
+   "source": "youtube",
+   "kind": "쇼츠",
+   "text": ""
+  },
+  {
+   "id": "yt:l19HpMpiLbQ",
+   "title": "자본주의(?) 냄새 가득한 휴가? #이터널리턴 #신스킨 #eternalreturn",
+   "url": "https://www.youtube.com/shorts/l19HpMpiLbQ",
+   "date": 1754103600,
+   "source": "youtube",
+   "kind": "쇼츠",
+   "text": ""
+  },
+  {
+   "id": "steam:524223243273373534",
+   "title": "[신규 스킨] 2nd Anniversary 이바 미리 보기",
+   "url": "https://store.steampowered.com/news/app/1049590/view/524223243273373534?l=koreana",
+   "date": 1753153200,
+   "source": "steam",
+   "kind": "공지",
+   "text": ""
+  },
+  {
+   "id": "steam:524223243273373536",
+   "title": "[신규 스킨] 2nd Anniversary 엘레나 미리 보기",
+   "url": "https://store.steampowered.com/news/app/1049590/view/524223243273373536?l=koreana",
+   "date": 1753153200,
+   "source": "steam",
+   "kind": "공지",
+   "text": ""
+  },
+  {
+   "id": "yt:c9_dBVjZTVA",
+   "title": "올 여름 니나와 함께 보내볼래요? #이터널리턴 #게임 #eternalreturn",
+   "url": "https://www.youtube.com/shorts/c9_dBVjZTVA",
+   "date": 1751943600,
+   "source": "youtube",
+   "kind": "쇼츠",
+   "text": "시즌 8 스플래쉬!의 ER Pass 스킨"
+  },
+  {
+   "id": "yt:zTBEnHE9tKc",
+   "title": "이번 여름 많이 더울지 별에게 물어볼까요?/ 이터널 리턴",
+   "url": "https://www.youtube.com/shorts/zTBEnHE9tKc",
+   "date": 1751857200,
+   "source": "youtube",
+   "kind": "쇼츠",
+   "text": "시즌 8 스플래쉬!의 ER Pass 스킨"
+  },
+  {
+   "id": "yt:yAapago5JbI",
+   "title": "전사는 더위를 타지 않는다! / 이터널 리턴",
+   "url": "https://www.youtube.com/shorts/yAapago5JbI",
+   "date": 1751770800,
+   "source": "youtube",
+   "kind": "쇼츠",
+   "text": "시즌 8 스플래쉬!의 ER Pass 스킨"
+  },
+  {
+   "id": "yt:L6XqOC8yEMk",
+   "title": "무더운 여름! 청랑일섬으로 베어버리겠습니다.",
+   "url": "https://www.youtube.com/shorts/L6XqOC8yEMk",
+   "date": 1751684400,
+   "source": "youtube",
+   "kind": "쇼츠",
+   "text": "시즌 8 스플래쉬!의 특별 영웅 스킨"
+  },
+  {
+   "id": "yt:zrcIRsN9nTI",
+   "title": "모든 캐릭터와 스킨을 만나보세요!",
+   "url": "https://www.youtube.com/shorts/zrcIRsN9nTI",
+   "date": 1751598000,
+   "source": "youtube",
+   "kind": "쇼츠",
+   "text": ""
+  },
+  {
+   "id": "steam:524219173974313634",
+   "title": "[신규 스킨] 선도부장 유스티나 미리 보기",
+   "url": "https://store.steampowered.com/news/app/1049590/view/524219173974313634?l=koreana",
+   "date": 1749524400,
+   "source": "steam",
+   "kind": "공지",
+   "text": ""
+  },
+  {
+   "id": "yt:UIH1-Wyp7zs",
+   "title": "히어로를 꿈꾸는 선도부 #이터널리턴 #신규스킨 #유스티나",
+   "url": "https://www.youtube.com/shorts/UIH1-Wyp7zs",
+   "date": 1749265200,
+   "source": "youtube",
+   "kind": "쇼츠",
+   "text": ""
+  },
+  {
+   "id": "steam:524218548534379905",
+   "title": "[신규 스킨] 연구원 바바라 미리 보기",
+   "url": "https://store.steampowered.com/news/app/1049590/view/524218548534379905?l=koreana",
+   "date": 1748574000,
+   "source": "steam",
+   "kind": "공지",
+   "text": ""
+  },
+  {
+   "id": "steam:524217913946670540",
+   "title": "[신규 스킨] 방과 후 자유시간 데비&마를렌 미리 보기",
+   "url": "https://store.steampowered.com/news/app/1049590/view/524217913946670540?l=koreana",
+   "date": 1748314800,
+   "source": "steam",
+   "kind": "공지",
+   "text": ""
+  },
+  {
+   "id": "yt:kvzZQIgg5d0",
+   "title": "자유시간 Part.2 #이터널리턴 #데비마를렌 #신규스킨",
+   "url": "https://www.youtube.com/shorts/kvzZQIgg5d0",
+   "date": 1748142000,
+   "source": "youtube",
+   "kind": "쇼츠",
+   "text": ""
+  },
+  {
+   "id": "yt:WDSsF4Co8jM",
+   "title": "방과 후 Part.1 #이터널리턴 #데비마를렌 #신규스킨",
+   "url": "https://www.youtube.com/shorts/WDSsF4Co8jM",
+   "date": 1748142000,
+   "source": "youtube",
+   "kind": "쇼츠",
+   "text": ""
+  },
+  {
+   "id": "steam:524216645064853746",
+   "title": "[신규 스킨] 뒷골목 히스이 미리 보기",
+   "url": "https://store.steampowered.com/news/app/1049590/view/524216645064853746?l=koreana",
+   "date": 1747105200,
+   "source": "steam",
+   "kind": "공지",
+   "text": ""
+  },
+  {
+   "id": "yt:WHOkgJKlXlE",
+   "title": "뒷골목의 주인은 누구인가? #이터널리턴 #게임 #신규스킨",
+   "url": "https://www.youtube.com/shorts/WHOkgJKlXlE",
+   "date": 1746846000,
+   "source": "youtube",
+   "kind": "쇼츠",
+   "text": ""
+  },
+  {
+   "id": "steam:524215397863391776",
+   "title": "[신규 스킨] 아포칼립스 윌리엄 미리 보기",
+   "url": "https://store.steampowered.com/news/app/1049590/view/524215397863391776?l=koreana",
+   "date": 1745895600,
+   "source": "steam",
+   "kind": "공지",
+   "text": ""
+  },
+  {
+   "id": "steam:524214742651240831",
+   "title": "[신규 스킨] 제식 교관 피오라 미리 보기",
+   "url": "https://store.steampowered.com/news/app/1049590/view/524214742651240831?l=koreana",
+   "date": 1744945200,
+   "source": "steam",
+   "kind": "공지",
+   "text": ""
+  },
+  {
+   "id": "steam:596271781985125740",
+   "title": "[신규 스킨] 사신 루크 미리 보기",
+   "url": "https://store.steampowered.com/news/app/1049590/view/596271781985125740?l=koreana",
+   "date": 1744686000,
+   "source": "steam",
+   "kind": "공지",
+   "text": ""
+  },
+  {
+   "id": "steam:524212840420083985",
+   "title": "[신규 스킨] 20년 전 마르티나 미리 보기",
+   "url": "https://store.steampowered.com/news/app/1049590/view/524212840420083985?l=koreana",
+   "date": 1743476400,
+   "source": "steam",
+   "kind": "공지",
+   "text": ""
+  },
+  {
+   "id": "yt:05zoxXivKjU",
+   "title": "이번 기수의 안전을 책임지실 분입니다. #eternalreturn #게임 #",
+   "url": "https://www.youtube.com/shorts/05zoxXivKjU",
+   "date": 1742180400,
+   "source": "youtube",
+   "kind": "쇼츠",
+   "text": "새로운 시즌 아카데미의 ER Pass 스킨"
+  },
+  {
+   "id": "yt:RgZ_tPwCdH0",
+   "title": "이번 기수의 사격 훈련을 책임지실 사격 교관님이십니다. #eternalreturn #게임 #",
+   "url": "https://www.youtube.com/shorts/RgZ_tPwCdH0",
+   "date": 1742094000,
+   "source": "youtube",
+   "kind": "쇼츠",
+   "text": "새로운 시즌 아카데미의 ER Pass 스킨"
+  },
+  {
+   "id": "yt:EwCzG3uF9-0",
+   "title": "이번 기수를 이끌어주실 훈련소장님이십니다. #eternalreturn #게임 #",
+   "url": "https://www.youtube.com/shorts/EwCzG3uF9-0",
+   "date": 1742007600,
+   "source": "youtube",
+   "kind": "쇼츠",
+   "text": "새로운 시즌 아카데미의 특별 스킨"
+  },
+  {
+   "id": "steam:524210308312468026",
+   "title": "[신규 스킨] 방랑도사 유민 미리 보기",
+   "url": "https://store.steampowered.com/news/app/1049590/view/524210308312468026?l=koreana",
+   "date": 1741057200,
+   "source": "steam",
+   "kind": "공지",
+   "text": ""
+  },
+  {
+   "id": "steam:530965072572318023",
+   "title": "[신규 스킨] 스위트 데빌 레니 미리 보기",
+   "url": "https://store.steampowered.com/news/app/1049590/view/530965072572318023?l=koreana",
+   "date": 1740106800,
+   "source": "steam",
+   "kind": "공지",
+   "text": ""
+  },
+  {
+   "id": "steam:578252501765063161",
+   "title": "[신규 스킨] 아이돌 마이 미리 보기",
+   "url": "https://store.steampowered.com/news/app/1049590/view/578252501765063161?l=koreana",
+   "date": 1739847600,
+   "source": "steam",
+   "kind": "공지",
+   "text": ""
+  },
+  {
+   "id": "yt:to9Icj1T9s4",
+   "title": "걱정하Chill마! 내가 왔어! 😏",
+   "url": "https://www.youtube.com/shorts/to9Icj1T9s4",
+   "date": 1738897200,
+   "source": "youtube",
+   "kind": "쇼츠",
+   "text": "악한 추위를 물리칠 정의의 히어로가 루미아 섬에 찾아옵니다"
+  },
+  {
+   "id": "steam:532089070251148440",
+   "title": "[신규 스킨] 구속된 가넷 미리 보기",
+   "url": "https://store.steampowered.com/news/app/1049590/view/532089070251148440?l=koreana",
+   "date": 1738638000,
+   "source": "steam",
+   "kind": "공지",
+   "text": ""
+  },
+  {
+   "id": "yt:OJtAZn_AgY8",
+   "title": "구속된 가넷 미리보기 / 이터널 리턴",
+   "url": "https://www.youtube.com/watch?v=OJtAZn_AgY8",
+   "date": 1738638000,
+   "source": "youtube",
+   "kind": "영상",
+   "text": "#이터널리턴 #신규스킨"
+  },
+  {
+   "id": "steam:532087167537644619",
+   "title": "[신규 스킨] 발렌타인 로지 미리 보기",
+   "url": "https://store.steampowered.com/news/app/1049590/view/532087167537644619?l=koreana",
+   "date": 1736823600,
+   "source": "steam",
+   "kind": "공지",
+   "text": ""
+  },
+  {
+   "id": "steam:532086714388185242",
+   "title": "[신규 스킨] 프리즌 브레이크 캐시 미리 보기",
+   "url": "https://store.steampowered.com/news/app/1049590/view/532086714388185242?l=koreana",
+   "date": 1735873200,
+   "source": "steam",
+   "kind": "공지",
+   "text": ""
+  },
+  {
+   "id": "steam:524204130710849823",
+   "title": "[신규 스킨] 홀로그래프 페어리 바냐 미리 보기",
+   "url": "https://store.steampowered.com/news/app/1049590/view/524204130710849823?l=koreana",
+   "date": 1735614000,
+   "source": "steam",
+   "kind": "공지",
+   "text": ""
+  },
+  {
+   "id": "steam:788789909363099130",
+   "title": "[신규 스킨] 스노보더 레온 미리 보기",
+   "url": "https://store.steampowered.com/news/app/1049590/view/788789909363099130?l=koreana",
+   "date": 1734404400,
+   "source": "steam",
+   "kind": "공지",
+   "text": ""
+  },
+  {
+   "id": "yt:NSuZSR34nnE",
+   "title": "지옥에서 선봉장이 오신다! #이터널리턴 #게임 #eternalreturn",
+   "url": "https://www.youtube.com/shorts/NSuZSR34nnE",
+   "date": 1733194800,
+   "source": "youtube",
+   "kind": "쇼츠",
+   "text": "ER Pass: Legion의 두번째 스킨"
+  },
+  {
+   "id": "yt:eqpjflpPRMk",
+   "title": "시셀라와 함께 몽환의 늪에 빠져보세요! / #이터널리턴 #게임 #신스킨",
+   "url": "https://www.youtube.com/shorts/eqpjflpPRMk",
+   "date": 1733108400,
+   "source": "youtube",
+   "kind": "쇼츠",
+   "text": ""
+  },
+  {
+   "id": "steam:7117470740593508806",
+   "title": "[신규 스킨] 그레이스 녹턴 르노어 미리 보기",
+   "url": "https://store.steampowered.com/news/app/1049590/view/7117470740593508806?l=koreana",
+   "date": 1731985200,
+   "source": "steam",
+   "kind": "공지",
+   "text": ""
+  },
+  {
+   "id": "steam:4478359995220492943",
+   "title": "[신규 스킨] 고스트헌터 재키 미리 보기",
+   "url": "https://store.steampowered.com/news/app/1049590/view/4478359995220492943?l=koreana",
+   "date": 1730775600,
+   "source": "steam",
+   "kind": "공지",
+   "text": ""
+  },
+  {
+   "id": "yt:ml8ONbvCiLg",
+   "title": "고스트헌터 재키 미리보기 / #이터널리턴 #게임 #스킨",
+   "url": "https://www.youtube.com/watch?v=ml8ONbvCiLg",
+   "date": 1730775600,
+   "source": "youtube",
+   "kind": "영상",
+   "text": ""
+  },
+  {
+   "id": "steam:4535779621905555036",
+   "title": "[신규 스킨] 프리즌 키퍼 비앙카 미리 보기",
+   "url": "https://store.steampowered.com/news/app/1049590/view/4535779621905555036?l=koreana",
+   "date": 1729566000,
+   "source": "steam",
+   "kind": "공지",
+   "text": ""
+  },
+  {
+   "id": "yt:F3nV7aaTMww",
+   "title": "바람따라 구름따라 #이터널리턴",
+   "url": "https://www.youtube.com/shorts/F3nV7aaTMww",
+   "date": 1729047600,
+   "source": "youtube",
+   "kind": "쇼츠",
+   "text": "유랑하는 바람, 유민이 루미아 섬에 찾아옵니다"
+  },
+  {
+   "id": "steam:4704663339713957958",
+   "title": "[신규 스킨] 봄버 래빗 셀린 미리 보기",
+   "url": "https://store.steampowered.com/news/app/1049590/view/4704663339713957958?l=koreana",
+   "date": 1728356400,
+   "source": "steam",
+   "kind": "공지",
+   "text": ""
+  },
+  {
+   "id": "yt:DfWXK2JYZYg",
+   "title": "봄버 래빗 셀린 미리보기 / 이터널 리턴",
+   "url": "https://www.youtube.com/watch?v=DfWXK2JYZYg",
+   "date": 1728356400,
+   "source": "youtube",
+   "kind": "영상",
+   "text": "#이터널리턴 #스킨"
+  },
+  {
+   "id": "steam:4704662705452650881",
+   "title": "[신규 스킨] 매지컬 래빗 엠마 미리 보기",
+   "url": "https://store.steampowered.com/news/app/1049590/view/4704662705452650881?l=koreana",
+   "date": 1727406000,
+   "source": "steam",
+   "kind": "공지",
+   "text": ""
+  },
+  {
+   "id": "steam:4706913871782374696",
+   "title": "[신규 스킨] 러블리 세레나데 일레븐 미리 보기",
+   "url": "https://store.steampowered.com/news/app/1049590/view/4706913871782374696?l=koreana",
+   "date": 1727146800,
+   "source": "steam",
+   "kind": "공지",
+   "text": ""
+  },
+  {
+   "id": "steam:4608959311787405418",
+   "title": "[신규 스킨] 딜러 다르코 미리 보기",
+   "url": "https://store.steampowered.com/news/app/1049590/view/4608959311787405418?l=koreana",
+   "date": 1725937200,
+   "source": "steam",
+   "kind": "공지",
+   "text": ""
+  },
+  {
+   "id": "yt:MbocYijY2GU",
+   "title": "딜러 다르코 미리보기 / 이터널 리턴",
+   "url": "https://www.youtube.com/watch?v=MbocYijY2GU",
+   "date": 1725937200,
+   "source": "youtube",
+   "kind": "영상",
+   "text": "#이터널리턴 #스킨"
+  },
+  {
+   "id": "yt:ZijsccuJiNY",
+   "title": "근접 딜러 아니고 카지노 딜러 #이터널리턴 #다르코 #스킨",
+   "url": "https://www.youtube.com/shorts/ZijsccuJiNY",
+   "date": 1725678000,
+   "source": "youtube",
+   "kind": "쇼츠",
+   "text": ""
+  },
+  {
+   "id": "yt:-RZ7jli0asQ",
+   "title": "겁먹지 마세요! #eternalreturn #이터널리턴",
+   "url": "https://www.youtube.com/shorts/-RZ7jli0asQ",
+   "date": 1724814000,
+   "source": "youtube",
+   "kind": "쇼츠",
+   "text": "시즌 5 - 럭키의 시즌팩 특별 스킨"
+  },
+  {
+   "id": "steam:4369140095317294670",
+   "title": "[신규 스킨] 전학생 샬럿 미리 보기",
+   "url": "https://store.steampowered.com/news/app/1049590/view/4369140095317294670?l=koreana",
+   "date": 1723431600,
+   "source": "steam",
+   "kind": "공지",
+   "text": ""
+  },
+  {
+   "id": "yt:XP-Y-FBum94",
+   "title": "새로운 전학생의 첫 등교일 / #이터널리턴 #eternalreturn #스킨",
+   "url": "https://www.youtube.com/shorts/XP-Y-FBum94",
+   "date": 1723258800,
+   "source": "youtube",
+   "kind": "쇼츠",
+   "text": ""
+  },
+  {
+   "id": "steam:4369138826285804380",
+   "title": "[신규 스킨] 해변가 현우 미리 보기",
+   "url": "https://store.steampowered.com/news/app/1049590/view/4369138826285804380?l=koreana",
+   "date": 1722308400,
+   "source": "steam",
+   "kind": "공지",
+   "text": ""
+  },
+  {
+   "id": "steam:6720016830729591413",
+   "title": "[신규 스킨] 1st Anniversary 수아&헤이즈 미리 보기",
+   "url": "https://store.steampowered.com/news/app/1049590/view/6720016830729591413?l=koreana",
+   "date": 1721098800,
+   "source": "steam",
+   "kind": "공지",
+   "text": ""
+  },
+  {
+   "id": "steam:4249790899147887569",
+   "title": "[신규 스킨] 밤까마귀 카티야 미리 보기",
+   "url": "https://store.steampowered.com/news/app/1049590/view/4249790899147887569?l=koreana",
+   "date": 1719889200,
+   "source": "steam",
+   "kind": "공지",
+   "text": ""
+  },
+  {
+   "id": "steam:6191967063122584846",
+   "title": "[신규 스킨] 스파클링 트윈즈 데비&마를렌 미리 보기",
+   "url": "https://store.steampowered.com/news/app/1049590/view/6191967063122584846?l=koreana",
+   "date": 1718679600,
+   "source": "steam",
+   "kind": "공지",
+   "text": ""
+  },
+  {
+   "id": "steam:4194619900919824447",
+   "title": "[신규 스킨] 해변가 키아라 미리 보기",
+   "url": "https://store.steampowered.com/news/app/1049590/view/4194619900919824447?l=koreana",
+   "date": 1717556400,
+   "source": "steam",
+   "kind": "공지",
+   "text": ""
+  },
+  {
+   "id": "yt:u2tebuJcjGs",
+   "title": "시즌 4 - 선셋을 준비하세요! - 한 여름의 추억 이바 #이터널리턴 #게임 #eternalreturn",
+   "url": "https://www.youtube.com/shorts/u2tebuJcjGs",
+   "date": 1716346800,
+   "source": "youtube",
+   "kind": "쇼츠",
+   "text": "시즌 4 - 선셋 시즌팩의 특별 영웅 스킨"
+  },
+  {
+   "id": "steam:4195743898807883758",
+   "title": "시즌 4 시즌팩 얼리버드 기간&1주년 스킨 컨셉아트 소개",
+   "url": "https://store.steampowered.com/news/app/1049590/view/4195743898807883758?l=koreana",
+   "date": 1716260400,
+   "source": "steam",
+   "kind": "공지",
+   "text": ""
+  },
+  {
+   "id": "steam:4199120970148729694",
+   "title": "[신규 스킨] 전투사제 케네스 미리 보기",
+   "url": "https://store.steampowered.com/news/app/1049590/view/4199120970148729694?l=koreana",
+   "date": 1715223600,
+   "source": "steam",
+   "kind": "공지",
+   "text": ""
+  },
+  {
+   "id": "steam:4204749195325098965",
+   "title": "[신규 스킨] 암흑가 에키온 미리 보기",
+   "url": "https://store.steampowered.com/news/app/1049590/view/4204749195325098965?l=koreana",
+   "date": 1714100400,
+   "source": "steam",
+   "kind": "공지",
+   "text": ""
+  },
+  {
+   "id": "steam:4187860062734271225",
+   "title": "[신규 스킨] 악마사냥꾼 나딘 미리 보기",
+   "url": "https://store.steampowered.com/news/app/1049590/view/4187860062734271225?l=koreana",
+   "date": 1713841200,
+   "source": "steam",
+   "kind": "공지",
+   "text": ""
+  },
+  {
+   "id": "steam:4212628592052128636",
+   "title": "[신규 스킨] 카페 매니저 헤이즈 미리 보기",
+   "url": "https://store.steampowered.com/news/app/1049590/view/4212628592052128636?l=koreana",
+   "date": 1712631600,
+   "source": "steam",
+   "kind": "공지",
+   "text": ""
+  },
+  {
+   "id": "steam:4187858160662726586",
+   "title": "[신규스킨] 부자히르 미리 보기",
+   "url": "https://store.steampowered.com/news/app/1049590/view/4187858160662726586?l=koreana",
+   "date": 1711940400,
+   "source": "steam",
+   "kind": "공지",
+   "text": ""
+  },
+  {
+   "id": "steam:4187858160662912282",
+   "title": "부자히르 스킨 및 패키지 판매 안내",
+   "url": "https://store.steampowered.com/news/app/1049590/view/4187858160662912282?l=koreana",
+   "date": 1711940400,
+   "source": "steam",
+   "kind": "공지",
+   "text": ""
+  },
+  {
+   "id": "steam:4124807130954100278",
+   "title": "[신규스킨] 사립탐정 니키 미리 보기",
+   "url": "https://store.steampowered.com/news/app/1049590/view/4124807130954100278?l=koreana",
+   "date": 1711422000,
+   "source": "steam",
+   "kind": "공지",
+   "text": ""
+  },
+  {
+   "id": "steam:7823387786208415326",
+   "title": "[신규스킨] 군악대 하트 미리 보기",
+   "url": "https://store.steampowered.com/news/app/1049590/view/7823387786208415326?l=koreana",
+   "date": 1710471600,
+   "source": "steam",
+   "kind": "공지",
+   "text": ""
+  },
+  {
+   "id": "steam:4149575664267365552",
+   "title": "[신규스킨] 고스트헌터 유키 미리 보기",
+   "url": "https://store.steampowered.com/news/app/1049590/view/4149575664267365552?l=koreana",
+   "date": 1710212400,
+   "source": "steam",
+   "kind": "공지",
+   "text": ""
+  },
+  {
+   "id": "steam:4163085830611323129",
+   "title": "[신규 스킨] 화이트데이 다니엘 미리 보기",
+   "url": "https://store.steampowered.com/news/app/1049590/view/4163085830611323129?l=koreana",
+   "date": 1709175600,
+   "source": "steam",
+   "kind": "공지",
+   "text": ""
+  },
+  {
+   "id": "steam:4150700295735925468",
+   "title": "[신규 스킨] 암향소영 츠바메 미리 보기",
+   "url": "https://store.steampowered.com/news/app/1049590/view/4150700295735925468?l=koreana",
+   "date": 1709002800,
+   "source": "steam",
+   "kind": "공지",
+   "text": ""
+  },
+  {
+   "id": "yt:PvOvaSOA_q8",
+   "title": "암향소영 츠바메 미리보기 / 이터널 리턴",
+   "url": "https://www.youtube.com/watch?v=PvOvaSOA_q8",
+   "date": 1709002800,
+   "source": "youtube",
+   "kind": "영상",
+   "text": "암향소영 츠바메 신규 스킨"
+  },
+  {
+   "id": "yt:X1xoosbD8Dc",
+   "title": "암향소영 츠바메 미리보기 / #eternalreturn #이터널리턴 #battleroyale #esports",
+   "url": "https://www.youtube.com/shorts/X1xoosbD8Dc",
+   "date": 1708743600,
+   "source": "youtube",
+   "kind": "쇼츠",
+   "text": "1.16 업데이트에서 만나실 수 있는 츠바메의 첫번째 스킨"
+  },
+  {
+   "id": "yt:MqE_0BNHeJA",
+   "title": "카페 매니저 에이든 미리 보기 / 이터널 리턴",
+   "url": "https://www.youtube.com/watch?v=MqE_0BNHeJA",
+   "date": 1708311600,
+   "source": "youtube",
+   "kind": "영상",
+   "text": "return #이터널리턴 #타지아 카페 매니저 에이든 스킨"
+  },
+  {
+   "id": "yt:X1xQABp69EM",
+   "title": "알바 대신 '매니저'님이 직접 오셨습니다. / 이터널 리턴 #eternalreturn #battleroyale #이터널리턴",
+   "url": "https://www.youtube.com/shorts/X1xQABp69EM",
+   "date": 1708052400,
+   "source": "youtube",
+   "kind": "쇼츠",
+   "text": "시즌 3 ER Pass 체인지의 첫번째 보너스 스킨"
+  },
+  {
+   "id": "steam:3984064573342957141",
+   "title": "[신규 스킨] 발렌타인 타지아 미리 보기",
+   "url": "https://store.steampowered.com/news/app/1049590/view/3984064573342957141?l=koreana",
+   "date": 1706583600,
+   "source": "steam",
+   "kind": "공지",
+   "text": ""
+  },
+  {
+   "id": "yt:O7XraidozSM",
+   "title": "발렌타인 타지아 미리 보기 / 이터널 리턴",
+   "url": "https://www.youtube.com/watch?v=O7XraidozSM",
+   "date": 1706583600,
+   "source": "youtube",
+   "kind": "영상",
+   "text": "eturn #이터널리턴 #타지아 발렌타인 타지아 신규 스킨"
+  },
+  {
+   "id": "steam:3984064573328335973",
+   "title": "[신규 스킨] 군악대 레니 신규 스킨",
+   "url": "https://store.steampowered.com/news/app/1049590/view/3984064573328335973?l=koreana",
+   "date": 1706238000,
+   "source": "steam",
+   "kind": "공지",
+   "text": ""
+  },
+  {
+   "id": "steam:6915906760370020769",
+   "title": "[신규 스킨] 와일드웨스트 아이작 미리 보기",
+   "url": "https://store.steampowered.com/news/app/1049590/view/6915906760370020769?l=koreana",
+   "date": 1705374000,
+   "source": "steam",
+   "kind": "공지",
+   "text": ""
+  },
+  {
+   "id": "steam:3891737610859177831",
+   "title": "[신규 스킨] 전투사제 테오도르 미리 보기",
+   "url": "https://store.steampowered.com/news/app/1049590/view/3891737610859177831?l=koreana",
+   "date": 1704423600,
+   "source": "steam",
+   "kind": "공지",
+   "text": ""
+  },
+  {
+   "id": "steam:3891737610848117999",
+   "title": "[신규 스킨] 여유로운 발걸음 셀린 미리 보기",
+   "url": "https://store.steampowered.com/news/app/1049590/view/3891737610848117999?l=koreana",
+   "date": 1704164400,
+   "source": "steam",
+   "kind": "공지",
+   "text": ""
+  },
+  {
+   "id": "steam:3906373844373903499",
+   "title": "[신규 스킨] 성야의 무녀 혜진&루돌크 스킨을 소개합니다",
+   "url": "https://store.steampowered.com/news/app/1049590/view/3906373844373903499?l=koreana",
+   "date": 1703127600,
+   "source": "steam",
+   "kind": "공지",
+   "text": ""
+  },
+  {
+   "id": "steam:3906372406942368638",
+   "title": "[신규 스킨] 픽셀아트 띠아 미리 보기",
+   "url": "https://store.steampowered.com/news/app/1049590/view/3906372406942368638?l=koreana",
+   "date": 1701745200,
+   "source": "steam",
+   "kind": "공지",
+   "text": ""
+  },
+  {
+   "id": "steam:3906372406941779721",
+   "title": "[신규 스킨] 신사 알론소 미리 보기",
+   "url": "https://store.steampowered.com/news/app/1049590/view/3906372406941779721?l=koreana",
+   "date": 1701658800,
+   "source": "steam",
+   "kind": "공지",
+   "text": ""
+  },
+  {
+   "id": "steam:3906371681105830437",
+   "title": "[신규 스킨] 프리즌 키퍼 아비게일 미리 보기",
+   "url": "https://store.steampowered.com/news/app/1049590/view/3906371681105830437?l=koreana",
+   "date": 1700535600,
+   "source": "steam",
+   "kind": "공지",
+   "text": ""
+  },
+  {
+   "id": "yt:p0aQGV6aWoM",
+   "title": "프리즌 키퍼 아비게일 미리보기 / 이터널 리턴",
+   "url": "https://www.youtube.com/watch?v=p0aQGV6aWoM",
+   "date": 1700535600,
+   "source": "youtube",
+   "kind": "영상",
+   "text": "습니다. #이터널리턴 #eternalreturn #신규스킨"
+  },
+  {
+   "id": "steam:3791528713041084307",
+   "title": "[신규 스킨] 고고학자 아르다 미리 보기",
+   "url": "https://store.steampowered.com/news/app/1049590/view/3791528713041084307?l=koreana",
+   "date": 1699844400,
+   "source": "steam",
+   "kind": "공지",
+   "text": ""
+  },
+  {
+   "id": "yt:kyA5jUIf-zM",
+   "title": "고고학 연구원 아르다가 찾아옵니다! #이터널리턴 #eternalreturn #battleroyale",
+   "url": "https://www.youtube.com/shorts/kyA5jUIf-zM",
+   "date": 1699585200,
+   "source": "youtube",
+   "kind": "쇼츠",
+   "text": "아르다의 첫번째 스킨"
+  },
+  {
+   "id": "yt:HHC2wzXb3no",
+   "title": "스트리트 파이터 피올로를 소개합니다! #eternalreturn #battleroyale #이터널리턴",
+   "url": "https://www.youtube.com/shorts/HHC2wzXb3no",
+   "date": 1699066800,
+   "source": "youtube",
+   "kind": "쇼츠",
+   "text": "시즌 2 ER 패스 - 전투 메이드의 2번째 보너스 스킨"
+  },
+  {
+   "id": "yt:NfyPvmTYb6c",
+   "title": "여행자 실비아를 만나보세요! #eternalreturn #battleroyale #이터널리턴",
+   "url": "https://www.youtube.com/shorts/NfyPvmTYb6c",
+   "date": 1698980400,
+   "source": "youtube",
+   "kind": "쇼츠",
+   "text": "시즌 2 ER 패스 - 전투 메이드의 첫번째 보너스 스킨"
+  },
+  {
+   "id": "yt:B_IQ4wFhavw",
+   "title": "하우스 키퍼 피오라를 소개합니다! / #이터널리턴 #eternalreturn #메이드",
+   "url": "https://www.youtube.com/shorts/B_IQ4wFhavw",
+   "date": 1698030000,
+   "source": "youtube",
+   "kind": "쇼츠",
+   "text": "즌 팩 - 전투 메이드를 구매 시, 특별한 영웅 등급 스킨"
+  },
+  {
+   "id": "steam:3754371475268969740",
+   "title": "[신규 스킨] 뱀파이어 쇼이치 미리 보기",
+   "url": "https://store.steampowered.com/news/app/1049590/view/3754371475268969740?l=koreana",
+   "date": 1696993200,
+   "source": "steam",
+   "kind": "공지",
+   "text": ""
+  },
+  {
+   "id": "steam:3728475144647365976",
+   "title": "[신규 스킨] 선생님 캐시 미리 보기",
+   "url": "https://store.steampowered.com/news/app/1049590/view/3728475144647365976?l=koreana",
+   "date": 1696993200,
+   "source": "steam",
+   "kind": "공지",
+   "text": ""
+  },
+  {
+   "id": "yt:JOS1smLR0hI",
+   "title": "뱀파이어 쇼이치 미리보기 / 이터널 리턴",
+   "url": "https://www.youtube.com/watch?v=JOS1smLR0hI",
+   "date": 1696993200,
+   "source": "youtube",
+   "kind": "영상",
+   "text": "※ 뱀파이어 쇼이치 신규 스킨"
+  },
+  {
+   "id": "steam:3728473876006515897",
+   "title": "[신규 스킨] 비터스윗 라우라 미리 보기",
+   "url": "https://store.steampowered.com/news/app/1049590/view/3728473876006515897?l=koreana",
+   "date": 1695783600,
+   "source": "steam",
+   "kind": "공지",
+   "text": ""
+  },
+  {
+   "id": "steam:3728473876002165658",
+   "title": "[신규 스킨] 경호원 데비&마를렌 미리 보기",
+   "url": "https://store.steampowered.com/news/app/1049590/view/3728473876002165658?l=koreana",
+   "date": 1695610800,
+   "source": "steam",
+   "kind": "공지",
+   "text": ""
+  },
+  {
+   "id": "yt:3Vkn5L6LKGU",
+   "title": "경호원 데비&마를렌 미리보기 / 이터널 리턴",
+   "url": "https://www.youtube.com/watch?v=3Vkn5L6LKGU",
+   "date": 1695610800,
+   "source": "youtube",
+   "kind": "영상",
+   "text": "데비&마를렌의 첫 스킨"
+  },
+  {
+   "id": "steam:3668800006283180019",
+   "title": "[신규 스킨] 뒷골목 칼라 미리 보기",
+   "url": "https://store.steampowered.com/news/app/1049590/view/3668800006283180019?l=koreana",
+   "date": 1694487600,
+   "source": "steam",
+   "kind": "공지",
+   "text": ""
+  },
+  {
+   "id": "yt:Eju3KGL-j7w",
+   "title": "악마 사냥꾼 마커스를 만나보세요! / 이터널 리턴",
+   "url": "https://www.youtube.com/shorts/Eju3KGL-j7w",
+   "date": 1693882800,
+   "source": "youtube",
+   "kind": "쇼츠",
+   "text": "마커스의 신규 스킨"
+  },
+  {
+   "id": "yt:DgQPv2XfPgQ",
+   "title": "이터널 리턴 1.0 [ER 패스 : 바캉스] 미리 보기",
+   "url": "https://www.youtube.com/watch?v=DgQPv2XfPgQ",
+   "date": 1689649200,
+   "source": "youtube",
+   "kind": "영상",
+   "text": "다. 이터널 리턴 1.0 [ER PASS : 바캉스] 스킨"
+  },
+  {
+   "id": "yt:uvRfhlZTwcQ",
+   "title": "사관후보생 에키온 미리보기 / 이터널 리턴",
+   "url": "https://www.youtube.com/shorts/uvRfhlZTwcQ",
+   "date": 1680145200,
+   "source": "youtube",
+   "kind": "쇼츠",
+   "text": "준으로 지급되는 시즌 8 랭크 보상(사관후보생 에키온 스킨"
+  },
+  {
+   "id": "yt:rXhEmxvlMqY",
+   "title": "구속된 이안 미리보기 / 이터널 리턴",
+   "url": "https://www.youtube.com/watch?v=rXhEmxvlMqY",
+   "date": 1679022000,
+   "source": "youtube",
+   "kind": "영상",
+   "text": "#이터널리턴 #eternalreturn #스킨"
+  },
+  {
+   "id": "yt:rbze9VV8D8g",
+   "title": "뒷골목 윌리엄 미리보기 / 이터널 리턴",
+   "url": "https://www.youtube.com/watch?v=rbze9VV8D8g",
+   "date": 1678762800,
+   "source": "youtube",
+   "kind": "영상",
+   "text": "턴 #eternalreturn #야구 윌리엄의 새로운 스킨"
+  },
+  {
+   "id": "yt:KfKiIu7xDxU",
+   "title": "기동특임대 테오도르 미리보기 / 이터널 리턴",
+   "url": "https://www.youtube.com/watch?v=KfKiIu7xDxU",
+   "date": 1677553200,
+   "source": "youtube",
+   "kind": "영상",
+   "text": "있습니다! #이터널리턴 #eternalreturn #스킨"
+  },
+  {
+   "id": "yt:8vDRh95LQN4",
+   "title": "암흑가 라우라 미리보기 / 이터널 리턴",
+   "url": "https://www.youtube.com/watch?v=8vDRh95LQN4",
+   "date": 1676343600,
+   "source": "youtube",
+   "kind": "영상",
+   "text": "#이터널리턴 #스킨"
+  },
+  {
+   "id": "yt:qrcT6M7KH74",
+   "title": "판다왔쇼우 미리보기 / 이터널 리턴",
+   "url": "https://www.youtube.com/watch?v=qrcT6M7KH74",
+   "date": 1675134000,
+   "source": "youtube",
+   "kind": "영상",
+   "text": ") 업데이트 이후 만나실 수 있습니다. #이터널리턴 #스킨"
+  },
+  {
+   "id": "yt:Npdh1x5McWA",
+   "title": "[신규 스킨] 브로큰 글래스 타지아 미리보기 - 이터널 리턴",
+   "url": "https://www.youtube.com/watch?v=Npdh1x5McWA",
+   "date": 1670554800,
+   "source": "youtube",
+   "kind": "영상",
+   "text": ""
+  },
+  {
+   "id": "yt:94FylWx50ms",
+   "title": "암흑가 아이작 미리보기 - 이터널 리턴",
+   "url": "https://www.youtube.com/watch?v=94FylWx50ms",
+   "date": 1670295600,
+   "source": "youtube",
+   "kind": "영상",
+   "text": "\" 암흑가 아이작이 다가오는 업데이트에 여러분을 찾아옵니다"
+  },
+  {
+   "id": "yt:Fim9KN1hNsY",
+   "title": "퍼플퀸 하트 미리보기 - 이터널 리턴",
+   "url": "https://www.youtube.com/watch?v=Fim9KN1hNsY",
+   "date": 1667876400,
+   "source": "youtube",
+   "kind": "영상",
+   "text": "하트의 3번째 스킨 퍼플퀸 하트가 곧 여러분을 찾아옵니다"
+  },
+  {
+   "id": "yt:N663JEzPY2A",
+   "title": "퍼펙트 서버 쇼이치 / 퍼펙트 딜리버리 실비아 미리보기 - 이터널 리턴",
+   "url": "https://www.youtube.com/watch?v=N663JEzPY2A",
+   "date": 1663038000,
+   "source": "youtube",
+   "kind": "영상",
+   "text": "다가오는 0.67 업데이트에서 만나실 수 있는 새로운 스킨"
+  },
+  {
+   "id": "yt:_OY1hguuV3o",
+   "title": "소방 기동대 에스텔 다시보기 - 이터널 리턴",
+   "url": "https://www.youtube.com/shorts/_OY1hguuV3o",
+   "date": 1660705200,
+   "source": "youtube",
+   "kind": "쇼츠",
+   "text": "8월 18일 프리시즌 업데이트와 함께 여러분을 찾아옵니다"
+  },
+  {
+   "id": "yt:dzOWuoDUaR4",
+   "title": "소방 기동대 에스텔 미리보기 - 이터널 리턴",
+   "url": "https://www.youtube.com/watch?v=dzOWuoDUaR4",
+   "date": 1660618800,
+   "source": "youtube",
+   "kind": "영상",
+   "text": "업데이트와 함께 소방 기동대 에스텔이 여러분을 찾아옵니다"
+  },
+  {
+   "id": "yt:Z7QfajTMirY",
+   "title": "시즌 7 신규 특성 미리보기",
+   "url": "https://www.youtube.com/shorts/Z7QfajTMirY",
+   "date": 1660186800,
+   "source": "youtube",
+   "kind": "쇼츠",
+   "text": "이용 가격을 낮춰주는 할인 쿠폰 특성을 제외한 6종의 스킨"
+  },
+  {
+   "id": "yt:lH_LGKgaTjU",
+   "title": "야생의 부름 나딘 미리보기 - 이터널 리턴",
+   "url": "https://www.youtube.com/watch?v=lH_LGKgaTjU",
+   "date": 1659409200,
+   "source": "youtube",
+   "kind": "영상",
+   "text": "있습니다. #이터널리턴 #eternalreturn #스킨"
+  },
+  {
+   "id": "yt:6fEo7pNwerY",
+   "title": "네메시스 로지 미리보기 - 이터널 리턴",
+   "url": "https://www.youtube.com/watch?v=6fEo7pNwerY",
+   "date": 1658458800,
+   "source": "youtube",
+   "kind": "영상",
+   "text": "화요일에 만나실 수 있습니다. #이터널리턴 #캐릭터 #스킨"
+  },
+  {
+   "id": "yt:LORtC3qcTYs",
+   "title": "해상구조요원 칼라 미리보기 - 이터널 리턴",
+   "url": "https://www.youtube.com/watch?v=LORtC3qcTYs",
+   "date": 1657249200,
+   "source": "youtube",
+   "kind": "영상",
+   "text": "해상구조요원 칼라가 7월 12일 여러분을 찾아옵니다"
+  },
+  {
+   "id": "yt:EIQRmt2rqqg",
+   "title": "아포칼립스 마커스 다시보기",
+   "url": "https://www.youtube.com/shorts/EIQRmt2rqqg",
+   "date": 1657076400,
+   "source": "youtube",
+   "kind": "쇼츠",
+   "text": "마커스의 첫 스킨"
+  },
+  {
+   "id": "yt:rxp5G6r9v9k",
+   "title": "아포칼립스 마커스 미리보기 - 이터널 리턴",
+   "url": "https://www.youtube.com/watch?v=rxp5G6r9v9k",
+   "date": 1656990000,
+   "source": "youtube",
+   "kind": "영상",
+   "text": "마커스의 첫 스킨"
+  },
+  {
+   "id": "yt:UvXkde2PJhM",
+   "title": "블랙스완 엘레나 다시보기 - 이터널 리턴",
+   "url": "https://www.youtube.com/shorts/UvXkde2PJhM",
+   "date": 1656039600,
+   "source": "youtube",
+   "kind": "쇼츠",
+   "text": "24일(금) 일반 상점에서 [블랙스완 엘레나] 신규 스킨"
+  },
+  {
+   "id": "yt:tCiuMp3pryQ",
+   "title": "블랙스완 엘레나 미리보기 - 이터널 리턴",
+   "url": "https://www.youtube.com/watch?v=tCiuMp3pryQ",
+   "date": 1655953200,
+   "source": "youtube",
+   "kind": "영상",
+   "text": "6월 24일(금) 오전 4시 블랙스완 엘레나 스킨"
+  },
+  {
+   "id": "yt:o_JFI1ArTwY",
+   "title": "[신규 스킨] 놀이공원 펠릭스 미리보기 - 이터널 리턴",
+   "url": "https://www.youtube.com/watch?v=o_JFI1ArTwY",
+   "date": 1654570800,
+   "source": "youtube",
+   "kind": "영상",
+   "text": ""
+  },
+  {
+   "id": "yt:r-mWibA4JAg",
+   "title": "누구나 스킨은 생기게 마련이지 - 고스트헌터 에이든",
+   "url": "https://www.youtube.com/shorts/r-mWibA4JAg",
+   "date": 1652065200,
+   "source": "youtube",
+   "kind": "쇼츠",
+   "text": ""
+  },
+  {
+   "id": "yt:YbE4cfjYGBM",
+   "title": "전학생 마이 미리보기",
+   "url": "https://www.youtube.com/watch?v=YbE4cfjYGBM",
+   "date": 1650942000,
+   "source": "youtube",
+   "kind": "영상",
+   "text": "새로운 전학생이 루미아 섬에 찾아옵니다"
+  },
+  {
+   "id": "yt:kBQiLzuvktY",
+   "title": "대부분의 문제는 스킨(으)로 해결 돼 - 폭탄해체반 셀린",
+   "url": "https://www.youtube.com/shorts/kBQiLzuvktY",
+   "date": 1649818800,
+   "source": "youtube",
+   "kind": "쇼츠",
+   "text": ""
+  },
+  {
+   "id": "yt:rXEorEUiSW4",
+   "title": "이 것도 반반스킨 이라고 불러야 되나요? - 메이드 클로에",
+   "url": "https://www.youtube.com/shorts/rXEorEUiSW4",
+   "date": 1648609200,
+   "source": "youtube",
+   "kind": "쇼츠",
+   "text": ""
+  },
+  {
+   "id": "yt:m1sly5iTU-k",
+   "title": "메이드 클로에 미리보기",
+   "url": "https://www.youtube.com/watch?v=m1sly5iTU-k",
+   "date": 1648522800,
+   "source": "youtube",
+   "kind": "영상",
+   "text": "3월 31일 0.55 패치와 함께 클로에의 첫번째 스킨"
+  },
+  {
+   "id": "yt:VX7wIQletfc",
+   "title": "이 또한 (스킨) 이라면, 구매하겠습니다?",
+   "url": "https://www.youtube.com/shorts/VX7wIQletfc",
+   "date": 1647831600,
+   "source": "youtube",
+   "kind": "쇼츠",
+   "text": ""
+  },
+  {
+   "id": "yt:JHyGxmwL1NM",
+   "title": "대행자 요한 미리보기",
+   "url": "https://www.youtube.com/watch?v=JHyGxmwL1NM",
+   "date": 1647572400,
+   "source": "youtube",
+   "kind": "영상",
+   "text": ") 출시 됩니다. (여러분) 뜻대로 하소서, 이 또한 스킨"
+  },
+  {
+   "id": "yt:UJVBTiC5o3g",
+   "title": "그대들의 ??이 궁금하구나 - 파자마 비앙카",
+   "url": "https://www.youtube.com/shorts/UJVBTiC5o3g",
+   "date": 1647399600,
+   "source": "youtube",
+   "kind": "쇼츠",
+   "text": "#이터널리턴 #캐릭터 #스킨 비앙카의 첫 스킨"
+  },
+  {
+   "id": "yt:sJOIyB6ca8c",
+   "title": "파자마 비앙카 스킨 미리보기",
+   "url": "https://www.youtube.com/watch?v=sJOIyB6ca8c",
+   "date": 1647313200,
+   "source": "youtube",
+   "kind": "영상",
+   "text": ""
+  },
+  {
+   "id": "yt:WJ6d23JAt1w",
+   "title": "연미복 카밀로 미리보기",
+   "url": "https://www.youtube.com/watch?v=WJ6d23JAt1w",
+   "date": 1646362800,
+   "source": "youtube",
+   "kind": "영상",
+   "text": "#연미복 연미복 카밀로가 3월 8일 여러분 곁에 찾아옵니다"
+  },
+  {
+   "id": "yt:ruow_q6PjH8",
+   "title": "반반치킨? 노노 반반스킨 - 마피아 제니",
+   "url": "https://www.youtube.com/shorts/ruow_q6PjH8",
+   "date": 1646103600,
+   "source": "youtube",
+   "kind": "쇼츠",
+   "text": ""
+  },
+  {
+   "id": "yt:XFrkgznsM5A",
+   "title": "마피아 제니 미리보기",
+   "url": "https://www.youtube.com/watch?v=XFrkgznsM5A",
+   "date": 1646103600,
+   "source": "youtube",
+   "kind": "영상",
+   "text": "킨 2022년 3월 3일 마피아 제니가 여러분을 찾아옵니다"
+  },
+  {
+   "id": "yt:hn4ZtD4CCHQ",
+   "title": "혹시..내가 그려줬으면 하는게 있을까? - 띠아",
+   "url": "https://www.youtube.com/shorts/hn4ZtD4CCHQ",
+   "date": 1645585200,
+   "source": "youtube",
+   "kind": "쇼츠",
+   "text": "하고 겁이 많은 천재 화가, 띠아가 루미아 섬에 찾아옵니다"
+  },
+  {
+   "id": "yt:keYlUPK6XrM",
+   "title": "새로운 ER Pass 고스트헌터 스킨 미리보기 (+Bonus)",
+   "url": "https://www.youtube.com/watch?v=keYlUPK6XrM",
+   "date": 1644894000,
+   "source": "youtube",
+   "kind": "영상",
+   "text": ""
+  },
+  {
+   "id": "yt:7a1SWuVQDXE",
+   "title": "라우라 - 이터널 리턴 #shorts",
+   "url": "https://www.youtube.com/shorts/7a1SWuVQDXE",
+   "date": 1644375600,
+   "source": "youtube",
+   "kind": "쇼츠",
+   "text": "lReturn #라우라 라우라가 곧 루미아 섬에 찾아옵니다"
+  },
+  {
+   "id": "yt:BNHJxLOBd6A",
+   "title": "별 관찰자 이바 신규스킨 인게임 미리보기ㅣ이터널 리턴",
+   "url": "https://www.youtube.com/watch?v=BNHJxLOBd6A",
+   "date": 1644289200,
+   "source": "youtube",
+   "kind": "영상",
+   "text": ""
+  },
+  {
+   "id": "yt:4vspt1rGxZo",
+   "title": "용 다이린 신규스킨 인게임 미리보기ㅣ이터널 리턴",
+   "url": "https://www.youtube.com/watch?v=4vspt1rGxZo",
+   "date": 1643252400,
+   "source": "youtube",
+   "kind": "영상",
+   "text": ""
+  },
+  {
+   "id": "yt:FgQVQR-MkX4",
+   "title": "새해의 이야기꾼 수아 신규스킨 인게임 미리보기ㅣ이터널 리턴",
+   "url": "https://www.youtube.com/watch?v=FgQVQR-MkX4",
+   "date": 1643079600,
+   "source": "youtube",
+   "kind": "영상",
+   "text": ""
+  },
+  {
+   "id": "yt:8o3d8Qj1J3Y",
+   "title": "극지탐험 나타폰 신규스킨 인게임 미리보기ㅣ이터널 리턴",
+   "url": "https://www.youtube.com/watch?v=8o3d8Qj1J3Y",
+   "date": 1642474800,
+   "source": "youtube",
+   "kind": "영상",
+   "text": ""
+  },
+  {
+   "id": "yt:-HfoCEMiDi0",
+   "title": "에이든 - 이터널 리턴 #shorts",
+   "url": "https://www.youtube.com/shorts/-HfoCEMiDi0",
+   "date": 1641956400,
+   "source": "youtube",
+   "kind": "쇼츠",
+   "text": "lReturn #에이든 에이든이 곧 루미아 섬에 찾아옵니다"
+  },
+  {
+   "id": "yt:ZXqCyGs5G6k",
+   "title": "뒷골목 니키 신규스킨 인게임 미리보기ㅣ이터널 리턴",
+   "url": "https://www.youtube.com/watch?v=ZXqCyGs5G6k",
+   "date": 1641524400,
+   "source": "youtube",
+   "kind": "영상",
+   "text": ""
+  },
+  {
+   "id": "yt:vYqgg7EFuz4",
+   "title": "뒷골목 루크 신규스킨 인게임 미리보기ㅣ이터널 리턴",
+   "url": "https://www.youtube.com/watch?v=vYqgg7EFuz4",
+   "date": 1641265200,
+   "source": "youtube",
+   "kind": "영상",
+   "text": ""
+  },
+  {
+   "id": "yt:_uG6EfzUa80",
+   "title": "성야 레녹스 & 고요한 밤의 신사 윌리엄 신규스킨 인게임 미리보기 (feat. 겨울 맵)ㅣ이터널 리턴",
+   "url": "https://www.youtube.com/watch?v=_uG6EfzUa80",
+   "date": 1640055600,
+   "source": "youtube",
+   "kind": "영상",
+   "text": ""
+  },
+  {
+   "id": "yt:Q1Mx6aveI6c",
+   "title": "무녀 리오 & 총사 피오라 신규스킨 인게임 미리보기ㅣ이터널 리턴",
+   "url": "https://www.youtube.com/watch?v=Q1Mx6aveI6c",
+   "date": 1638846000,
+   "source": "youtube",
+   "kind": "영상",
+   "text": ""
+  },
+  {
+   "id": "yt:mMzCzZNOLXs",
+   "title": "레드데블 현우 & 스위트 일레븐 신규스킨 인게임 미리보기ㅣ이터널 리턴",
+   "url": "https://www.youtube.com/watch?v=mMzCzZNOLXs",
+   "date": 1637636400,
+   "source": "youtube",
+   "kind": "영상",
+   "text": ""
+  },
+  {
+   "id": "yt:A_EkVe2b1dU",
+   "title": "빨간 망토 나딘 신규스킨 인게임 미리보기ㅣ이터널리턴",
+   "url": "https://www.youtube.com/watch?v=A_EkVe2b1dU",
+   "date": 1636426800,
+   "source": "youtube",
+   "kind": "영상",
+   "text": ""
+  },
+  {
+   "id": "yt:FPOsuV8LgEI",
+   "title": "마녀 엠마 신규스킨 인게임 미리보기 [이터널리턴]",
+   "url": "https://www.youtube.com/watch?v=FPOsuV8LgEI",
+   "date": 1635303600,
+   "source": "youtube",
+   "kind": "영상",
+   "text": ""
+  },
+  {
+   "id": "yt:UCsnQ-YEJag",
+   "title": "반항아 리 다이린 & 노블 시셀라 신규스킨 인게임 미리보기 [이터널리턴]",
+   "url": "https://www.youtube.com/watch?v=UCsnQ-YEJag",
+   "date": 1632884400,
+   "source": "youtube",
+   "kind": "영상",
+   "text": ""
+  },
+  {
+   "id": "yt:cocyPv6prpA",
+   "title": "오퍼레이터 알렉스 & 정비공 바바라 신규스킨 인게임 미리보기 [이터널리턴]",
+   "url": "https://www.youtube.com/watch?v=cocyPv6prpA",
+   "date": 1631674800,
+   "source": "youtube",
+   "kind": "영상",
+   "text": ""
+  },
+  {
+   "id": "yt:JK50VbP1tPw",
+   "title": "아포칼립스 버니스 & 스칼렛 코사지 재키 신규스킨 인게임 미리보기 [이터널 리턴]",
+   "url": "https://www.youtube.com/watch?v=JK50VbP1tPw",
+   "date": 1630465200,
+   "source": "youtube",
+   "kind": "영상",
+   "text": ""
+  },
+  {
+   "id": "yt:Lrt-JhFVGpY",
+   "title": "화이트 퀸 아델라 & 피구왕 쇼우 신규스킨 인게임 미리보기 [이터널 리턴]",
+   "url": "https://www.youtube.com/watch?v=Lrt-JhFVGpY",
+   "date": 1629255600,
+   "source": "youtube",
+   "kind": "영상",
+   "text": ""
+  },
+  {
+   "id": "yt:b2RpNC7VrrA",
+   "title": "군의관 캐시 & 바텐더 루크 신규스킨 인게임 미리보기 [이터널 리턴]",
+   "url": "https://www.youtube.com/watch?v=b2RpNC7VrrA",
+   "date": 1628046000,
+   "source": "youtube",
+   "kind": "영상",
+   "text": ""
+  },
+  {
+   "id": "yt:aAsLCZVRjJM",
+   "title": "미드나잇 브리즈 실비아 & 심판자 키아라 신규스킨 인게임 미리보기 [이터널 리턴]",
+   "url": "https://www.youtube.com/watch?v=aAsLCZVRjJM",
+   "date": 1626836400,
+   "source": "youtube",
+   "kind": "영상",
+   "text": ""
+  }
+ ],
+ "patches": [
+  {
+   "id": "680765564125184349",
+   "title": "2026.10.29 - 12.7 패치노트",
+   "url": "https://store.steampowered.com/news/app/1049590/view/680765564125184349?l=koreana",
+   "date": 1793156400,
+   "kind": "패치노트"
+  },
+  {
+   "id": "669505296465395755",
+   "title": "2026.10.15 - 12.6 패치노트",
+   "url": "https://store.steampowered.com/news/app/1049590/view/669505296465395755?l=koreana",
+   "date": 1791946800,
+   "kind": "패치노트"
+  },
+  {
+   "id": "703281025618282644",
+   "title": "12.5b 핫픽스",
+   "url": "https://store.steampowered.com/news/app/1049590/view/703281025618282644?l=koreana",
+   "date": 1791255600,
+   "kind": "핫픽스"
+  },
+  {
+   "id": "703281025618281416",
+   "title": "[수정] 12.5a 핫픽스",
+   "url": "https://store.steampowered.com/news/app/1049590/view/703281025618281416?l=koreana",
+   "date": 1790910000,
+   "kind": "핫픽스"
+  },
+  {
+   "id": "703281025618280480",
+   "title": "2026.10.01 - 12.5 패치노트",
+   "url": "https://store.steampowered.com/news/app/1049590/view/703281025618280480?l=koreana",
+   "date": 1790737200,
+   "kind": "패치노트"
+  },
+  {
+   "id": "698776157349216600",
+   "title": "12.4a 핫픽스",
+   "url": "https://store.steampowered.com/news/app/1049590/view/698776157349216600?l=koreana",
+   "date": 1789700400,
+   "kind": "핫픽스"
+  },
+  {
+   "id": "698776157349216299",
+   "title": "2026.09.17 - 12.4 패치노트",
+   "url": "https://store.steampowered.com/news/app/1049590/view/698776157349216299?l=koreana",
+   "date": 1789527600,
+   "kind": "패치노트"
+  },
+  {
+   "id": "708907988310558288",
+   "title": "12.3a 핫픽스",
+   "url": "https://store.steampowered.com/news/app/1049590/view/708907988310558288?l=koreana",
+   "date": 1788750000,
+   "kind": "핫픽스"
+  },
+  {
+   "id": "708907988310556683",
+   "title": "2026.09.03 - 12.3 패치노트",
+   "url": "https://store.steampowered.com/news/app/1049590/view/708907988310556683?l=koreana",
+   "date": 1788318000,
+   "kind": "패치노트"
+  },
+  {
+   "id": "708907354451607801",
+   "title": "12.2c 핫픽스",
+   "url": "https://store.steampowered.com/news/app/1049590/view/708907354451607801?l=koreana",
+   "date": 1787799600,
+   "kind": "핫픽스"
+  },
+  {
+   "id": "676255623445218945",
+   "title": "12.2b 핫픽스",
+   "url": "https://store.steampowered.com/news/app/1049590/view/676255623445218945?l=koreana",
+   "date": 1787626800,
+   "kind": "핫픽스"
+  },
+  {
+   "id": "676255623445218196",
+   "title": "12.2a 핫픽스",
+   "url": "https://store.steampowered.com/news/app/1049590/view/676255623445218196?l=koreana",
+   "date": 1787281200,
+   "kind": "핫픽스"
+  },
+  {
+   "id": "676255623445217630",
+   "title": "서버 점검 완료 및 패치노트 추가 내용 안내",
+   "url": "https://store.steampowered.com/news/app/1049590/view/676255623445217630?l=koreana",
+   "date": 1787194800,
+   "kind": "패치노트"
+  },
+  {
+   "id": "676255623445217315",
+   "title": "2026.08.20 - 12.2패치노트",
+   "url": "https://store.steampowered.com/news/app/1049590/view/676255623445217315?l=koreana",
+   "date": 1787108400,
+   "kind": "패치노트"
+  },
+  {
+   "id": "671751488532383557",
+   "title": "12.1b 핫픽스",
+   "url": "https://store.steampowered.com/news/app/1049590/view/671751488532383557?l=koreana",
+   "date": 1786676400,
+   "kind": "핫픽스"
+  },
+  {
+   "id": "671751488532382425",
+   "title": "12.1a 핫픽스",
+   "url": "https://store.steampowered.com/news/app/1049590/view/671751488532382425?l=koreana",
+   "date": 1786590000,
+   "kind": "핫픽스"
+  },
+  {
+   "id": "671751488532381719",
+   "title": "서버 점검 완료 & 패치 노트 추가",
+   "url": "https://store.steampowered.com/news/app/1049590/view/671751488532381719?l=koreana",
+   "date": 1786590000,
+   "kind": "패치노트"
+  },
+  {
+   "id": "708906085669404694",
+   "title": "2026.08.13 - 12.1패치노트",
+   "url": "https://store.steampowered.com/news/app/1049590/view/708906085669404694?l=koreana",
+   "date": 1786503600,
+   "kind": "패치노트"
+  },
+  {
+   "id": "685261553769907147",
+   "title": "12.0b 핫픽스",
+   "url": "https://store.steampowered.com/news/app/1049590/view/685261553769907147?l=koreana",
+   "date": 1786330800,
+   "kind": "핫픽스"
+  },
+  {
+   "id": "685261553769906552",
+   "title": "12.0a 핫픽스",
+   "url": "https://store.steampowered.com/news/app/1049590/view/685261553769906552?l=koreana",
+   "date": 1786071600,
+   "kind": "핫픽스"
+  },
+  {
+   "id": "685261553769906419",
+   "title": "서버 점검 완료 & 패치 노트 추가",
+   "url": "https://store.steampowered.com/news/app/1049590/view/685261553769906419?l=koreana",
+   "date": 1785985200,
+   "kind": "패치노트"
+  },
+  {
+   "id": "685261553769906247",
+   "title": "2026.08.06 - 12.0 패치노트",
+   "url": "https://store.steampowered.com/news/app/1049590/view/685261553769906247?l=koreana",
+   "date": 1785898800,
+   "kind": "패치노트"
+  },
+  {
+   "id": "680756685198852235",
+   "title": "2026.07.23 - 11.7패치노트",
+   "url": "https://store.steampowered.com/news/app/1049590/view/680756685198852235?l=koreana",
+   "date": 1784689200,
+   "kind": "패치노트"
+  },
+  {
+   "id": "688635449342695803",
+   "title": "2026.07.09 - 11.6패치노트",
+   "url": "https://store.steampowered.com/news/app/1049590/view/688635449342695803?l=koreana",
+   "date": 1783479600,
+   "kind": "패치노트"
+  },
+  {
+   "id": "688635449342694235",
+   "title": "11.5a 핫픽스",
+   "url": "https://store.steampowered.com/news/app/1049590/view/688635449342694235?l=koreana",
+   "date": 1783306800,
+   "kind": "핫픽스"
+  },
+  {
+   "id": "688635449342689313",
+   "title": "2026.06.25 - 11.5패치노트",
+   "url": "https://store.steampowered.com/news/app/1049590/view/688635449342689313?l=koreana",
+   "date": 1782270000,
+   "kind": "패치노트"
+  },
+  {
+   "id": "667242081733838306",
+   "title": "11.4b 핫픽스",
+   "url": "https://store.steampowered.com/news/app/1049590/view/667242081733838306?l=koreana",
+   "date": 1781233200,
+   "kind": "핫픽스"
+  },
+  {
+   "id": "667242081733838176",
+   "title": "11.4a 핫픽스",
+   "url": "https://store.steampowered.com/news/app/1049590/view/667242081733838176?l=koreana",
+   "date": 1781233200,
+   "kind": "핫픽스"
+  },
+  {
+   "id": "667242081733837272",
+   "title": "서버 점검 완료 & 패치 노트 추가",
+   "url": "https://store.steampowered.com/news/app/1049590/view/667242081733837272?l=koreana",
+   "date": 1781146800,
+   "kind": "패치노트"
+  },
+  {
+   "id": "667242081733836827",
+   "title": "2026.06.11 - 11.4패치노트",
+   "url": "https://store.steampowered.com/news/app/1049590/view/667242081733836827?l=koreana",
+   "date": 1781060400,
+   "kind": "패치노트"
+  },
+  {
+   "id": "668366713382767707",
+   "title": "11.3c 핫픽스",
+   "url": "https://store.steampowered.com/news/app/1049590/view/668366713382767707?l=koreana",
+   "date": 1780369200,
+   "kind": "핫픽스"
+  },
+  {
+   "id": "668366713382765505",
+   "title": "11.3b 핫픽스",
+   "url": "https://store.steampowered.com/news/app/1049590/view/668366713382765505?l=koreana",
+   "date": 1780023600,
+   "kind": "핫픽스"
+  },
+  {
+   "id": "668366713382765162",
+   "title": "11.3a 핫픽스",
+   "url": "https://store.steampowered.com/news/app/1049590/view/668366713382765162?l=koreana",
+   "date": 1779937200,
+   "kind": "핫픽스"
+  },
+  {
+   "id": "668366713382764573",
+   "title": "2026.05.28 - 11.3패치노트",
+   "url": "https://store.steampowered.com/news/app/1049590/view/668366713382764573?l=koreana",
+   "date": 1779850800,
+   "kind": "패치노트"
+  },
+  {
+   "id": "670617878982033924",
+   "title": "11.2e 핫픽스",
+   "url": "https://store.steampowered.com/news/app/1049590/view/670617878982033924?l=koreana",
+   "date": 1779418800,
+   "kind": "핫픽스"
+  },
+  {
+   "id": "670617878982033424",
+   "title": "11.2d 핫픽스",
+   "url": "https://store.steampowered.com/news/app/1049590/view/670617878982033424?l=koreana",
+   "date": 1779246000,
+   "kind": "핫픽스"
+  },
+  {
+   "id": "701016542742054814",
+   "title": "11.2c 핫픽스",
+   "url": "https://store.steampowered.com/news/app/1049590/view/701016542742054814?l=koreana",
+   "date": 1779159600,
+   "kind": "핫픽스"
+  },
+  {
+   "id": "701016542742053761",
+   "title": "11.2b 핫픽스",
+   "url": "https://store.steampowered.com/news/app/1049590/view/701016542742053761?l=koreana",
+   "date": 1778814000,
+   "kind": "핫픽스"
+  },
+  {
+   "id": "701016542742053540",
+   "title": "11.2a 핫픽스",
+   "url": "https://store.steampowered.com/news/app/1049590/view/701016542742053540?l=koreana",
+   "date": 1778814000,
+   "kind": "핫픽스"
+  },
+  {
+   "id": "701016542742052895",
+   "title": "2026.05.14 - 11.2패치노트",
+   "url": "https://store.steampowered.com/news/app/1049590/view/701016542742052895?l=koreana",
+   "date": 1778641200,
+   "kind": "패치노트"
+  }
+ ],
+ "videos": [
+  {
+   "id": "jjW1HlevyZs",
+   "title": "창 끝에 나의 신념을 모아... #이터널리턴 #시즌13 #glory",
+   "url": "https://www.youtube.com/shorts/jjW1HlevyZs",
+   "date": 1794279600,
+   "kind": "쇼츠",
+   "source": "youtube"
+  },
+  {
+   "id": "x0XOA4h-t94",
+   "title": "시즌 13 글로리까지 D-3 🔥",
+   "url": "https://www.youtube.com/shorts/x0XOA4h-t94",
+   "date": 1794193200,
+   "kind": "쇼츠",
+   "source": "youtube"
+  },
+  {
+   "id": "nBJqYuWx31s",
+   "title": "빛을 위해 헌신하는.. #이터널리턴 #시즌13 #glory",
+   "url": "https://www.youtube.com/shorts/nBJqYuWx31s",
+   "date": 1794193200,
+   "kind": "쇼츠",
+   "source": "youtube"
+  },
+  {
+   "id": "pwvf1aQtv0M",
+   "title": "항해(Sailing) 를 마치고 다시 영예(Glory)를 찾아.. #이터널리턴 #시즌13 #glory",
+   "url": "https://www.youtube.com/shorts/pwvf1aQtv0M",
+   "date": 1794106800,
+   "kind": "쇼츠",
+   "source": "youtube"
+  },
+  {
+   "id": "5L6q5CGRHXU",
+   "title": "시즌 13 글로리까지 D-7 🔥",
+   "url": "https://www.youtube.com/shorts/5L6q5CGRHXU",
+   "date": 1793847600,
+   "kind": "쇼츠",
+   "source": "youtube"
+  },
+  {
+   "id": "c7n2yGmkzlk",
+   "title": "시즌 13: 글로리를 소개합니다. | 이터널 리턴",
+   "url": "https://www.youtube.com/watch?v=c7n2yGmkzlk",
+   "date": 1793674800,
+   "kind": "영상",
+   "source": "youtube"
+  },
+  {
+   "id": "l-mmnfybE5Q",
+   "title": "골드 티어를 달성하고 사관후보생 얀을 만나보세요!",
+   "url": "https://www.youtube.com/shorts/l-mmnfybE5Q",
+   "date": 1793674800,
+   "kind": "쇼츠",
+   "source": "youtube"
+  },
+  {
+   "id": "B9k17VbPudk",
+   "title": "기도시간 #이터널리턴 #시즌13",
+   "url": "https://www.youtube.com/shorts/B9k17VbPudk",
+   "date": 1793674800,
+   "kind": "쇼츠",
+   "source": "youtube"
+  },
+  {
+   "id": "F9SbKX9Uonk",
+   "title": "가보자고! 카우보이! #이터널리턴 #시즌12 #신규스킨",
+   "url": "https://www.youtube.com/shorts/F9SbKX9Uonk",
+   "date": 1792810800,
+   "kind": "쇼츠",
+   "source": "youtube"
+  },
+  {
+   "id": "qqyZXu0gyIQ",
+   "title": "미스틱 퓨어 바니 수아 미리보기",
+   "url": "https://www.youtube.com/watch?v=qqyZXu0gyIQ",
+   "date": 1791860400,
+   "kind": "영상",
+   "source": "youtube"
+  },
+  {
+   "id": "Sy9sFe2rX7Y",
+   "title": "뒷골목에서 심판자로! #이터널리턴 #시즌12 #신규스킨",
+   "url": "https://www.youtube.com/shorts/Sy9sFe2rX7Y",
+   "date": 1791774000,
+   "kind": "쇼츠",
+   "source": "youtube"
+  },
+  {
+   "id": "dpMCe4ATKIk",
+   "title": "수상한자의 뒷골목... #이터널리턴 #시즌12",
+   "url": "https://www.youtube.com/shorts/dpMCe4ATKIk",
+   "date": 1791687600,
+   "kind": "쇼츠",
+   "source": "youtube"
+  },
+  {
+   "id": "YebHex_xYM4",
+   "title": "평범한 마법소녀의 하루 #이터널리턴 #시즌12 #신규스킨",
+   "url": "https://www.youtube.com/shorts/YebHex_xYM4",
+   "date": 1791601200,
+   "kind": "쇼츠",
+   "source": "youtube"
+  },
+  {
+   "id": "ZmOJ_IViA2c",
+   "title": "미스틱 퓨어 바니! 당신의 부름에 응해, 이곳에 등장!",
+   "url": "https://www.youtube.com/shorts/ZmOJ_IViA2c",
+   "date": 1791514800,
+   "kind": "쇼츠",
+   "source": "youtube"
+  },
+  {
+   "id": "KEig0xAeJX8",
+   "title": "운동하기 딱 좋은 날씨죠? #이터널리턴 #시즌12 #신규스킨",
+   "url": "https://www.youtube.com/shorts/KEig0xAeJX8",
+   "date": 1790391600,
+   "kind": "쇼츠",
+   "source": "youtube"
+  },
+  {
+   "id": "rAgiyvKtxgc",
+   "title": "신규 캐릭터 세레스 미리보기",
+   "url": "https://www.youtube.com/watch?v=rAgiyvKtxgc",
+   "date": 1790132400,
+   "kind": "영상",
+   "source": "youtube"
+  },
+  {
+   "id": "3bppQXNryZY",
+   "title": "지금 모시러 갑니다. #이터널리턴 #시즌12 #신규캐릭터",
+   "url": "https://www.youtube.com/shorts/3bppQXNryZY",
+   "date": 1790046000,
+   "kind": "쇼츠",
+   "source": "youtube"
+  },
+  {
+   "id": "xqWN2ONsgKI",
+   "title": "청춘, 한컷..남기실래요? / #이터널리턴 #시즌12 #신규스킨",
+   "url": "https://www.youtube.com/shorts/xqWN2ONsgKI",
+   "date": 1789182000,
+   "kind": "쇼츠",
+   "source": "youtube"
+  },
+  {
+   "id": "VEZ84k1lnjI",
+   "title": "치어풀 펀치 니키 미리보기 #이터널리턴 #시즌12 #신규스킨",
+   "url": "https://www.youtube.com/watch?v=VEZ84k1lnjI",
+   "date": 1788231600,
+   "kind": "영상",
+   "source": "youtube"
+  },
+  {
+   "id": "3WLStVzT3NA",
+   "title": "치어풀 니키가 생존자 여러분을 응원합니다! #이터널리턴 #시즌12 #신규스킨",
+   "url": "https://www.youtube.com/shorts/3WLStVzT3NA",
+   "date": 1787972400,
+   "kind": "쇼츠",
+   "source": "youtube"
+  },
+  {
+   "id": "FY1WimoNRGA",
+   "title": "V.I.C.T.O.R.Y! 내 응원, 제대로 전해졌지?",
+   "url": "https://www.youtube.com/shorts/FY1WimoNRGA",
+   "date": 1787886000,
+   "kind": "쇼츠",
+   "source": "youtube"
+  },
+  {
+   "id": "i_l3chYVPL8",
+   "title": "쇼이치와 거래에 응하시겠습니까? #이터널리턴 #시즌12 #신규스킨",
+   "url": "https://www.youtube.com/shorts/i_l3chYVPL8",
+   "date": 1786849200,
+   "kind": "쇼츠",
+   "source": "youtube"
+  },
+  {
+   "id": "NF0Zq7JLGso",
+   "title": "가넷의 달콤함에 빠져보시겠습니까? #이터널리턴 #시즌12 #신규스킨",
+   "url": "https://www.youtube.com/shorts/NF0Zq7JLGso",
+   "date": 1786762800,
+   "kind": "쇼츠",
+   "source": "youtube"
+  },
+  {
+   "id": "XctXVVZ6oiw",
+   "title": "신규 캐릭터 루치아 미리보기 #이터널리턴 #신규캐릭터 #루치아",
+   "url": "https://www.youtube.com/watch?v=XctXVVZ6oiw",
+   "date": 1786676400,
+   "kind": "영상",
+   "source": "youtube"
+  },
+  {
+   "id": "XMpMKH0MMbQ",
+   "title": "소녀의 여정에 함께 하시겠습니까? #이터널리턴 #시즌12 #신규캐릭터",
+   "url": "https://www.youtube.com/shorts/XMpMKH0MMbQ",
+   "date": 1786503600,
+   "kind": "쇼츠",
+   "source": "youtube"
+  },
+  {
+   "id": "J-w3Y9PG2Io",
+   "title": "8월 6일 시작되는 새로운 시즌의 변경점을 확인해 보세요!",
+   "url": "https://www.youtube.com/shorts/J-w3Y9PG2Io",
+   "date": 1785898800,
+   "kind": "쇼츠",
+   "source": "youtube"
+  },
+  {
+   "id": "9GPMSHyirmU",
+   "title": "여름이다! 바다다! 수영복이다! #이터널리턴 #시즌12 #세일링",
+   "url": "https://www.youtube.com/shorts/9GPMSHyirmU",
+   "date": 1785812400,
+   "kind": "쇼츠",
+   "source": "youtube"
+  },
+  {
+   "id": "8st7o5nyg7k",
+   "title": "시즌 12 세일링까지 D-3 🔥 #이터널리턴 #eternalreturn",
+   "url": "https://www.youtube.com/shorts/8st7o5nyg7k",
+   "date": 1785726000,
+   "kind": "쇼츠",
+   "source": "youtube"
+  },
+  {
+   "id": "N8_xF7N-tOY",
+   "title": "유민 도술의 아쉬운 점은? #이터널리턴 #시즌12 #세일링",
+   "url": "https://www.youtube.com/shorts/N8_xF7N-tOY",
+   "date": 1785726000,
+   "kind": "쇼츠",
+   "source": "youtube"
+  },
+  {
+   "id": "kdZoShrzT2w",
+   "title": "ER 크리에이터와 함께 성장한 3년, 앞으로도 꿈꾸고 도전하는 이들을 응원하겠습니다 / 이터널 리턴 3주년 (재업로드)",
+   "url": "https://www.youtube.com/watch?v=kdZoShrzT2w",
+   "date": 1785639600,
+   "kind": "영상",
+   "source": "youtube"
+  },
+  {
+   "id": "Bxu5sxJh2eI",
+   "title": "타지아가 가고 싶었던 낙원은..? #이터널리턴 #시즌12 #세일링",
+   "url": "https://www.youtube.com/shorts/Bxu5sxJh2eI",
+   "date": 1785639600,
+   "kind": "쇼츠",
+   "source": "youtube"
+  },
+  {
+   "id": "1tjsBfm2nVc",
+   "title": "슈린은 더위를 잊고 싶어요 #이터널리턴 #시즌12 #세일링",
+   "url": "https://www.youtube.com/shorts/1tjsBfm2nVc",
+   "date": 1785553200,
+   "kind": "쇼츠",
+   "source": "youtube"
+  },
+  {
+   "id": "xK5yBx8L45s",
+   "title": "골드 티어를 달성하고 사관후보생 일레븐을 만나보세요!",
+   "url": "https://www.youtube.com/shorts/xK5yBx8L45s",
+   "date": 1785466800,
+   "kind": "쇼츠",
+   "source": "youtube"
+  },
+  {
+   "id": "TwNxngwqN3Q",
+   "title": "시즌 12 세일링까지 D-7 🔥",
+   "url": "https://www.youtube.com/shorts/TwNxngwqN3Q",
+   "date": 1785380400,
+   "kind": "쇼츠",
+   "source": "youtube"
+  },
+  {
+   "id": "bgNLq0PJq9c",
+   "title": "이터널 리턴 [시즌 12 팩 :세일링] 영상 안내",
+   "url": "https://www.youtube.com/watch?v=bgNLq0PJq9c",
+   "date": 1785207600,
+   "kind": "영상",
+   "source": "steam"
+  },
+  {
+   "id": "E2Hvcg2VZxo",
+   "title": "시즌 12: 세일링을 소개합니다.",
+   "url": "https://www.youtube.com/watch?v=E2Hvcg2VZxo",
+   "date": 1785207600,
+   "kind": "영상",
+   "source": "youtube"
+  },
+  {
+   "id": "9QKfTbw9D4k",
+   "title": "지금 안 받으면 손해🔥스킨 2종 무료로 드려요",
+   "url": "https://www.youtube.com/shorts/9QKfTbw9D4k",
+   "date": 1784862000,
+   "kind": "쇼츠",
+   "source": "youtube"
+  },
+  {
+   "id": "wYyF-pCtki0",
+   "title": "영겁의 푸른 망령 비앙카 미리보기",
+   "url": "https://www.youtube.com/watch?v=wYyF-pCtki0",
+   "date": 1784602800,
+   "kind": "영상",
+   "source": "youtube"
+  },
+  {
+   "id": "i5EeakEpvJU",
+   "title": "마지막 바퀴(Final Lap) 인가요? #이터널리턴 #시즌11 #신규스킨",
+   "url": "https://www.youtube.com/shorts/i5EeakEpvJU",
+   "date": 1784516400,
+   "kind": "쇼츠",
+   "source": "youtube"
+  },
+  {
+   "id": "tL0bJeqUjxU",
+   "title": "넌 착한 권속이로구나 #이터널리턴 #시즌11 #신규스킨",
+   "url": "https://www.youtube.com/shorts/tL0bJeqUjxU",
+   "date": 1784343600,
+   "kind": "쇼츠",
+   "source": "youtube"
+  },
+  {
+   "id": "rjncXt0Qb58",
+   "title": "루미아 섬에서의 3년, 데이터로 돌아보기 / 이터널 리턴 3주년",
+   "url": "https://www.youtube.com/watch?v=rjncXt0Qb58",
+   "date": 1783911600,
+   "kind": "영상",
+   "source": "youtube"
+  },
+  {
+   "id": "8nN11hdQMt0",
+   "title": "3rd Anniversary 하트&리오 미리보기",
+   "url": "https://www.youtube.com/watch?v=8nN11hdQMt0",
+   "date": 1783393200,
+   "kind": "영상",
+   "source": "youtube"
+  },
+  {
+   "id": "eW7LOdz6ZDc",
+   "title": "영겁의 시간을 지나... 이곳에 도래했도다!",
+   "url": "https://www.youtube.com/shorts/eW7LOdz6ZDc",
+   "date": 1782702000,
+   "kind": "쇼츠",
+   "source": "youtube"
+  },
+  {
+   "id": "zYOCy8r-gig",
+   "title": "경력 있는 신입 메이드 #이터널리턴 #시즌11 #스킨케어",
+   "url": "https://www.youtube.com/shorts/zYOCy8r-gig",
+   "date": 1782010800,
+   "kind": "쇼츠",
+   "source": "youtube"
+  },
+  {
+   "id": "YKHDJoltdl8",
+   "title": "다시 설레이기 시작했어 #이터널리턴 #시즌11 #신규스킨",
+   "url": "https://www.youtube.com/shorts/YKHDJoltdl8",
+   "date": 1781924400,
+   "kind": "쇼츠",
+   "source": "youtube"
+  },
+  {
+   "id": "Kott3PrXAD4",
+   "title": "신규 캐릭터 크레이버 미리보기 / 이터널 리턴",
+   "url": "https://www.youtube.com/watch?v=Kott3PrXAD4",
+   "date": 1781838000,
+   "kind": "영상",
+   "source": "youtube"
+  },
+  {
+   "id": "lsxz8XCyLsc",
+   "title": "뭐? \"크레이버\"에 대해 알고 있냐고?",
+   "url": "https://www.youtube.com/shorts/lsxz8XCyLsc",
+   "date": 1781665200,
+   "kind": "쇼츠",
+   "source": "youtube"
+  },
+  {
+   "id": "TTYcDNN3PKw",
+   "title": "펜리르! 여기는 골목길이다. #이터널리턴 #시즌11 #신규스킨",
+   "url": "https://www.youtube.com/shorts/TTYcDNN3PKw",
+   "date": 1780714800,
+   "kind": "쇼츠",
+   "source": "youtube"
+  },
+  {
+   "id": "UQEAOFfEzYo",
+   "title": "당신과 나의 네코마츠리 이렘 미리보기 #이터널리턴 #시즌11 #신규스킨",
+   "url": "https://www.youtube.com/watch?v=UQEAOFfEzYo",
+   "date": 1779764400,
+   "kind": "영상",
+   "source": "youtube"
+  },
+  {
+   "id": "BsNLTsp4Qus",
+   "title": "메이드, 때때로 폭발.. #이터널리턴 #시즌11 #신규스킨",
+   "url": "https://www.youtube.com/shorts/BsNLTsp4Qus",
+   "date": 1779591600,
+   "kind": "쇼츠",
+   "source": "youtube"
+  },
+  {
+   "id": "7x9gEU751CQ",
+   "title": "당신과 나의... #이터널리턴 #시즌11 #신규스킨",
+   "url": "https://www.youtube.com/shorts/7x9gEU751CQ",
+   "date": 1779505200,
+   "kind": "쇼츠",
+   "source": "youtube"
+  },
+  {
+   "id": "CjRG20MvRZQ",
+   "title": "신규 캐릭터 비형 미리보기 #이터널리턴 #시즌11 #신규캐릭터",
+   "url": "https://www.youtube.com/watch?v=CjRG20MvRZQ",
+   "date": 1778554800,
+   "kind": "영상",
+   "source": "youtube"
+  },
+  {
+   "id": "ytEomWWdtB0",
+   "title": "8번째 고스트헌터? #이터널리턴 #시즌11 #신규스킨",
+   "url": "https://www.youtube.com/shorts/ytEomWWdtB0",
+   "date": 1778382000,
+   "kind": "쇼츠",
+   "source": "youtube"
+  },
+  {
+   "id": "zV6YLdr8jyw",
+   "title": "꿈은 이루어지겠지..? #이터널리턴 #시즌11 #신규스킨",
+   "url": "https://www.youtube.com/shorts/zV6YLdr8jyw",
+   "date": 1778295600,
+   "kind": "쇼츠",
+   "source": "youtube"
+  },
+  {
+   "id": "NGKqc00ljzk",
+   "title": "시즌팩 - 쁘띠 미뇽 / 신규 지역 '바지선' / 지역별 특수 기믹 / 새로운 전술 스킬 추가 / 11.0 업데이트 / 패치노트 다이제스트",
+   "url": "https://www.youtube.com/watch?v=NGKqc00ljzk",
+   "date": 1777604400,
+   "kind": "영상",
+   "source": "youtube"
+  },
+  {
+   "id": "vUH5lLVC2uY",
+   "title": "시즌11 시작! 새로운 변경들을 확인해보세요!",
+   "url": "https://www.youtube.com/shorts/vUH5lLVC2uY",
+   "date": 1777604400,
+   "kind": "쇼츠",
+   "source": "youtube"
+  },
+  {
+   "id": "fPcDiGI6jrU",
+   "title": "시즌 11: 쁘띠 미뇽이 찾아옵니다. #shorts",
+   "url": "https://www.youtube.com/shorts/fPcDiGI6jrU",
+   "date": 1777604400,
+   "kind": "쇼츠",
+   "source": "youtube"
+  },
+  {
+   "id": "yGjfQ8euv2c",
+   "title": "시, 실수해도 귀엽게 봐줘야 한다냥... / #이터널리턴 #시즌11 #쁘띠미뇽",
+   "url": "https://www.youtube.com/shorts/yGjfQ8euv2c",
+   "date": 1777345200,
+   "kind": "쇼츠",
+   "source": "youtube"
+  },
+  {
+   "id": "P2_QRrxmiG0",
+   "title": "시즌 11 쁘띠 미뇽! D-3, 단 72시간 🔥",
+   "url": "https://www.youtube.com/shorts/P2_QRrxmiG0",
+   "date": 1777258800,
+   "kind": "쇼츠",
+   "source": "youtube"
+  },
+  {
+   "id": "cxhNpkKigcQ",
+   "title": "땨람쥐는 살금살금 움직이지 않는데.. / #이터널리턴 #시즌11 #쁘띠미뇽",
+   "url": "https://www.youtube.com/shorts/cxhNpkKigcQ",
+   "date": 1777258800,
+   "kind": "쇼츠",
+   "source": "youtube"
+  }
+ ]
+}
