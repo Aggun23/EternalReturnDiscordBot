@@ -1,1 +1,41 @@
+name: 이터널 리턴 알림
 
+on:
+  schedule:
+    - cron: "*/30 * * * *"   # 30분마다 (GitHub 사정으로 몇 분 늦게 돌 수 있음)
+  workflow_dispatch:          # Actions 탭에서 수동 실행
+    inputs:
+      test:
+        description: "최신 공지 1개를 강제로 보내서 웹훅 확인"
+        type: boolean
+        default: false
+
+permissions:
+  contents: write             # state.json 커밋용
+
+concurrency:
+  group: er-news-bot
+  cancel-in-progress: false
+
+jobs:
+  notify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: 새 공지 확인 후 전송
+        env:
+          DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
+          MENTION: ${{ vars.MENTION }}
+        run: python bot.py ${{ inputs.test && '--test' || '' }}
+
+      - name: 보낸 기록 저장
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add state.json 2>/dev/null || exit 0
+          git diff --cached --quiet || (git commit -m "알림 기록 갱신" && git push)
