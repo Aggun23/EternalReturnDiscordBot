@@ -5,10 +5,11 @@ on:
     - cron: "*/30 * * * *"   # 30분마다 (GitHub 사정으로 몇 분 늦게 돌 수 있음)
   workflow_dispatch:          # Actions 탭에서 수동 실행
     inputs:
-      test:
-        description: "최신 공지 1개를 강제로 보내서 웹훅 확인"
-        type: boolean
-        default: false
+      mode:
+        description: "normal = 평소처럼 / check = 보냄·건너뜀 목록만 로그에 출력 / test = 필터 통과하는 최신 공지·영상 1개씩 강제 전송"
+        type: choice
+        options: [normal, check, test]
+        default: normal
 
 permissions:
   contents: write             # state.json 커밋용
@@ -27,11 +28,19 @@ jobs:
         with:
           python-version: "3.12"
 
-      - name: 새 공지 확인 후 전송
+      - name: 새 공지·영상 확인 후 전송
         env:
           DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
           MENTION: ${{ vars.MENTION }}
-        run: python bot.py ${{ inputs.test && '--test' || '' }}
+          STEAM_KEYWORDS: ${{ vars.STEAM_KEYWORDS }}
+          STEAM_PATCH_KEYWORDS: ${{ vars.STEAM_PATCH_KEYWORDS }}
+          STEAM_EXCLUDE: ${{ vars.STEAM_EXCLUDE }}
+          SEASON_WINDOW_DAYS: ${{ vars.SEASON_WINDOW_DAYS }}
+          YOUTUBE_CHANNELS: ${{ vars.YOUTUBE_CHANNELS }}
+          YOUTUBE_KEYWORDS: ${{ vars.YOUTUBE_KEYWORDS }}
+          YOUTUBE_EXCLUDE: ${{ vars.YOUTUBE_EXCLUDE }}
+          YOUTUBE_SHORTS: ${{ vars.YOUTUBE_SHORTS }}
+        run: python bot.py ${{ inputs.mode == 'test' && '--test' || inputs.mode == 'check' && '--check' || '' }}
 
       - name: 보낸 기록 저장
         run: |
