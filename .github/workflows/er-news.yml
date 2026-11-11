@@ -31,6 +31,7 @@ jobs:
       - name: 새 공지·영상 확인 후 전송
         env:
           DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
+          YOUTUBE_WEBHOOK_URL: ${{ secrets.YOUTUBE_WEBHOOK_URL }}
           MENTION: ${{ vars.MENTION }}
           STEAM_KEYWORDS: ${{ vars.STEAM_KEYWORDS }}
           STEAM_PATCH_KEYWORDS: ${{ vars.STEAM_PATCH_KEYWORDS }}
