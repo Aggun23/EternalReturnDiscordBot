@@ -1,5 +1,5 @@
 {
- "updated": 1794376124,
+ "updated": 1794378744,
  "season": {
   "num": 13,
   "since": 1793606942
@@ -120,6 +120,18 @@
   }
  ],
  "skins": [
+  {
+   "id": "yt:qfXs36fnFuU",
+   "title": "이단 추적 개시! #이터널리턴 #시즌13 #글로리",
+   "url": "https://www.youtube.com/shorts/qfXs36fnFuU",
+   "date": 1794366032,
+   "source": "youtube",
+   "kind": "쇼츠",
+   "text": "이터널 리턴의 새로운 시즌 글로리(Glory) 가 곧 시작됩니다.\n심판하는 검 블레어가 여러분을 찾아옵니다.\n\n※시즌 13: Glory는 2026.11.12에 시작 됩니다.",
+   "chars": [
+    "블레어"
+   ]
+  },
   {
    "id": "yt:jjW1HlevyZs",
    "title": "창 끝에 나의 신념을 모아... #이터널리턴 #시즌13 #glory",
@@ -3202,6 +3214,14 @@
  ],
  "videos": [
   {
+   "id": "qfXs36fnFuU",
+   "title": "이단 추적 개시! #이터널리턴 #시즌13 #글로리",
+   "url": "https://www.youtube.com/shorts/qfXs36fnFuU",
+   "date": 1794366032,
+   "kind": "쇼츠",
+   "source": "youtube"
+  },
+  {
    "id": "jjW1HlevyZs",
    "title": "창 끝에 나의 신념을 모아... #이터널리턴 #시즌13 #glory",
    "url": "https://www.youtube.com/shorts/jjW1HlevyZs",
@@ -3669,14 +3689,6 @@
    "id": "P2_QRrxmiG0",
    "title": "시즌 11 쁘띠 미뇽! D-3, 단 72시간 🔥",
    "url": "https://www.youtube.com/shorts/P2_QRrxmiG0",
-   "date": 1777258800,
-   "kind": "쇼츠",
-   "source": "youtube"
-  },
-  {
-   "id": "cxhNpkKigcQ",
-   "title": "땨람쥐는 살금살금 움직이지 않는데.. / #이터널리턴 #시즌11 #쁘띠미뇽",
-   "url": "https://www.youtube.com/shorts/cxhNpkKigcQ",
    "date": 1777258800,
    "kind": "쇼츠",
    "source": "youtube"

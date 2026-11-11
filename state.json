@@ -44,12 +44,16 @@
   ],
   "seen_videos": [
     "qqyZXu0gyIQ",
-    "c7n2yGmkzlk"
+    "c7n2yGmkzlk",
+    "qfXs36fnFuU"
   ],
-  "yt_ready": [],
+  "yt_ready": [
+    "UCEOaB76vS9RfiAwEzxB8QGw"
+  ],
   "yt_ids": {
     "https://www.youtube.com/@EternalReturnKR": "UCEOaB76vS9RfiAwEzxB8QGw"
   },
   "reminded": [],
-  "worker_youtube": true
+  "worker_youtube": true,
+  "handoff_sent": []
 }
