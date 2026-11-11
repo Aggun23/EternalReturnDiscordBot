@@ -1,11 +1,33 @@
 {
- "updated": 1794368824,
+ "updated": 1794376124,
  "season": {
   "num": 13,
   "since": 1793606942
  },
  "chars_extra": [],
  "coupons": [
+  {
+   "code": "S13D7GLORY",
+   "reward": "럭키박스 + EP부스트1일 + A-COIN + 검은상자",
+   "valid": "11.18",
+   "expires": 1795013940,
+   "date": 1794369302,
+   "title": "직접 등록",
+   "url": null,
+   "source": "manual",
+   "by": "Fablean"
+  },
+  {
+   "code": "GLORYBLAIR",
+   "reward": "럭키박스 + EP부스트1일 + A-COIN +  검은상자",
+   "valid": "11/18",
+   "expires": 1795013940,
+   "date": 1794369252,
+   "title": "직접 등록",
+   "url": null,
+   "source": "manual",
+   "by": "Fablean"
+  },
   {
    "code": "SEASON13GLORY",
    "reward": null,
