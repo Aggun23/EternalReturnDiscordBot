@@ -26,8 +26,10 @@
   python bot.py --test       필터를 통과하는 최신 공지 1개 + 영상 1개를 강제로 전송
   python bot.py --dry-run    디스코드로 보내지 않고 보낼 내용만 출력
 
-환경 변수 (전부 선택, DISCORD_WEBHOOK_URL만 필수)
-  DISCORD_WEBHOOK_URL   디스코드 채널 웹후크 주소
+환경 변수 (보낼 곳: DISCORD_CHANNEL_ID + DISCORD_BOT_TOKEN, 또는 DISCORD_WEBHOOK_URL 중 하나는 필수)
+  DISCORD_CHANNEL_ID    알림 채널 ID. DISCORD_BOT_TOKEN과 같이 넣으면 봇 계정으로 직접 올림 (웹후크 대신)
+  DISCORD_VIDEO_CHANNEL_ID  (선택) 유튜브 알림 채널 ID (Worker가 30분 넘게 못 보낸 영상을 대신 올릴 때)
+  DISCORD_WEBHOOK_URL   디스코드 채널 웹후크 주소 (봇 계정으로 올리지 않을 때)
   MENTION               쿠폰 알림 때 붙일 멘션. 예: @everyone 또는 <@&역할ID>
   STEAM_KEYWORDS        제목에 이 단어가 있으면 보냄 (기본: 스킨)
   STEAM_PATCH_KEYWORDS  제목에 이 단어가 있으면 제외 단어와 상관없이 보냄
@@ -39,6 +41,7 @@
   YOUTUBE_EXCLUDE       제목에 이 단어가 있으면 건너뜀 (기본: KEL,마스터즈,서포트 패키지,비하인드,슈퍼컵,Masters,내셔널 리그)
   YOUTUBE_SHORTS        off면 쇼츠 제외 (기본: 쇼츠 포함)
   COUPON_REMIND_HOURS   쿠폰 마감 몇 시간 전에 한 번 더 알릴지 (기본: 24, 0이면 끔)
+  DISCORD_BOT_TOKEN     (선택) 넣으면 알림 글도 개발자 포털의 봇 이름·프로필 사진으로 보냄 (명령어 등록용과 같은 토큰)
   YOUTUBE_WEBHOOK_URL   (선택) 유튜브 알림 채널 웹후크. Worker가 디스코드 전송에 계속 실패한 영상을 여기서 대신 보냄
   WORKER_URL            명령어 봇(Cloudflare Worker) 주소. 넣으면 /쿠폰추가 로 직접 등록한 쿠폰도 마감 알림에 넣고,
                         Worker가 유튜브 새 영상을 따로 올리고 있으면 여기서는 유튜브 알림을 안 보냄 (겹침 방지)
@@ -167,7 +170,8 @@ def is_skin_video(title, desc):
         return True
     return bool(re.search(r"미리\s*보기", title)) and "스킨" in desc
 CLAN_IMAGE_BASE = "https://clan.fastly.steamstatic.com/images"
-# 봇 이름·프로필 사진은 코드에서 정하지 않아요. 디스코드 채널 설정 → 연동 → 웹후크에서 바꾸면 그대로 나와요.
+# 봇 이름·프로필 사진: DISCORD_BOT_TOKEN이 있으면 개발자 포털 Bot 탭의 이름·사진을 그대로 씀 (모든 채널 통일).
+# 없으면 각 채널 웹후크에 설정된 이름·사진.
 MAX_SEEN = 300
 COLOR_NEWS = 0x5865F2
 COLOR_SEASON = 0x2ECC71
@@ -1071,6 +1075,86 @@ def run_coupon_reminders(state, data, deliver, cfg, mode="normal", now=None):
 # ---------------------------------------------------------------- 보내기 / 기록
 
 
+def bot_profile(token):
+    """디스코드 개발자 포털 → Bot 탭의 이름·프로필 사진. 웹후크 글도 이걸로 보내서 모든 채널을 봇 프로필 하나로 통일."""
+    if not token:
+        return {}
+    req = urllib.request.Request(
+        "https://discord.com/api/v10/users/@me",
+        headers={"Authorization": f"Bot {token}", "User-Agent": DISCORD_USER_AGENT},
+    )
+    try:
+        with urllib.request.urlopen(req, timeout=15) as resp:
+            user = json.loads(resp.read().decode("utf-8"))
+    except Exception as e:
+        print(f"[경고] 봇 프로필을 못 읽어서 웹후크 기본 이름·사진으로 보내요: {e}")
+        return {}
+    return profile_from_user(user)
+
+
+def profile_from_user(user):
+    out = {}
+    name = (user.get("global_name") or user.get("username") or "").strip()
+    # 웹후크 이름에는 'discord', 'clyde'가 들어가면 디스코드가 거절함 → 그땐 이름은 웹후크 것 그대로
+    if 1 <= len(name) <= 80 and not re.search(r"discord|clyde", name, re.I):
+        out["username"] = name
+    uid, avatar = user.get("id"), user.get("avatar")
+    if uid and avatar:
+        out["avatar_url"] = f"https://cdn.discordapp.com/avatars/{uid}/{avatar}.{'gif' if avatar.startswith('a_') else 'png'}?size=256"
+    elif uid:
+        out["avatar_url"] = f"https://cdn.discordapp.com/embed/avatars/{(int(uid) >> 22) % 6}.png"
+    return out
+
+
+def target_for(channel_id, token, webhook):
+    """봇 계정으로 채널에 올리기(채널 ID + 봇 토큰)가 우선, 없으면 웹후크."""
+    if channel_id and token:
+        return ("bot", channel_id, token)
+    if webhook:
+        return ("webhook", webhook)
+    return None
+
+
+def send_discord(target, payload, profile=None):
+    if target[0] == "bot":
+        send_bot_message(target[1], target[2], payload)
+    else:
+        send_webhook(target[1], {**payload, **(profile or {})})
+
+
+def send_bot_message(channel_id, token, payload):
+    """봇 계정으로 채널에 글 올리기 (내가 디스코드에서 글 쓰는 것과 같은 방식)."""
+    body = {k: v for k, v in payload.items() if k not in ("username", "avatar_url")}
+    data = json.dumps(body).encode("utf-8")
+    for _ in range(5):
+        req = urllib.request.Request(
+            f"https://discord.com/api/v10/channels/{channel_id}/messages",
+            data=data,
+            method="POST",
+            headers={"Authorization": f"Bot {token}", "Content-Type": "application/json", "User-Agent": DISCORD_USER_AGENT},
+        )
+        try:
+            with urllib.request.urlopen(req, timeout=20):
+                return
+        except urllib.error.HTTPError as e:
+            raw = e.read()
+            if e.code == 429:
+                try:
+                    wait = float(json.loads(raw or b"{}").get("retry_after", 1))
+                except ValueError:
+                    wait = 2.0
+                time.sleep(min(wait, 30) + 0.5)
+                continue
+            hint = {
+                401: "봇 토큰이 틀렸어요 (DISCORD_BOT_TOKEN).",
+                403: "봇이 그 채널에 글을 쓸 수 없어요. 봇을 'bot' 권한으로 서버에 초대했는지, 채널 권한에서 봇에게 "
+                     "채널 보기·메시지 보내기·링크 첨부가 허용돼 있는지 확인해 주세요.",
+                404: "채널 ID가 틀렸어요.",
+            }.get(e.code, "")
+            raise RuntimeError(f"봇 메시지 전송 실패 (HTTP {e.code}) {hint} {raw[:200]!r}") from None
+    raise RuntimeError("봇 메시지 전송 실패: 재시도 횟수 초과")
+
+
 def send_webhook(url, payload):
     data = json.dumps(payload).encode("utf-8")
     for _ in range(5):
@@ -1151,24 +1235,31 @@ def main(argv=None):
     args = ap.parse_args(argv)
     mode = "check" if args.check else "test" if args.test else "normal"
 
+    token = os.environ.get("DISCORD_BOT_TOKEN", "").strip()
     webhook = os.environ.get("DISCORD_WEBHOOK_URL", "").strip()
-    if not webhook and not (args.dry_run or args.check):
-        sys.exit("DISCORD_WEBHOOK_URL 환경 변수가 비어 있어요. (--check, --dry-run 은 없이도 실행돼요)")
+    channel = os.environ.get("DISCORD_CHANNEL_ID", "").strip()
+    video_channel = os.environ.get("DISCORD_VIDEO_CHANNEL_ID", "").strip()
+    yt_webhook = os.environ.get("YOUTUBE_WEBHOOK_URL", "").strip()
+    main_target = target_for(channel, token, webhook)
+    if not main_target and not (args.dry_run or args.check):
+        sys.exit("보낼 곳이 없어요. DISCORD_CHANNEL_ID + DISCORD_BOT_TOKEN(봇 계정으로 올리기) 또는 DISCORD_WEBHOOK_URL 을 넣어 주세요. "
+                 "(--check, --dry-run 은 없이도 실행돼요)")
+    yt_target = target_for(video_channel, token, yt_webhook) or main_target  # 유튜브 채널 (없으면 원래 채널)
     cfg = load_config()
+    # 웹후크로 보낼 때만: 개발자 포털 봇 이름·사진을 웹후크 글에도 똑같이
+    uses_webhook = any(t and t[0] == "webhook" for t in (main_target, yt_target))
+    profile = bot_profile(token) if uses_webhook and not args.check else {}
 
-    def deliver(payload):
-        if args.dry_run:
-            print(json.dumps(payload, ensure_ascii=False, indent=2))
-        else:
-            send_webhook(webhook, payload)
+    def sender(target):
+        def deliver_to(payload):
+            if args.dry_run:
+                print(json.dumps(payload, ensure_ascii=False, indent=2))
+            else:
+                send_discord(target, payload, profile)
+        return deliver_to
 
-    yt_webhook = os.environ.get("YOUTUBE_WEBHOOK_URL", "").strip() or webhook  # 유튜브 채널 웹후크 (없으면 원래 채널)
-
-    def deliver_yt(payload):
-        if args.dry_run:
-            print(json.dumps(payload, ensure_ascii=False, indent=2))
-        else:
-            send_webhook(yt_webhook, payload)
+    deliver = sender(main_target)
+    deliver_yt = sender(yt_target)
 
     state = load_state()
     data = load_data()

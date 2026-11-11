@@ -63,8 +63,7 @@ state.json, data.json                    (자동 생성) 보낸 기록 / 명령�
 
 여기까지 하면 기본 설정(위 표대로)으로 동작해요. 바꾸고 싶은 게 있을 때만 아래 4번을 해요.
 
-> **봇 이름·프로필 사진**은 코드가 아니라 디스코드에서 바꿔요. 채널 톱니바퀴 → 연동 → 웹후크 → 그 웹후크를 눌러 이름과 사진을 바꾸고 **변경 사항 저장**. 다음 알림부터 그 이름·사진으로 나와요 (이미 올라간 글은 그대로). 유튜브 알림 채널 웹후크도 따로 똑같이 바꾸면 돼요.
-> `/쿠폰` 같은 명령어에 답하는 봇의 이름·사진은 디스코드 개발자 포털 → 내 앱 → **Bot** 탭(Username, Icon)에서 바꿔요.
+> **알림도 봇 계정으로 올리고 싶으면** → [알림을 봇 계정으로 올리기](#알림을-봇-계정으로-올리기-추천). 웹후크 대신 봇이 직접 글을 써서, 모든 채널이 개발자 포털의 봇 프로필 하나로 통일돼요.
 
 ### 4. (선택) 설정 바꾸기
 같은 화면의 **Variables** 탭 → New repository variable. 안 넣은 항목은 기본값을 써요.
@@ -197,6 +196,7 @@ state.json, data.json                    (자동 생성) 보낸 기록 / 명령�
    |---|---|---|
    | `YOUTUBE_WEBHOOK_URL` | Secret | 1번에서 복사한 웹후크 URL |
    | `MENTION` | Text (선택) | 쿠폰 있는 영상에 붙일 멘션. 예: `@everyone` |
+   | `DISCORD_BOT_TOKEN` | Secret (추천) | 봇 토큰. 유튜브 알림 글도 개발자 포털 봇 이름·사진으로 |
 3. Worker → **Settings → Trigger Events**(또는 Triggers) → **Add → Cron Triggers** → Cron 식에 `*/5 * * * *` (5분마다) → 저장
 4. (선택) 영상 기준을 바꾸려면 2번처럼 `YOUTUBE_KEYWORDS`, `YOUTUBE_EXCLUDE`, `YOUTUBE_SHORTS`를 Text로 추가 (뜻은 위 설정 표와 같아요)
 5. 새 `worker.js`를 붙여넣고 **Deploy** 했는지 확인
@@ -232,6 +232,40 @@ state.json, data.json                    (자동 생성) 보낸 기록 / 명령�
 - `디스코드가 Cloudflare 서버 IP를 잠시 막음 (1015)`: Cloudflare 서버는 여러 사람이 같은 IP를 같이 써서, 디스코드가 그 IP를 잠깐씩 막을 때가 있어요. 내 설정 문제가 아니에요. Worker가 5분마다 (보통 다른 서버에서) 다시 보내고, 30분 넘게 안 되면 GitHub 알림 봇이 대신 보내요(위 8번).
 - `디스코드 웹후크 주소가 틀렸거나 삭제됨`: `YOUTUBE_WEBHOOK_URL`을 다시 복사해서 넣고 Deploy.
 - `바로 알림: 연결 대기 중`이 한참 계속됨: 5분 확인만으로도 영상은 와요(조금 늦을 뿐). Worker 주소를 브라우저로 한 번 열면 다시 시도해요.
+
+## 알림을 봇 계정으로 올리기 (추천)
+
+웹후크 대신 **봇 계정이 직접** 채널에 글을 써요. 내가 디스코드에서 글 쓰는 것과 같은 방식이라, 알림 채널·유튜브 채널·명령어 답장이 전부 같은 봇(개발자 포털 → Bot 탭의 이름·사진)으로 보여요. 이름을 눌러도 봇 프로필이 떠요.
+
+> 디스코드 명령어 설치(위 1~4)를 먼저 끝내고 진행하세요.
+
+1. **봇을 '글 쓰기 권한'으로 서버에 다시 초대**
+   - 개발자 포털 → 내 앱 → **Installation** → **Guild Install**
+     - Scopes: `applications.commands` 와 **`bot`** 둘 다
+     - Permissions: **View Channels**, **Send Messages**, **Embed Links** (멘션을 쓰면 **Mention Everyone**도)
+   - **Save Changes** → 위쪽 **Install Link** 복사 → 브라우저로 열기 → 내 서버 선택 → 승인
+   - 서버 멤버 목록에 봇이 보이면 성공
+2. **채널 ID 복사**: 디스코드 **사용자 설정 → 고급 → 개발자 모드** 켜기 → 알림 채널을 우클릭 → **채널 ID 복사**. 유튜브 알림 채널도 똑같이.
+3. **GitHub** 저장소 **Variables** 탭
+   | 이름 | 값 |
+   |---|---|
+   | `DISCORD_CHANNEL_ID` | 알림 채널 ID |
+   | `DISCORD_VIDEO_CHANNEL_ID` | 유튜브 알림 채널 ID |
+
+   (봇 토큰 `DISCORD_BOT_TOKEN` Secret은 명령어 등록 때 넣은 걸 그대로 써요)
+4. **Cloudflare Worker** → Settings → Variables and Secrets
+   | 이름 | 종류 | 값 |
+   |---|---|---|
+   | `DISCORD_VIDEO_CHANNEL_ID` | Text | 유튜브 알림 채널 ID |
+   | `DISCORD_BOT_TOKEN` | Secret | 봇 토큰 (GitHub에 넣은 것과 같은 값) |
+5. **비공개 채널이면**: 채널 설정 → 권한 → 봇 추가 → 채널 보기·메시지 보내기·링크 첨부 허용
+6. **확인**
+   - GitHub Actions → `이터널 리턴 알림` → Run workflow → **test** → 알림 채널에 봇 이름으로 글이 오면 성공
+   - 브라우저로 `Worker주소/youtube` → `유튜브 알림: 켜짐 (봇 계정으로 채널에 올림)`, `디스코드 (봇 계정): 정상`
+
+- 채널 ID와 봇 토큰이 있으면 웹후크보다 먼저 써요. 잘 되는 걸 확인한 뒤에는 채널의 웹후크를 지워도 돼요. `DISCORD_WEBHOOK_URL`, `YOUTUBE_WEBHOOK_URL`도 그때 지워도 돼요.
+- **"봇이 그 채널에 글을 못 써요 (403)"**: 1번 초대에서 `bot`이 빠졌거나, 채널 권한에서 봇이 막혀 있어요.
+- Cloudflare 서버 IP를 디스코드가 잠깐 막는 일(1015)은 봇 계정이어도 똑같이 생길 수 있어요. 그때는 Worker가 5분마다 다시 보내고, 30분 넘게 안 되면 GitHub 알림 봇이 봇 계정으로 대신 올려요.
 
 ## 내 PC에서 돌려 보기
 
