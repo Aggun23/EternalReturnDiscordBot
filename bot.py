@@ -9,9 +9,12 @@
   · 새 시즌 번호(예: 시즌 14)가 처음 나온 날부터 3주 동안, 그 시즌 공지 → 보냄
   · 나머지(이모티콘, 만화, 당첨자 발표 등) → 건너뜀
   · 공지에 유튜브 영상이 붙어 있으면 링크를 같이 보내서 디스코드에서 바로 재생
+- 쿠폰 마감 24시간 전에 한 번 더 알림 (기한을 읽을 수 있는 쿠폰만)
 - 유튜브 이터널 리턴 한국 채널 (쇼츠 포함)
+  · 쇼츠/영상 설명에 쿠폰 코드가 있으면 필터와 상관없이 보냄 (시즌 D-7, D-3 쇼츠 쿠폰 등)
   · 제목/설명에 스킨·시즌·미리보기·찾아옵니다 가 있는 영상만
   · KEL·마스터즈 같은 대회 영상은 제외
+- 명령어 봇(Worker)에서 /쿠폰추가 로 직접 등록한 쿠폰도 마감 알림 (WORKER_URL 설정 시)
 - 보낸 기록은 state.json에 저장 (중복 방지)
 - 디스코드 명령어 봇(worker.js)이 읽을 모음 데이터는 data.json에 저장
   (쿠폰과 기한, 스킨 공지·쇼츠, 패치노트·핫픽스, 스킨·시즌 영상)
@@ -35,6 +38,10 @@
   YOUTUBE_KEYWORDS      제목/설명에 이 단어가 있으면 보냄 (기본: 스킨,시즌,미리보기,미리 보기,찾아옵니다)
   YOUTUBE_EXCLUDE       제목에 이 단어가 있으면 건너뜀 (기본: KEL,마스터즈,서포트 패키지,비하인드,슈퍼컵,Masters,내셔널 리그)
   YOUTUBE_SHORTS        off면 쇼츠 제외 (기본: 쇼츠 포함)
+  COUPON_REMIND_HOURS   쿠폰 마감 몇 시간 전에 한 번 더 알릴지 (기본: 24, 0이면 끔)
+  WORKER_URL            명령어 봇(Cloudflare Worker) 주소. 넣으면 /쿠폰추가 로 직접 등록한 쿠폰도 마감 알림에 넣고,
+                        Worker가 유튜브 새 영상을 따로 올리고 있으면 여기서는 유튜브 알림을 안 보냄 (겹침 방지)
+  YOUTUBE_NOTIFY        auto(기본) = 위처럼 자동 / on = 항상 여기서도 보냄 / off = 여기서는 유튜브 알림 안 보냄
 
   키워드 목록은 쉼표로 구분. * 를 쓰면 전부 보냄, none 을 쓰면 키워드로는 아무것도 안 보냄.
 """
@@ -71,6 +78,8 @@ DEFAULTS = {
     "YOUTUBE_KEYWORDS": "스킨,시즌,미리보기,미리 보기,찾아옵니다",
     "YOUTUBE_EXCLUDE": "KEL,마스터즈,서포트 패키지,비하인드,슈퍼컵,Masters,내셔널 리그",
     "YOUTUBE_SHORTS": "on",
+    "COUPON_REMIND_HOURS": "24",
+    "YOUTUBE_NOTIFY": "auto",
 }
 
 STATE_FILE = Path(__file__).with_name("state.json")
@@ -93,6 +102,55 @@ _CHARACTER_DESC = re.compile(r"새로운\s*실험체|신규\s*실험체|신규\s
 # Steam 스킨 공지 중 모음에서 뺄 것 (스킨 박스 판매, 환불, 사용 제한 같은 운영 공지)
 SKIN_NOTICE_EXCLUDE = ("당첨자", "오류", "박스", "환불", "제한", "중단", "비활성화", "원복", "교환권",
                        "확률", "후속", "정상화", "보급권", "선택권", "현상", "소개 페이지", "전체 스킨", "올 스킨")
+
+
+# 실험체 이름 (나무위키 '분류:이터널 리턴/실험체' 기준). 새 캐릭터는 공지 제목에서 자동으로 배움(data.json의 chars_extra).
+CHARACTERS = (
+    "JP 가넷 나딘 나타폰 니아 니키 다니엘 다르코 데비&마를렌 띠아 라우라 레녹스 레니 레온 로지 루치아 루크 르노어 "
+    "리 다이린 리오 마르티나 마이 마커스 매그너스 미르카 바냐 바바라 버니스 블레어 비앙카 비형 샬럿 세레스 셀린 쇼우 "
+    "쇼이치 수아 슈린 시셀라 실비아 아델라 아드리아나 아디나 아르다 아비게일 아야 아이솔 아이작 알렉스 알론소 얀 에스텔 "
+    "에이든 에키온 엘레나 엠마 요한 윌리엄 유민 유스티나 유키 이렘 이바 이슈트반 이안 일레븐 자히르 재키 제니 츠바메 "
+    "카밀로 카티야 칼라 캐시 케네스 코렐라인 크레이버 클로에 키아라 타지아 테오도르 펜리르 펠릭스 프리야 피오라 피올로 "
+    "하트 헤이즈 헨리 현우 혜진 히스이"
+).replace("리 다이린", "리_다이린").split()
+CHARACTERS = [c.replace("_", " ") for c in CHARACTERS]
+_CHAR_ALIASES = {
+    "데비&마를렌": ["데비&마를렌", "데비 & 마를렌", "데비마를렌", "데비와 마를렌", "데비", "마를렌"],
+    "리 다이린": ["리 다이린", "리다이린", "다이린"],
+    "자히르": ["자히르", "부자히르"],   # 스킨 이름 말장난 (부자 + 자히르)
+    "쇼우": ["쇼우", "판다왔쇼우"],
+}
+# 이름 뒤에 이 글자가 오면 다른 단어 (마이크, 이바지 …)
+_CHAR_NOT_FOLLOWED = {"마이": "크|너|페이지|룸|웨이|홈|트|스터", "이바": "지", "제니": "퍼", "로지": "컬|스틱", "칼라": "풀|파"}
+_CHAR_STOP = {"미리", "미리보기", "출시", "소개", "스킨", "이벤트", "안내", "업데이트", "공개", "등장", "추가"}
+
+
+def _char_regex(name):
+    aliases = sorted(_CHAR_ALIASES.get(name, [name]), key=len, reverse=True)
+    tail = _CHAR_NOT_FOLLOWED.get(name)
+    body = "|".join(re.escape(a) for a in aliases)
+    return re.compile(r"(?<![가-힣A-Za-z0-9])(?:" + body + r")" + (rf"(?!{tail})" if tail else "") + r"(?![A-Za-z0-9])")
+
+
+_CHAR_RE_CACHE = {}
+
+
+def extract_characters(text, extra=(), limit=3):
+    """글 속에 나온 실험체 이름을 나온 순서대로 (최대 limit개)."""
+    found = []
+    for name in list(CHARACTERS) + [e for e in extra if e not in CHARACTERS]:
+        rx = _CHAR_RE_CACHE.get(name) or _CHAR_RE_CACHE.setdefault(name, _char_regex(name))
+        m = rx.search(text or "")
+        if m:
+            found.append((m.start(), name))
+    return [n for _, n in sorted(found)][:limit]
+
+
+def learn_characters(title):
+    """'신규 캐릭터 세레스 미리보기', '세레스 : 신규 실험체 출시' 같은 제목에서 새 캐릭터 이름 뽑기."""
+    names = re.findall(r"신규\s*(?:캐릭터|실험체)\s*\]?\s*[-:]?\s*([가-힣]{2,6})", title or "")
+    names += re.findall(r"([가-힣]{2,6})\s*:\s*신규\s*실험체", title or "")
+    return [n for n in names if n not in _CHAR_STOP]
 
 
 def is_skin_video(title, desc):
@@ -240,15 +298,21 @@ def youtube_ids_in(raw):
     return list(dict.fromkeys(ids))
 
 
-# "쿠폰 코드 : SEASON13GLORY" / "Coupon Code: ERVALENTINE" 형태. 코드는 대문자+숫자만 인정.
+# "쿠폰 코드 : SEASON13GLORY", "쿠폰 번호: GLORYBLAIR", "쿠폰: THX3RDANNIVERSARY", "쿠폰코드: s8SPLASH0710",
+# "Coupon Code: ERVALENTINE" 형태.
 _CODE_RE = re.compile(
-    r"(?i:coupon\s*code|쿠폰\s*(?:코드|번호))\s*[:：]\s*([A-Z0-9]{4,30})(?![A-Za-z0-9])"
+    r"(?i:coupon\s*code|쿠폰\s*(?:코드|번호)|쿠폰)\s*[:：]\s*([A-Za-z0-9]{4,30})(?![A-Za-z0-9])"
 )
 _REWARD_RE = re.compile(r"^(?:쿠폰\s*)?(?:rewards?|보상|리워드)\s*[:：]\s*(.+)$", re.I)
 _VALID_RE = re.compile(
-    r"^(?:쿠폰\s*)?(?:valid\s*(?:thru|through|until)|expires?|expiration|사용\s*기간|유효\s*기간|기한)\s*[:：]\s*(.+)$",
+    r"^(?:쿠폰\s*)?(?:valid\s*(?:thru|through|until)|expires?|expiration|사용\s*기간|유효\s*기간|등록\s*기간|기간|기한)\s*[:：]\s*(.+)$",
     re.I,
 )
+
+
+def _looks_like_code(s):
+    """'Coming' 같은 영어 단어는 빼고, 대문자·숫자가 절반 이상인 것만 코드로 봄."""
+    return sum(ch.isupper() or ch.isdigit() for ch in s) >= max(3, len(s) // 2)
 
 
 def extract_coupons(text):
@@ -256,11 +320,11 @@ def extract_coupons(text):
     coupons = []
     current = None
     for line in text.splitlines():
-        line = line.strip().lstrip("-•*·▶■◆ ").strip()
+        line = re.sub(r"^[^0-9A-Za-z가-힣]+", "", line.strip())  # 앞쪽 '- ', '🎫 ', '⏰ ' 같은 기호 제거
         if not line:
             continue
         m = _CODE_RE.search(line)
-        if m:
+        if m and _looks_like_code(m.group(1)):
             code = m.group(1)
             current = next((c for c in coupons if c["code"] == code), None)
             if current is None:
@@ -535,17 +599,27 @@ def decide_video(video, cfg):
     return False, "해당 없음"
 
 
-def video_payload(video):
+def video_payload(video, coupons=None, mention=""):
     kind = "쇼츠" if video["is_short"] else "영상"
+    head = f"📺 **{_clip(video['channel'], 80)}** 새 {kind}\n{_clip(video['title'], 300)}\n{video['url']}"
+    if not coupons:
+        return {"username": BOT_NAME, "content": head, "allowed_mentions": {"parse": []}}
+    codes = ", ".join(f"`{c['code']}`" for c in coupons)
     return {
         "username": BOT_NAME,
-        "content": f"📺 **{_clip(video['channel'], 80)}** 새 {kind}\n{_clip(video['title'], 300)}\n{video['url']}",
-        "allowed_mentions": {"parse": []},
+        "content": f"{mention} 🎁 새 쿠폰: {codes}".strip() + "\n" + head,
+        "embeds": [coupon_embed(coupons)],
+        "allowed_mentions": {"parse": ["everyone", "roles"]} if mention else {"parse": []},
     }
 
 
-def run_youtube(state, deliver, cfg, mode="normal", data=None):
-    """채널 하나가 실패해도 나머지는 계속한다."""
+def video_coupons(video, seen_codes=()):
+    return [c for c in extract_coupons(video.get("description", "")) if c["code"] not in seen_codes]
+
+
+def run_youtube(state, deliver, cfg, mode="normal", data=None, notify=True):
+    """채널 하나가 실패해도 나머지는 계속한다.
+    notify=False: 유튜브는 Worker가 따로 보내는 중 → 여기서는 기록과 모음 데이터만 (보내지 않음)."""
     for spec in cfg["channels"]:
         try:
             cid = resolve_channel_id(spec, state["yt_ids"])
@@ -561,23 +635,37 @@ def run_youtube(state, deliver, cfg, mode="normal", data=None):
         name = videos[-1]["channel"]
 
         if mode == "check":
-            print(f"── 유튜브 {name} (최근 {len(videos)}개)")
+            print(f"── 유튜브 {name} (최근 {len(videos)}개)" + ("" if notify else "  ※ 전송은 명령어 봇(Worker)이 유튜브 채널로 함"))
             for v in videos:
                 send, why = decide_video(v, cfg)
+                cs = video_coupons(v)
+                if cs:
+                    send, why = True, "쿠폰 " + ", ".join(c["code"] for c in cs)
                 kind = "쇼츠" if v["is_short"] else "영상"
                 print(f"  {'✅ 보냄  ' if send else '⏭  건너뜀'} {v['published'][5:10]} [{kind}] {v['title']}   ({why})")
             continue
 
         if mode == "test":
+            if not notify:
+                print(f"유튜브 테스트 건너뜀: {name} 영상은 명령어 봇(Worker)이 유튜브 채널로 보내고 있어요.")
+                continue
             picked = [v for v in videos if decide_video(v, cfg)[0]] or videos
             deliver(video_payload(picked[-1]))
             print(f"유튜브 테스트 전송: {name} - {picked[-1]['title']}")
             continue
 
         seen = set(state["seen_videos"])
+        if not notify:
+            state["seen_videos"] += [v["id"] for v in videos if v["id"] not in seen]
+            state["seen_codes"] += [c["code"] for v in videos for c in video_coupons(v, set(state["seen_codes"]))]
+            if cid not in state["yt_ready"]:
+                state["yt_ready"].append(cid)
+            print(f"유튜브 {name}: 명령어 봇(Worker)이 보내는 중이라 기록만 했어요.")
+            continue
         if cid not in state["yt_ready"]:
             # 이 채널은 처음: 지금 있는 영상은 기록만
             state["seen_videos"] += [v["id"] for v in videos if v["id"] not in seen]
+            state["seen_codes"] += [c["code"] for v in videos for c in video_coupons(v)]
             state["yt_ready"].append(cid)
             print(f"유튜브 첫 확인: {name} 영상 {len(videos)}개는 기록만 했어요.")
             continue
@@ -587,8 +675,12 @@ def run_youtube(state, deliver, cfg, mode="normal", data=None):
             if v["id"] in seen:
                 continue
             send, why = decide_video(v, cfg)
+            coupons = video_coupons(v, set(state["seen_codes"]))
+            if coupons:  # 쇼츠 설명에 쿠폰이 있으면 필터와 상관없이 보냄
+                send, why = True, "쿠폰 " + ", ".join(c["code"] for c in coupons)
+                state["seen_codes"] += [c["code"] for c in coupons]
             if send:
-                deliver(video_payload(v))
+                deliver(video_payload(v, coupons, cfg["mention"]))
                 print(f"유튜브 전송: {name} - {v['title']} ({why})")
                 new += 1
                 time.sleep(1)
@@ -619,8 +711,18 @@ def parse_expiry(text, posted_ts=None):
             return None
         mo, d = map(int, m.groups())
         y = posted.year
-    t = re.search(r"(\d{1,2}):(\d{2})", text[m.end():])
-    hh, mm = (int(t.group(1)), int(t.group(2))) if t else (23, 59)
+    rest = text[m.end():]
+    t = re.search(r"(\d{1,2}):(\d{2})", rest)
+    if t:
+        hh, mm = int(t.group(1)), int(t.group(2))
+    else:
+        t = re.search(r"(오전|오후)?\s*(\d{1,2})\s*시", rest)  # '오전 5시까지'
+        if t:
+            hh, mm = int(t.group(2)) % 12 + (12 if t.group(1) == "오후" else 0), 0
+            if not t.group(1) and int(t.group(2)) >= 12:
+                hh = int(t.group(2))
+        else:
+            hh, mm = 23, 59
     tz = timezone.utc if re.search(r"\bUTC\b", text) else KST
     try:
         dt = datetime(y, mo, d, min(hh, 23), min(mm, 59), tzinfo=tz)
@@ -643,10 +745,18 @@ def _upsert(items, key_name, item):
     return item
 
 
+def _learn(data, title):
+    extra = data.setdefault("chars_extra", [])
+    for n in learn_characters(title):
+        if n not in CHARACTERS and n not in extra:
+            extra.append(n)
+
+
 def collect_steam(data, items):
     for i in items:
         title, raw, gid = i["title"], i.get("contents", ""), i["gid"]
         text = bbcode_to_text(raw)
+        _learn(data, title)
         for c in extract_coupons(text):
             _upsert(data["coupons"], "code", {
                 "code": c["code"], "reward": c["reward"], "valid": c["valid"],
@@ -676,8 +786,15 @@ def _iso_ts(s):
 
 def collect_youtube(data, videos, cfg):
     for v in videos:
+        _learn(data, v["title"])
         kind = "쇼츠" if v["is_short"] else "영상"
         date = _iso_ts(v["published"])
+        for c in video_coupons(v):
+            _upsert(data["coupons"], "code", {
+                "code": c["code"], "reward": c["reward"], "valid": c["valid"],
+                "expires": parse_expiry(c["valid"], date),
+                "date": date, "title": v["title"], "url": v["url"],
+            })
         if decide_video(v, cfg)[0]:
             entry = {"id": v["id"], "title": v["title"], "url": v["url"], "date": date, "kind": kind, "source": "youtube"}
             old = _upsert(data["videos"], "id", entry)
@@ -695,12 +812,24 @@ def load_data():
     data = json.loads(DATA_FILE.read_text(encoding="utf-8")) if DATA_FILE.exists() else {}
     for key in DATA_LIMITS:
         data.setdefault(key, [])
+    data.setdefault("chars_extra", [])
     return data
+
+
+def tag_characters(data):
+    """스킨 항목마다 캐릭터 이름 붙이기 (제목에 있으면 제목 기준, 없으면 본문/설명에서)."""
+    extra = data.setdefault("chars_extra", [])
+    for s in data["skins"]:
+        names = extract_characters(s.get("title"), extra)
+        if not names:
+            names = extract_characters(s.get("text"), extra, limit=2)
+        s["chars"] = names
 
 
 def save_data(data, state):
     """내용이 바뀌었을 때만 저장 (30분마다 쓸데없는 커밋 방지)."""
-    out = {"season": state.get("season")}
+    tag_characters(data)
+    out = {"season": state.get("season"), "chars_extra": data.get("chars_extra", [])}
     for key, limit in DATA_LIMITS.items():
         out[key] = sorted(data[key], key=lambda x: x.get("date") or 0, reverse=True)[:limit]
     old = json.loads(DATA_FILE.read_text(encoding="utf-8")) if DATA_FILE.exists() else {}
@@ -710,6 +839,122 @@ def save_data(data, state):
     out = {"updated": int(time.time()), **out}
     DATA_FILE.write_text(json.dumps(out, ensure_ascii=False, indent=1) + "\n", encoding="utf-8")
     return True
+
+
+# ---------------------------------------------------------------- 명령어 봇(Worker) 연동
+
+
+def worker_base(url):
+    url = (url or "").strip().rstrip("/")
+    for tail in ("/coupons.json", "/youtube"):
+        if url.endswith(tail):
+            url = url[: -len(tail)]
+    return url
+
+
+def fetch_worker(cfg):
+    """Worker의 /coupons.json → {"coupons": [직접 등록한 쿠폰], "youtube": 유튜브 알림 켜짐 여부}. 실패하면 None."""
+    if not cfg["worker_url"]:
+        return None
+    try:
+        info = json.loads(http_get(cfg["worker_url"] + "/coupons.json", retries=2))
+        return info if isinstance(info, dict) else None
+    except Exception as e:
+        print(f"[경고] 명령어 봇(Worker) 확인 실패: {e}")
+        return None
+
+
+def merge_manual_coupons(data, manual):
+    """/쿠폰추가 로 직접 등록한 쿠폰을 data.json 쿠폰 목록에 합침 (마감 알림용).
+    Worker에서 지운 쿠폰은 여기서도 지움. 공지에서 모은 같은 코드가 있으면 빈 칸만 채움."""
+    manual = [m for m in manual or [] if isinstance(m, dict) and re.fullmatch(r"[A-Za-z0-9]{4,30}", str(m.get("code", "")))]
+    keep = {m["code"].upper() for m in manual}
+    data["coupons"] = [c for c in data["coupons"] if c.get("source") != "manual" or c["code"].upper() in keep]
+    for m in manual:
+        entry = {
+            "code": m["code"], "reward": m.get("reward"), "valid": m.get("valid"),
+            "expires": int(m["expires"]) if m.get("expires") else None,
+            "date": int(m.get("date") or time.time()), "title": "직접 등록", "url": None,
+            "source": "manual", "by": m.get("by"),
+        }
+        old = next((c for c in data["coupons"] if c["code"].upper() == m["code"].upper()), None)
+        if old is None:
+            data["coupons"].append(entry)
+        elif old.get("source") == "manual":
+            old.clear()
+            old.update(entry)
+        else:
+            for k in ("reward", "valid", "expires"):
+                if entry[k] and not old.get(k):
+                    old[k] = entry[k]
+    return len(manual)
+
+
+def youtube_notify(cfg, info, state):
+    """여기(GitHub 봇)서 유튜브 알림을 보낼지. auto면 Worker가 유튜브를 맡고 있을 땐 안 보냄."""
+    mode = cfg["yt_notify"]
+    if mode in ("off", "false", "0", "no"):
+        return False
+    if mode in ("on", "true", "1", "yes") or not cfg["worker_url"]:
+        return True
+    if info is not None:
+        state["worker_youtube"] = bool(info.get("youtube"))
+    return not state.get("worker_youtube", False)  # Worker 확인이 잠깐 실패하면 지난번 상태대로
+
+
+# ---------------------------------------------------------------- 쿠폰 마감 알림
+
+
+def due_reminders(state, data, hours, now=None):
+    """마감까지 hours 시간 이내로 남았고 아직 안 알린 쿠폰.
+    처음부터 마감이 코앞인 쿠폰(공지 후 hours×1.5 시간 안에 끝나는 것)은 새 쿠폰 알림과 겹치니 뺌."""
+    if hours <= 0:
+        return []
+    now = now or time.time()
+    done = set(state["reminded"])
+    due = [
+        c for c in data.get("coupons", [])
+        if c.get("expires") and now < c["expires"] <= now + hours * 3600
+        and c["code"] not in done
+        and c["expires"] - (c.get("date") or 0) > hours * 3600 * 1.5
+    ]
+    return sorted(due, key=lambda c: c["expires"])
+
+
+def reminder_payload(c, mention="", now=None):
+    now = now or time.time()
+    left = max(1, round((c["expires"] - now) / 3600))
+    lines = [f"```\n{c['code']}\n```"]
+    if c.get("reward"):
+        lines.append(f"**보상** {c['reward']}")
+    lines.append(f"**마감** <t:{c['expires']}:f> (<t:{c['expires']}:R>)")
+    if c.get("url"):
+        lines.append(f"[{'영상 보기' if 'youtu' in c['url'] else '공지 보기'}]({c['url']})")
+    lines.append("입력: 게임 안 [옵션] → [서비스] → [쿠폰]")
+    return {
+        "username": BOT_NAME,
+        "content": f"{mention} ⏰ 쿠폰 마감 {left}시간 전: `{c['code']}`".strip(),
+        "embeds": [{"title": "⏰ 쿠폰 마감 임박", "description": "\n".join(lines), "color": COLOR_COUPON}],
+        "allowed_mentions": {"parse": ["everyone", "roles"]} if mention else {"parse": []},
+    }
+
+
+def run_coupon_reminders(state, data, deliver, cfg, mode="normal", now=None):
+    due = due_reminders(state, data, cfg["remind_hours"], now)
+    if mode == "check":
+        print(f"── 쿠폰 마감 알림 ({cfg['remind_hours']}시간 전)")
+        for c in due:
+            print(f"  ⏰ 보낼 예정  {c['code']}  (마감 {datetime.fromtimestamp(c['expires'], KST):%m-%d %H:%M})")
+        if not due:
+            print("  마감이 임박한 쿠폰 없음")
+        return
+    if mode == "test":
+        return
+    for c in due:
+        deliver(reminder_payload(c, cfg["mention"], now))
+        state["reminded"].append(c["code"])
+        print(f"쿠폰 마감 알림: {c['code']}")
+        time.sleep(1)
 
 
 # ---------------------------------------------------------------- 보내기 / 기록
@@ -745,20 +990,24 @@ def load_state():
     state.setdefault("steam_ready", False)
     state.setdefault("steam_source", None)
     state.setdefault("season", {"num": 0, "since": 0})
-    for key in ("seen_gids", "seen_codes", "seen_videos", "yt_ready"):
+    for key in ("seen_gids", "seen_codes", "seen_videos", "yt_ready", "reminded"):
         state.setdefault(key, [])
     state.setdefault("yt_ids", {})
     return state
 
 
 def save_state(state):
-    for key in ("seen_gids", "seen_codes", "seen_videos"):
+    for key in ("seen_gids", "seen_codes", "seen_videos", "reminded"):
         state[key] = list(dict.fromkeys(state[key]))[-MAX_SEEN:]
     STATE_FILE.write_text(json.dumps(state, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
 
 
 def load_config():
     channels_raw = setting("YOUTUBE_CHANNELS")
+    try:
+        remind = max(0, int(setting("COUPON_REMIND_HOURS")))
+    except ValueError:
+        remind = 24
     try:
         window = int(setting("SEASON_WINDOW_DAYS"))
     except ValueError:
@@ -773,6 +1022,9 @@ def load_config():
         "yt_keywords": keyword_list("YOUTUBE_KEYWORDS"),
         "yt_exclude": keyword_list("YOUTUBE_EXCLUDE"),
         "shorts": setting("YOUTUBE_SHORTS").lower() not in ("off", "false", "0", "no"),
+        "remind_hours": remind,
+        "worker_url": worker_base(os.environ.get("WORKER_URL", "")),
+        "yt_notify": setting("YOUTUBE_NOTIFY").lower(),
     }
 
 
@@ -808,8 +1060,14 @@ def main(argv=None):
         except Exception as e:
             steam_error = e
             print(f"[오류] Steam: {e}")
+        info = fetch_worker(cfg)
+        if info is not None:
+            n = merge_manual_coupons(data, info.get("coupons"))
+            if mode == "check":
+                print(f"── 명령어 봇(Worker): 직접 등록 쿠폰 {n}개, 유튜브 알림 {'Worker가 보냄' if info.get('youtube') else '꺼짐'}")
+        run_coupon_reminders(state, data, deliver, cfg, mode)
         if cfg["channels"]:
-            run_youtube(state, deliver, cfg, mode, data)
+            run_youtube(state, deliver, cfg, mode, data, notify=youtube_notify(cfg, info, state))
     finally:
         if mode == "normal" and not args.dry_run:
             save_state(state)

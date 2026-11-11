@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-디스코드에 슬래시 명령어(/쿠폰 /스킨 /패치 /영상)를 등록한다. 처음 한 번, 그리고 명령어를 바꿨을 때만 실행.
+디스코드에 슬래시 명령어(/쿠폰 /스킨 /패치 /영상 /쿠폰추가 /쿠폰삭제)를 등록한다. 처음 한 번, 그리고 명령어를 바꿨을 때만 실행.
 
 환경 변수
   DISCORD_APP_ID     디스코드 개발자 포털 → General Information → APPLICATION ID
@@ -22,10 +22,7 @@ COMMANDS = [
     {
         "type": 1,
         "name": "스킨",
-        "description": "최근 스킨 소식 (캐릭터 이름을 넣으면 그 캐릭터만)",
-        "options": [
-            {"type": 3, "name": "캐릭터", "description": "예: 아야, 수아, 니키", "required": False},
-        ],
+        "description": "최근 스킨 소식 (캐릭터 이름 표시)",
     },
     {
         "type": 1,
@@ -36,6 +33,30 @@ COMMANDS = [
         "type": 1,
         "name": "영상",
         "description": "최근 스킨 · 시즌 영상",
+    },
+    {
+        "type": 1,
+        "name": "쿠폰추가",
+        "description": "쿠폰 직접 등록 (/쿠폰 목록 + 마감 하루 전 알림에 들어감)",
+        "default_member_permissions": "32",  # 서버 관리 권한이 있는 사람에게만 보임
+        "contexts": [0],                     # 서버 안에서만
+        "options": [
+            {"type": 3, "name": "코드", "description": "쿠폰 코드 (예: GLORYBLAIR)", "required": True,
+             "min_length": 4, "max_length": 30},
+            {"type": 3, "name": "기한", "description": "예: 11/30 또는 11/30 23:59 또는 11월 30일 오전 5시 (안 쓰면 30일 동안 표시)",
+             "max_length": 50},
+            {"type": 3, "name": "보상", "description": "예: 블레어 스킨, 골드 500 (선택)", "max_length": 100},
+        ],
+    },
+    {
+        "type": 1,
+        "name": "쿠폰삭제",
+        "description": "직접 등록한 쿠폰 지우기",
+        "default_member_permissions": "32",
+        "contexts": [0],
+        "options": [
+            {"type": 3, "name": "코드", "description": "지울 쿠폰 코드", "required": True, "autocomplete": True},
+        ],
     },
 ]
 
