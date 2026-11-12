@@ -1,5 +1,5 @@
 {
- "updated": 1794414618,
+ "updated": 1794456239,
  "season": {
   "num": 13,
   "since": 1793606942
@@ -24,7 +24,7 @@
    "expires": 1795013940,
    "date": 1794369252,
    "title": "직접 등록",
-   "url": "https://www.youtube.com/shorts/x0XOA4h-t94",
+   "url": null,
    "source": "manual",
    "by": "Fablean"
   },
@@ -3214,6 +3214,14 @@
  ],
  "videos": [
   {
+   "id": "MRZ9aGC54Vc",
+   "title": "럼블 아웃을 만나보세요! #이터널리턴 #시즌13 #신규모드",
+   "url": "https://www.youtube.com/shorts/MRZ9aGC54Vc",
+   "date": 1794456005,
+   "kind": "쇼츠",
+   "source": "youtube"
+  },
+  {
    "id": "qfXs36fnFuU",
    "title": "이단 추적 개시! #이터널리턴 #시즌13 #글로리",
    "url": "https://www.youtube.com/shorts/qfXs36fnFuU",
@@ -3682,14 +3690,6 @@
    "title": "시, 실수해도 귀엽게 봐줘야 한다냥... / #이터널리턴 #시즌11 #쁘띠미뇽",
    "url": "https://www.youtube.com/shorts/yGjfQ8euv2c",
    "date": 1777345200,
-   "kind": "쇼츠",
-   "source": "youtube"
-  },
-  {
-   "id": "P2_QRrxmiG0",
-   "title": "시즌 11 쁘띠 미뇽! D-3, 단 72시간 🔥",
-   "url": "https://www.youtube.com/shorts/P2_QRrxmiG0",
-   "date": 1777258800,
    "kind": "쇼츠",
    "source": "youtube"
   }
