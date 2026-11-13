@@ -1,10 +1,20 @@
 {
- "updated": 1794563660,
+ "updated": 1794591432,
  "season": {
   "num": 13,
   "since": 1793606942
  },
  "chars_extra": [],
+ "aliases": {
+  "데비와마를렌": "데비&마를렌",
+  "데비": "데비&마를렌",
+  "마를렌": "데비&마를렌",
+  "뎁마": "데비&마를렌",
+  "데마": "데비&마를렌",
+  "다이린": "리 다이린",
+  "부자히르": "자히르",
+  "판다왔쇼우": "쇼우"
+ },
  "coupons": [
   {
    "code": "S13D7GLORY",
@@ -2932,283 +2942,283 @@
  ],
  "patches": [
   {
-   "id": "708914425087656359",
+   "id": "official:3964",
    "title": "13.0b 핫픽스",
-   "url": "https://store.steampowered.com/news/app/1049590/view/708914425087656359?l=koreana",
-   "date": 1794563438,
+   "url": "https://playeternalreturn.com/posts/news/3964",
+   "date": 1794563100,
    "kind": "핫픽스"
   },
   {
-   "id": "708914425087656018",
+   "id": "official:3959",
    "title": "13.0a 핫픽스",
-   "url": "https://store.steampowered.com/news/app/1049590/view/708914425087656018?l=koreana",
-   "date": 1794479644,
+   "url": "https://playeternalreturn.com/posts/news/3959",
+   "date": 1794479580,
    "kind": "핫픽스"
   },
   {
-   "id": "708914333639245856",
-   "title": "2026.11.12 - 13.0 패치노트",
-   "url": "https://store.steampowered.com/news/app/1049590/view/708914333639245856?l=koreana",
-   "date": 1794385320,
+   "id": "official:3950",
+   "title": "13.0 패치노트 Part.3 - 럼블 아웃 (2026.11.12)",
+   "url": "https://playeternalreturn.com/posts/news/3950",
+   "date": 1794384120,
    "kind": "패치노트"
   },
   {
-   "id": "680765564125184349",
+   "id": "official:3949",
+   "title": "13.0 패치노트 Part.2 - 실험체 및 아이템 (2026.11.12)",
+   "url": "https://playeternalreturn.com/posts/news/3949",
+   "date": 1794384060,
+   "kind": "패치노트"
+  },
+  {
+   "id": "official:3948",
+   "title": "13.0 패치노트 Part.1 - 메인 (2026.11.12)",
+   "url": "https://playeternalreturn.com/posts/news/3948",
+   "date": 1794384000,
+   "kind": "패치노트"
+  },
+  {
+   "id": "official:3924",
    "title": "2026.10.29 - 12.7 패치노트",
-   "url": "https://store.steampowered.com/news/app/1049590/view/680765564125184349?l=koreana",
-   "date": 1793156400,
+   "url": "https://playeternalreturn.com/posts/news/3924",
+   "date": 1793174400,
    "kind": "패치노트"
   },
   {
-   "id": "669505296465395755",
+   "id": "official:3898",
    "title": "2026.10.15 - 12.6 패치노트",
-   "url": "https://store.steampowered.com/news/app/1049590/view/669505296465395755?l=koreana",
-   "date": 1791946800,
+   "url": "https://playeternalreturn.com/posts/news/3898",
+   "date": 1791964800,
    "kind": "패치노트"
   },
   {
-   "id": "703281025618282644",
+   "id": "official:3882",
    "title": "12.5b 핫픽스",
-   "url": "https://store.steampowered.com/news/app/1049590/view/703281025618282644?l=koreana",
-   "date": 1791255600,
+   "url": "https://playeternalreturn.com/posts/news/3882",
+   "date": 1791274840,
    "kind": "핫픽스"
   },
   {
-   "id": "703281025618281416",
+   "id": "official:3879",
    "title": "[수정] 12.5a 핫픽스",
-   "url": "https://store.steampowered.com/news/app/1049590/view/703281025618281416?l=koreana",
-   "date": 1790910000,
+   "url": "https://playeternalreturn.com/posts/news/3879",
+   "date": 1790911320,
    "kind": "핫픽스"
   },
   {
-   "id": "703281025618280480",
+   "id": "official:3867",
    "title": "2026.10.01 - 12.5 패치노트",
-   "url": "https://store.steampowered.com/news/app/1049590/view/703281025618280480?l=koreana",
-   "date": 1790737200,
+   "url": "https://playeternalreturn.com/posts/news/3867",
+   "date": 1790755200,
    "kind": "패치노트"
   },
   {
-   "id": "698776157349216600",
+   "id": "official:3850",
    "title": "12.4a 핫픽스",
-   "url": "https://store.steampowered.com/news/app/1049590/view/698776157349216600?l=koreana",
-   "date": 1789700400,
+   "url": "https://playeternalreturn.com/posts/news/3850",
+   "date": 1789710480,
    "kind": "핫픽스"
   },
   {
-   "id": "698776157349216299",
+   "id": "official:3838",
    "title": "2026.09.17 - 12.4 패치노트",
-   "url": "https://store.steampowered.com/news/app/1049590/view/698776157349216299?l=koreana",
-   "date": 1789527600,
+   "url": "https://playeternalreturn.com/posts/news/3838",
+   "date": 1789545600,
    "kind": "패치노트"
   },
   {
-   "id": "708907988310558288",
+   "id": "official:3827",
    "title": "12.3a 핫픽스",
-   "url": "https://store.steampowered.com/news/app/1049590/view/708907988310558288?l=koreana",
-   "date": 1788750000,
+   "url": "https://playeternalreturn.com/posts/news/3827",
+   "date": 1788767640,
    "kind": "핫픽스"
   },
   {
-   "id": "708907988310556683",
+   "id": "official:3813",
    "title": "2026.09.03 - 12.3 패치노트",
-   "url": "https://store.steampowered.com/news/app/1049590/view/708907988310556683?l=koreana",
-   "date": 1788318000,
+   "url": "https://playeternalreturn.com/posts/news/3813",
+   "date": 1788336000,
    "kind": "패치노트"
   },
   {
-   "id": "708907354451607801",
+   "id": "official:3810",
    "title": "12.2c 핫픽스",
-   "url": "https://store.steampowered.com/news/app/1049590/view/708907354451607801?l=koreana",
-   "date": 1787799600,
+   "url": "https://playeternalreturn.com/posts/news/3810",
+   "date": 1787808600,
    "kind": "핫픽스"
   },
   {
-   "id": "676255623445218945",
+   "id": "official:3801",
    "title": "12.2b 핫픽스",
-   "url": "https://store.steampowered.com/news/app/1049590/view/676255623445218945?l=koreana",
-   "date": 1787626800,
+   "url": "https://playeternalreturn.com/posts/news/3801",
+   "date": 1787637840,
    "kind": "핫픽스"
   },
   {
-   "id": "676255623445218196",
+   "id": "official:3798",
    "title": "12.2a 핫픽스",
-   "url": "https://store.steampowered.com/news/app/1049590/view/676255623445218196?l=koreana",
-   "date": 1787281200,
+   "url": "https://playeternalreturn.com/posts/news/3798",
+   "date": 1787303190,
    "kind": "핫픽스"
   },
   {
-   "id": "676255623445217630",
-   "title": "서버 점검 완료 및 패치노트 추가 내용 안내",
-   "url": "https://store.steampowered.com/news/app/1049590/view/676255623445217630?l=koreana",
-   "date": 1787194800,
+   "id": "official:3783",
+   "title": "2026.08.20 - 12.2 패치노트",
+   "url": "https://playeternalreturn.com/posts/news/3783",
+   "date": 1787126400,
    "kind": "패치노트"
   },
   {
-   "id": "676255623445217315",
-   "title": "2026.08.20 - 12.2패치노트",
-   "url": "https://store.steampowered.com/news/app/1049590/view/676255623445217315?l=koreana",
-   "date": 1787108400,
-   "kind": "패치노트"
-  },
-  {
-   "id": "671751488532383557",
+   "id": "official:3780",
    "title": "12.1b 핫픽스",
-   "url": "https://store.steampowered.com/news/app/1049590/view/671751488532383557?l=koreana",
-   "date": 1786676400,
+   "url": "https://playeternalreturn.com/posts/news/3780",
+   "date": 1786693740,
    "kind": "핫픽스"
   },
   {
-   "id": "671751488532382425",
+   "id": "official:3776",
    "title": "12.1a 핫픽스",
-   "url": "https://store.steampowered.com/news/app/1049590/view/671751488532382425?l=koreana",
-   "date": 1786590000,
+   "url": "https://playeternalreturn.com/posts/news/3776",
+   "date": 1786615380,
    "kind": "핫픽스"
   },
   {
-   "id": "671751488532381719",
-   "title": "서버 점검 완료 & 패치 노트 추가",
-   "url": "https://store.steampowered.com/news/app/1049590/view/671751488532381719?l=koreana",
-   "date": 1786590000,
+   "id": "official:3769",
+   "title": "2026.08.13 - 12.1 패치노트",
+   "url": "https://playeternalreturn.com/posts/news/3769",
+   "date": 1786521600,
    "kind": "패치노트"
   },
   {
-   "id": "708906085669404694",
-   "title": "2026.08.13 - 12.1패치노트",
-   "url": "https://store.steampowered.com/news/app/1049590/view/708906085669404694?l=koreana",
-   "date": 1786503600,
-   "kind": "패치노트"
-  },
-  {
-   "id": "685261553769907147",
+   "id": "official:3768",
    "title": "12.0b 핫픽스",
-   "url": "https://store.steampowered.com/news/app/1049590/view/685261553769907147?l=koreana",
-   "date": 1786330800,
+   "url": "https://playeternalreturn.com/posts/news/3768",
+   "date": 1786352160,
    "kind": "핫픽스"
   },
   {
-   "id": "685261553769906552",
+   "id": "official:3759",
    "title": "12.0a 핫픽스",
-   "url": "https://store.steampowered.com/news/app/1049590/view/685261553769906552?l=koreana",
-   "date": 1786071600,
+   "url": "https://playeternalreturn.com/posts/news/3759",
+   "date": 1786094300,
    "kind": "핫픽스"
   },
   {
-   "id": "685261553769906419",
-   "title": "서버 점검 완료 & 패치 노트 추가",
-   "url": "https://store.steampowered.com/news/app/1049590/view/685261553769906419?l=koreana",
-   "date": 1785985200,
+   "id": "official:3743",
+   "title": "[수정] 12.0 패치노트 Part.2 - 실험체 및 아이템 (2026.08.06)",
+   "url": "https://playeternalreturn.com/posts/news/3743",
+   "date": 1785916801,
    "kind": "패치노트"
   },
   {
-   "id": "685261553769906247",
-   "title": "2026.08.06 - 12.0 패치노트",
-   "url": "https://store.steampowered.com/news/app/1049590/view/685261553769906247?l=koreana",
-   "date": 1785898800,
+   "id": "official:3742",
+   "title": "12.0 패치노트 Part.1 - 메인 (2026.08.06)",
+   "url": "https://playeternalreturn.com/posts/news/3742",
+   "date": 1785916800,
    "kind": "패치노트"
   },
   {
-   "id": "680756685198852235",
-   "title": "2026.07.23 - 11.7패치노트",
-   "url": "https://store.steampowered.com/news/app/1049590/view/680756685198852235?l=koreana",
-   "date": 1784689200,
+   "id": "official:3713",
+   "title": "2026.07.23 - 11.7 패치노트",
+   "url": "https://playeternalreturn.com/posts/news/3713",
+   "date": 1784707200,
    "kind": "패치노트"
   },
   {
-   "id": "688635449342695803",
-   "title": "2026.07.09 - 11.6패치노트",
-   "url": "https://store.steampowered.com/news/app/1049590/view/688635449342695803?l=koreana",
-   "date": 1783479600,
+   "id": "official:3690",
+   "title": "2026.07.09 - 11.6 패치노트",
+   "url": "https://playeternalreturn.com/posts/news/3690",
+   "date": 1783497600,
    "kind": "패치노트"
   },
   {
-   "id": "688635449342694235",
+   "id": "official:3687",
    "title": "11.5a 핫픽스",
-   "url": "https://store.steampowered.com/news/app/1049590/view/688635449342694235?l=koreana",
-   "date": 1783306800,
+   "url": "https://playeternalreturn.com/posts/news/3687",
+   "date": 1783320600,
    "kind": "핫픽스"
   },
   {
-   "id": "688635449342689313",
-   "title": "2026.06.25 - 11.5패치노트",
-   "url": "https://store.steampowered.com/news/app/1049590/view/688635449342689313?l=koreana",
-   "date": 1782270000,
+   "id": "official:3657",
+   "title": "2026.06.25 - 11.5 패치노트",
+   "url": "https://playeternalreturn.com/posts/news/3657",
+   "date": 1782288000,
    "kind": "패치노트"
   },
   {
-   "id": "667242081733838306",
+   "id": "official:3643",
    "title": "11.4b 핫픽스",
-   "url": "https://store.steampowered.com/news/app/1049590/view/667242081733838306?l=koreana",
-   "date": 1781233200,
+   "url": "https://playeternalreturn.com/posts/news/3643",
+   "date": 1781256390,
    "kind": "핫픽스"
   },
   {
-   "id": "667242081733838176",
+   "id": "official:3638",
    "title": "11.4a 핫픽스",
-   "url": "https://store.steampowered.com/news/app/1049590/view/667242081733838176?l=koreana",
-   "date": 1781233200,
+   "url": "https://playeternalreturn.com/posts/news/3638",
+   "date": 1781245740,
    "kind": "핫픽스"
   },
   {
-   "id": "667242081733837272",
-   "title": "서버 점검 완료 & 패치 노트 추가",
-   "url": "https://store.steampowered.com/news/app/1049590/view/667242081733837272?l=koreana",
-   "date": 1781146800,
+   "id": "official:3629",
+   "title": "2026.06.11 - 11.4 패치노트",
+   "url": "https://playeternalreturn.com/posts/news/3629",
+   "date": 1781078400,
    "kind": "패치노트"
   },
   {
-   "id": "667242081733836827",
-   "title": "2026.06.11 - 11.4패치노트",
-   "url": "https://store.steampowered.com/news/app/1049590/view/667242081733836827?l=koreana",
-   "date": 1781060400,
-   "kind": "패치노트"
-  },
-  {
-   "id": "668366713382767707",
+   "id": "official:3620",
    "title": "11.3c 핫픽스",
-   "url": "https://store.steampowered.com/news/app/1049590/view/668366713382767707?l=koreana",
-   "date": 1780369200,
+   "url": "https://playeternalreturn.com/posts/news/3620",
+   "date": 1780380660,
    "kind": "핫픽스"
   },
   {
-   "id": "668366713382765505",
+   "id": "official:3614",
    "title": "11.3b 핫픽스",
-   "url": "https://store.steampowered.com/news/app/1049590/view/668366713382765505?l=koreana",
-   "date": 1780023600,
+   "url": "https://playeternalreturn.com/posts/news/3614",
+   "date": 1780036440,
    "kind": "핫픽스"
   },
   {
-   "id": "668366713382765162",
+   "id": "official:3607",
    "title": "11.3a 핫픽스",
-   "url": "https://store.steampowered.com/news/app/1049590/view/668366713382765162?l=koreana",
-   "date": 1779937200,
+   "url": "https://playeternalreturn.com/posts/news/3607",
+   "date": 1779962340,
    "kind": "핫픽스"
   },
   {
-   "id": "668366713382764573",
-   "title": "2026.05.28 - 11.3패치노트",
-   "url": "https://store.steampowered.com/news/app/1049590/view/668366713382764573?l=koreana",
-   "date": 1779850800,
+   "id": "official:3606",
+   "title": "[수정] 2026.05.28 - 11.3 패치노트",
+   "url": "https://playeternalreturn.com/posts/news/3606",
+   "date": 1779868800,
    "kind": "패치노트"
   },
   {
-   "id": "670617878982033924",
+   "id": "official:3602",
    "title": "11.2e 핫픽스",
-   "url": "https://store.steampowered.com/news/app/1049590/view/670617878982033924?l=koreana",
-   "date": 1779418800,
+   "url": "https://playeternalreturn.com/posts/news/3602",
+   "date": 1779432780,
    "kind": "핫픽스"
   },
   {
-   "id": "670617878982033424",
+   "id": "official:3598",
    "title": "11.2d 핫픽스",
-   "url": "https://store.steampowered.com/news/app/1049590/view/670617878982033424?l=koreana",
-   "date": 1779246000,
+   "url": "https://playeternalreturn.com/posts/news/3598",
+   "date": 1779245580,
    "kind": "핫픽스"
   },
   {
-   "id": "701016542742054814",
+   "id": "official:3595",
    "title": "11.2c 핫픽스",
-   "url": "https://store.steampowered.com/news/app/1049590/view/701016542742054814?l=koreana",
-   "date": 1779159600,
+   "url": "https://playeternalreturn.com/posts/news/3595",
+   "date": 1779177840,
+   "kind": "핫픽스"
+  },
+  {
+   "id": "official:3589",
+   "title": "11.2b 핫픽스",
+   "url": "https://playeternalreturn.com/posts/news/3589",
+   "date": 1778837220,
    "kind": "핫픽스"
   }
  ],

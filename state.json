@@ -84,5 +84,25 @@
   },
   "reminded": [],
   "worker_youtube": true,
-  "handoff_sent": []
+  "handoff_sent": [],
+  "seen_official": [
+    "3810",
+    "3813",
+    "3827",
+    "3838",
+    "3850",
+    "3867",
+    "3879",
+    "3882",
+    "3898",
+    "3924",
+    "3948",
+    "3949",
+    "3950",
+    "3959",
+    "3964"
+  ],
+  "patch_sent": [],
+  "official_ready": true,
+  "official_fail": 0
 }
