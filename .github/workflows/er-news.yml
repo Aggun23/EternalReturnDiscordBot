@@ -30,10 +30,15 @@ jobs:
 
       - name: 새 공지·영상 확인 후 전송
         env:
-          DISCORD_CHANNEL_ID: ${{ vars.DISCORD_CHANNEL_ID }}             # 봇 계정으로 올릴 알림 채널
-          DISCORD_VIDEO_CHANNEL_ID: ${{ vars.DISCORD_VIDEO_CHANNEL_ID }} # 봇 계정으로 올릴 유튜브 채널
+          DISCORD_CHANNEL_ID: ${{ vars.DISCORD_CHANNEL_ID }}             # 알림 채널 (쿠폰·새 시즌·스킨 공지)
+          DISCORD_PATCH_CHANNEL_ID: ${{ vars.DISCORD_PATCH_CHANNEL_ID }} # 패치노트·핫픽스·점검 전용 채널
+          DISCORD_VIDEO_CHANNEL_ID: ${{ vars.DISCORD_VIDEO_CHANNEL_ID }} # 유튜브 채널
+          DISCORD_SKIN_CHANNEL_ID: ${{ vars.DISCORD_SKIN_CHANNEL_ID }}   # 유튜브 스킨 영상 전용 채널
           DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
+          PATCH_WEBHOOK_URL: ${{ secrets.PATCH_WEBHOOK_URL }}
           YOUTUBE_WEBHOOK_URL: ${{ secrets.YOUTUBE_WEBHOOK_URL }}
+          SKIN_WEBHOOK_URL: ${{ secrets.SKIN_WEBHOOK_URL }}
+          PATCH_SOURCE: ${{ vars.PATCH_SOURCE }}
           DISCORD_BOT_TOKEN: ${{ secrets.DISCORD_BOT_TOKEN }}   # 봇 계정으로 올리기 (채널 ID와 같이)
           MENTION: ${{ vars.MENTION }}
           STEAM_KEYWORDS: ${{ vars.STEAM_KEYWORDS }}
