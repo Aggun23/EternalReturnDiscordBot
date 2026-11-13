@@ -22,7 +22,11 @@ COMMANDS = [
     {
         "type": 1,
         "name": "스킨",
-        "description": "최근 스킨 소식 (캐릭터 이름 표시)",
+        "description": "최근 스킨 소식 (캐릭터 이름을 넣으면 그 캐릭터만)",
+        "options": [
+            {"type": 3, "name": "캐릭터", "description": "캐릭터 이름 (예: 블레어). 비워 두면 최근 스킨 소식 전체",
+             "required": False, "autocomplete": True, "max_length": 30},
+        ],
     },
     {
         "type": 1,

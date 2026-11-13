@@ -1,10 +1,13 @@
 #!/usr/bin/env python3
 """
-이터널 리턴 소식 → 디스코드 웹훅 알림 (스킨 · 새 시즌 · 쿠폰 · 점검 · 패치노트)
+이터널 리턴 소식 → 디스코드 알림 (스킨 · 새 시즌 · 쿠폰 · 점검 · 패치노트)
 
+- 공식 홈페이지(playeternalreturn.com) 패치노트 게시판
+  · 패치노트, 핫픽스 → 패치 채널로 보냄
+  · 공식 홈페이지가 2시간 넘게 안 열리면 그동안만 Steam 패치노트 공지로 대신 (같은 패치를 두 번 보내지 않음)
 - Steam 한국어 공지 (상점 뉴스 페이지와 같은 데이터)
   · 쿠폰 코드가 있는 공지 → 항상 보냄 (코드를 따로 강조)
-  · 서버 점검 안내/완료, 패치노트, 핫픽스 → 보냄
+  · 서버 점검 안내/완료 → 패치 채널로 보냄
   · 제목에 '스킨'이 있는 공지 → 보냄
   · 새 시즌 번호(예: 시즌 14)가 처음 나온 날부터 3주 동안, 그 시즌 공지 → 보냄
   · 나머지(이모티콘, 만화, 당첨자 발표 등) → 건너뜀
@@ -14,6 +17,7 @@
   · 쇼츠/영상 설명에 쿠폰 코드가 있으면 필터와 상관없이 보냄 (시즌 D-7, D-3 쇼츠 쿠폰 등)
   · 제목/설명에 스킨·시즌·미리보기·찾아옵니다 가 있는 영상만
   · KEL·마스터즈 같은 대회 영상은 제외
+  · 스킨 영상은 스킨 채널로, 나머지(시즌 영상·쿠폰 있는 영상)는 유튜브 채널로
 - 명령어 봇(Worker)에서 /쿠폰추가 로 직접 등록한 쿠폰도 마감 알림 (WORKER_URL 설정 시)
 - 보낸 기록은 state.json에 저장 (중복 방지)
 - 디스코드 명령어 봇(worker.js)이 읽을 모음 데이터는 data.json에 저장
@@ -23,13 +27,17 @@
 사용법
   python bot.py              평소 실행 (새 글/영상만 전송)
   python bot.py --check      지금 올라와 있는 공지/영상이 필터에서 보냄/건너뜀 중 무엇인지 목록만 출력
-  python bot.py --test       필터를 통과하는 최신 공지 1개 + 영상 1개를 강제로 전송
+  python bot.py --test       최신 패치노트 1개 + 필터를 통과하는 최신 공지 1개 + 영상 1개를 강제로 전송
   python bot.py --dry-run    디스코드로 보내지 않고 보낼 내용만 출력
 
 환경 변수 (보낼 곳: DISCORD_CHANNEL_ID + DISCORD_BOT_TOKEN, 또는 DISCORD_WEBHOOK_URL 중 하나는 필수)
   DISCORD_CHANNEL_ID    알림 채널 ID. DISCORD_BOT_TOKEN과 같이 넣으면 봇 계정으로 직접 올림 (웹후크 대신)
-  DISCORD_VIDEO_CHANNEL_ID  (선택) 유튜브 알림 채널 ID (Worker가 30분 넘게 못 보낸 영상을 대신 올릴 때)
+  DISCORD_PATCH_CHANNEL_ID  (선택) 패치노트·핫픽스·점검 전용 채널 ID. 없으면 알림 채널로
+  DISCORD_VIDEO_CHANNEL_ID  (선택) 유튜브 알림 채널 ID. 없으면 알림 채널로
+  DISCORD_SKIN_CHANNEL_ID   (선택) 유튜브 스킨 영상 전용 채널 ID. 없으면 유튜브 알림 채널로
   DISCORD_WEBHOOK_URL   디스코드 채널 웹후크 주소 (봇 계정으로 올리지 않을 때)
+  PATCH_WEBHOOK_URL / YOUTUBE_WEBHOOK_URL / SKIN_WEBHOOK_URL  (선택) 위 전용 채널들을 웹후크로 쓸 때
+  PATCH_SOURCE          official(기본) = 패치노트·핫픽스를 공식 홈페이지에서 / steam = 예전처럼 Steam 공지에서
   MENTION               쿠폰 알림 때 붙일 멘션. 예: @everyone 또는 <@&역할ID>
   STEAM_KEYWORDS        제목에 이 단어가 있으면 보냄 (기본: 스킨)
   STEAM_PATCH_KEYWORDS  제목에 이 단어가 있으면 제외 단어와 상관없이 보냄
@@ -42,7 +50,6 @@
   YOUTUBE_SHORTS        off면 쇼츠 제외 (기본: 쇼츠 포함)
   COUPON_REMIND_HOURS   쿠폰 마감 몇 시간 전에 한 번 더 알릴지 (기본: 24, 0이면 끔)
   DISCORD_BOT_TOKEN     (선택) 넣으면 알림 글도 개발자 포털의 봇 이름·프로필 사진으로 보냄 (명령어 등록용과 같은 토큰)
-  YOUTUBE_WEBHOOK_URL   (선택) 유튜브 알림 채널 웹후크. Worker가 디스코드 전송에 계속 실패한 영상을 여기서 대신 보냄
   WORKER_URL            명령어 봇(Cloudflare Worker) 주소. 넣으면 /쿠폰추가 로 직접 등록한 쿠폰도 마감 알림에 넣고,
                         Worker가 유튜브 새 영상을 따로 올리고 있으면 여기서는 유튜브 알림을 안 보냄 (겹침 방지)
   YOUTUBE_NOTIFY        auto(기본) = 위처럼 자동 / on = 항상 여기서도 보냄 / off = 여기서는 유튜브 알림 안 보냄
@@ -87,6 +94,7 @@ DEFAULTS = {
     "YOUTUBE_SHORTS": "on",
     "COUPON_REMIND_HOURS": "24",
     "YOUTUBE_NOTIFY": "auto",
+    "PATCH_SOURCE": "official",
 }
 
 STATE_FILE = Path(__file__).with_name("state.json")
@@ -172,6 +180,114 @@ def is_skin_video(title, desc):
 CLAN_IMAGE_BASE = "https://clan.fastly.steamstatic.com/images"
 # 봇 이름·프로필 사진: DISCORD_BOT_TOKEN이 있으면 개발자 포털 Bot 탭의 이름·사진을 그대로 씀 (모든 채널 통일).
 # 없으면 각 채널 웹후크에 설정된 이름·사진.
+# 공식 홈페이지 패치노트 게시판 (패치노트·핫픽스)
+OFFICIAL_NEWS_API = "https://playeternalreturn.com/api/v1/posts/news?category=patchnote&page={}&hl=ko-KR"
+OFFICIAL_POST_URL = "https://playeternalreturn.com/posts/news/{}"
+OFFICIAL_FALLBACK_AFTER = 4  # 공식 홈페이지가 이만큼 연속으로(30분마다 → 약 2시간) 안 열리면 그동안은 Steam 패치노트로 대신
+PATCH_CHANNEL_KINDS = ("maintenance", "maintenance_done", "hotfix", "patch")  # 패치 채널로 보내는 공지 종류
+
+# ---------------------------------------------------------------- 말투 (코렐라인)
+# 봇이 하는 말은 전부 여기 모여 있어요. 문구를 고치거나 줄을 더하거나 빼도 돼요.
+# - 한 종류에 문구가 여러 개면 소식마다 하나를 골라 써요 (같은 소식엔 늘 같은 문구).
+# - {codes} {code} {hours} {channel} {kind} 같은 중괄호 칸은 그 자리에 실제 값이 들어가요. 지우지 마세요.
+# - 명령어(/쿠폰 등) 답장 말투는 worker.js 맨 위 TONE 에 있어요.
+TONE = {
+    # 새 쿠폰 ({codes} = 쿠폰 코드들)
+    "coupon": [
+        "🎁 내 거울에 새 쿠폰이 비쳤어: {codes}\n진짜냐고? 난 거짓말 안 해. 후후훗.",
+        "🎁 반짝이는 걸 찾았어. 새 쿠폰 {codes}\n빛이 꺼지기 전에 얼른 챙겨.",
+        "🎁 새 쿠폰이야: {codes}\n알고도 안 쓰면... 그건 유죄지? 후훗.",
+    ],
+    # 쿠폰 마감 하루 전 ({code} = 쿠폰 코드, {hours} = 남은 시간)
+    "remind": [
+        "⏰ {code} 쿠폰, 마감까지 {hours}시간 남았어. 빛이 꺼지기 전에 써.",
+        "⏰ 마감 {hours}시간 전이야: {code}\n받아 놓고 안 쓰면 유죄야. 후훗.",
+    ],
+    # Steam 공지 종류별 한마디
+    "season": [
+        "🌟 새 시즌 소식이야. 새로운 빛이 떠오르려나 봐. 후후훗.",
+        "🌟 새 시즌 이야기가 들려왔어. 이번엔 어떤 색일지 궁금하네.",
+    ],
+    "maintenance": [
+        "🧹 점검 소식이야. 섬도 가끔은 깨끗이 닦아 줘야지.",
+        "🧹 점검이 있대. 얼룩을 지우는 시간이니까 얌전히 기다려 줘.",
+    ],
+    "maintenance_done": [
+        "✨ 점검이 끝났대. 깨끗해진 섬에서 다시 만나.",
+        "✨ 다 닦았나 봐. 이제 돌아와도 돼. 후훗.",
+    ],
+    "hotfix": [
+        "🩹 핫픽스 소식이야. 얼룩은 보이는 대로 바로 닦아야 하는 법이지.",
+        "🩹 급하게 고친 게 있대. 뭘 고쳤는지 확인해 볼래?",
+    ],
+    "patch": [
+        "📜 패치노트가 나왔어. 뭐가 바뀌었는지 숨김없이 적혀 있을 거야.",
+        "📜 새 패치노트야. 꼼꼼히 읽어 봐. 모르고 당하면 억울하잖아?",
+    ],
+    "skin": [
+        "👗 새 스킨 소식이야. 반짝이는 건 언제든 환영이거든. 후훗.",
+        "👗 스킨 소식이 왔어. 예쁜지 아닌지는 내 거울로 직접 확인해 줄게.",
+    ],
+    # 유튜브 새 영상 ({channel} = 채널 이름, {kind} = "쇼츠가" 또는 "영상이")
+    "video": [
+        "📺 **{channel}** 채널에 새 {kind} 올라왔어. 같이 볼래? 후훗.",
+        "📺 **{channel}** 채널에 새 {kind} 떴어. 놓치지 말고 챙겨 봐.",
+    ],
+    # 유튜브 스킨 영상 (스킨 채널로 가는 영상. {kind} = "쇼츠가" 또는 "영상이")
+    "skin_video": [
+        "👗 새 스킨 {kind} 올라왔어. 반짝이는 건 그냥 지나칠 수가 없거든. 후훗.",
+        "👗 스킨 {kind} 떴어. 예쁜지 아닌지는 직접 보고 판단해.",
+    ],
+    # 제목·안내 (하나씩)
+    "coupon_title": "🎁 새 쿠폰 코드",
+    "remind_title": "⏰ 곧 꺼지는 쿠폰",
+    "redeem": "쓰는 곳: 게임 안 [옵션] → [서비스] → [쿠폰]",
+}
+
+
+def say(key, pick_by="", **values):
+    """TONE[key]에서 문구 하나를 골라 값을 채움. pick_by가 같으면 늘 같은 문구."""
+    options = TONE[key]
+    if isinstance(options, str):
+        options = [options]
+    line = options[sum(map(ord, str(pick_by))) % len(options)]
+    for name, value in values.items():
+        line = line.replace("{" + name + "}", str(value))
+    return line
+
+
+def send_to(deliver, payload, to="main"):
+    """소식 종류에 맞는 채널로 보냄. to = main(알림) / patch(패치노트·핫픽스·점검) / video(유튜브) / skin(유튜브 스킨 영상).
+    deliver가 채널 나누기를 지원하면(.route) 그쪽으로, 아니면 그냥 보냄."""
+    route = getattr(deliver, "route", None)
+    if route:
+        route(payload, to)
+    else:
+        deliver(payload)
+
+
+_PATCH_KEY_RE = re.compile(r"(\d+\.\d+)\s*([a-z])?\s*(?:패치\s*노트|핫픽스)", re.I)
+
+
+def patch_key(title):
+    """'13.0a 핫픽스' → '13.0a', '2026.10.29 - 12.7 패치노트' → '12.7'. 공식 홈페이지 글과 Steam 공지가 같은 패치인지 볼 때 씀."""
+    m = _PATCH_KEY_RE.search(title or "")
+    return (m.group(1) + (m.group(2) or "")).lower() if m else None
+
+
+def notice_kind(title):
+    """공지 제목 → 말투 종류 (없으면 None)."""
+    if "점검" in title:
+        return "maintenance_done" if re.search(r"점검\s*(완료|종료)", title) else "maintenance"
+    if "핫픽스" in title:
+        return "hotfix"
+    if re.search(r"패치\s*노트", title):
+        return "patch"
+    if "스킨" in title:
+        return "skin"
+    return None
+
+
 MAX_SEEN = 300
 COLOR_NEWS = 0x5865F2
 COLOR_SEASON = 0x2ECC71
@@ -433,9 +549,9 @@ def coupon_embed(coupons):
         if c["valid"]:
             lines.append(f"**기한** {c['valid']}")
         lines.append("")
-    lines.append("입력: 게임 안 [옵션] → [서비스] → [쿠폰]")
+    lines.append(say("redeem"))
     return {
-        "title": "🎁 새 쿠폰 코드",
+        "title": say("coupon_title"),
         "description": _clip("\n".join(lines), 4000),
         "color": COLOR_COUPON,
     }
@@ -449,14 +565,18 @@ def build_news_payload(item, coupons, seen_videos, mention="", season_news=False
 
     payload = {"embeds": [], "allowed_mentions": {"parse": []}}
     content = []
+    title = item.get("title", "")
+    kind = notice_kind(title)
     if coupons:
         codes = ", ".join(f"`{c['code']}`" for c in coupons)
-        content.append(f"{mention} 🎁 새 쿠폰: {codes}".strip())
+        content.append(f"{mention} {say('coupon', coupons[0]['code'], codes=codes)}".strip())
         payload["embeds"].append(coupon_embed(coupons))
         if mention:
             payload["allowed_mentions"] = {"parse": ["everyone", "roles"]}
-    elif season_news:
-        content.append("🌟 새 시즌 소식")
+    elif season_news:  # 제목에 새 시즌 번호가 있는 공지 (예: '시즌 13 …', '13.0 패치노트')
+        content.append(say("season", title))
+    elif kind:
+        content.append(say(kind, title))
     if videos:
         content += [watch_url(v) for v in videos]  # 링크를 본문에 넣으면 디스코드가 플레이어로 펼쳐 줌
     if content:
@@ -465,10 +585,32 @@ def build_news_payload(item, coupons, seen_videos, mention="", season_news=False
     return payload, videos
 
 
-def run_steam(state, deliver, cfg, mode="normal", data=None):
+def steam_patch_rule(item, coupons, patch_mode, state):
+    """패치노트를 공식 홈페이지에서 받을 때, Steam의 패치노트·핫픽스 공지를 어떻게 할지.
+    돌려주는 값: None(평소대로) / ("skip", 이유) / ("defer", 이유) / ("send", 덧붙일 이유)"""
+    if patch_mode == "steam" or coupons or notice_kind(item["title"]) not in ("patch", "hotfix"):
+        return None
+    if patch_mode == "official":
+        return "skip", "패치노트는 공식 홈페이지에서 받음"
+    if patch_mode == "defer":
+        return "defer", "공식 홈페이지가 잠깐 안 열려서 다음에 다시 확인"
+    key = patch_key(item["title"])
+    if key and f"official:{key}" in state["patch_sent"]:
+        return "skip", "공식 홈페이지 패치노트로 이미 보냄"
+    return "send", "공식 홈페이지가 계속 안 열려서 Steam 공지로 대신"
+
+
+def steam_channel(item, coupons):
+    """쿠폰이 있으면 알림 채널(모두가 봐야 하니까), 점검·패치노트·핫픽스는 패치 채널."""
+    return "patch" if not coupons and notice_kind(item["title"]) in PATCH_CHANNEL_KINDS else "main"
+
+
+def run_steam(state, deliver, cfg, mode="normal", data=None, patch_mode="steam"):
+    """patch_mode: steam = Steam 패치노트도 보냄 / official = 공식 홈페이지에서 받으니 건너뜀 /
+    defer = 공식 홈페이지가 잠깐 실패해서 보류 / fallback = 공식 홈페이지가 계속 실패해서 Steam으로 대신"""
     items = fetch_news()
     if data is not None:
-        collect_steam(data, items)
+        collect_steam(data, items, patches=patch_mode in ("steam", "fallback"))
     if not items:
         print("Steam: 가져온 공지가 없어요.")
         return
@@ -495,7 +637,12 @@ def run_steam(state, deliver, cfg, mode="normal", data=None):
         season = copy.deepcopy(state["season"])
         print(f"── Steam 공지 (현재 시즌 {season['num']}, 새 시즌 소식 기간 {cfg['window_days']}일)")
         for i in items:
-            send, why, _, _ = decide_steam(i, season, cfg, set())
+            send, why, cs, _ = decide_steam(i, season, cfg, set())
+            rule = steam_patch_rule(i, cs, patch_mode, state) if send else None
+            if rule and rule[0] != "send":
+                send, why = False, rule[1]
+            elif send and steam_channel(i, cs) == "patch":
+                why += " → 패치 채널"
             day = datetime.fromtimestamp(i["date"], tz=timezone.utc).strftime("%m-%d")
             print(f"  {'✅ 보냄  ' if send else '⏭  건너뜀'} {day} {i['title']}   ({why})")
         return
@@ -503,10 +650,11 @@ def run_steam(state, deliver, cfg, mode="normal", data=None):
     if mode == "test":
         season = copy.deepcopy(state["season"])
         decided = [(i, decide_steam(i, season, cfg, set())) for i in items]
-        picked = [(i, d) for i, d in decided if d[0]] or decided
+        picked = [(i, d) for i, d in decided
+                  if d[0] and (steam_patch_rule(i, d[2], patch_mode, state) or ("send",))[0] == "send"] or decided
         item, (_, why, coupons, season_news) = picked[-1]
         payload, _ = build_news_payload(item, coupons, set(), cfg["mention"], season_news)
-        deliver(payload)
+        send_to(deliver, payload, steam_channel(item, coupons))
         print(f"Steam 테스트 전송: {item['title']} ({why})")
         return
 
@@ -516,9 +664,22 @@ def run_steam(state, deliver, cfg, mode="normal", data=None):
     new_items = [i for i in items if i["gid"] not in seen_gids]
     for item in new_items:
         send, why, coupons, season_news = decide_steam(item, state["season"], cfg, seen_codes)
+        rule = steam_patch_rule(item, coupons, patch_mode, state) if send else None
+        if rule:
+            action, reason = rule
+            if action == "defer":  # 기록하지 않음 → 다음 실행 때 다시 봄
+                print(f"Steam 보류: {item['title']} ({reason})")
+                continue
+            if action == "skip":
+                send, why = False, reason
+            else:
+                why += " · " + reason
+                key = patch_key(item["title"])
+                if key:
+                    state["patch_sent"].append(f"steam:{key}")
         if send:
             payload, videos = build_news_payload(item, coupons, seen_videos, cfg["mention"], season_news)
-            deliver(payload)
+            send_to(deliver, payload, steam_channel(item, coupons))
             state["seen_videos"] += videos
             seen_videos.update(videos)
             codes = [c["code"] for c in coupons]
@@ -531,6 +692,142 @@ def run_steam(state, deliver, cfg, mode="normal", data=None):
         state["seen_gids"].append(item["gid"])
     if not new_items:
         print("Steam: 새 공지 없음.")
+
+
+# ---------------------------------------------------------------- 공식 홈페이지 패치노트
+
+
+def fetch_official_patches(page=1):
+    """공식 홈페이지 패치노트 게시판 목록 (오래된 것부터). 핫픽스도 이 게시판에 올라옴."""
+    board = json.loads(http_get(OFFICIAL_NEWS_API.format(page), retries=2))
+    items = []
+    for a in board.get("articles") or []:
+        i18ns = a.get("i18ns") or {}
+        loc = i18ns.get("ko_KR") or next(iter(i18ns.values()), None) or {}
+        title = (loc.get("title") or "").strip()
+        if not title or a.get("is_hidden") or loc.get("is_hidden"):
+            continue
+        items.append({
+            "id": str(a["id"]),
+            "title": title,
+            "summary": (loc.get("summary") or "").strip(),
+            "url": a.get("url") or OFFICIAL_POST_URL.format(a["id"]),
+            "date": _iso_ts((a.get("created_at") or "").replace("Z", "+00:00")),
+            "image": a.get("thumbnail_url") or None,
+        })
+    return sorted(items, key=lambda i: (i["date"], int(i["id"]) if i["id"].isdigit() else 0))
+
+
+def official_preview(url):
+    """패치노트 글 본문 앞부분 (글 페이지에서 본문 칸만 뽑아 글자만 남김)."""
+    page = http_get(url + ("&" if "?" in url else "?") + "hl=ko-KR", retries=1).decode("utf-8", "replace")
+    start = page.find("er-article-detail__content")
+    if start < 0:
+        return ""
+    start = page.find(">", start) + 1
+    ends = [pos for pos in (page.find(mark, start) for mark in ("er-article-detail__recent", "er-article-side", "er-recent-articles")) if pos > 0]
+    seg = page[start:min(ends + [start + 6000])]
+    seg = re.sub(r"(?is)<(script|style)[^>]*>.*?</\1>", "", seg)
+    seg = re.sub(r"<[^>]*$", "", seg)  # 잘린 태그
+    seg = re.sub(r"(?i)<(?:br|/p|/li|/h\d|/div|/tr)[^>]*>", "\n", seg)
+    seg = html.unescape(re.sub(r"<[^>]+>", "", seg))
+    lines = [re.sub(r"[ \t\u200b\xa0]+", " ", line).strip() for line in seg.split("\n")]
+    return "\n".join(line for line in lines if line)
+
+
+def official_text(item):
+    try:
+        return official_preview(item["url"]) or item.get("summary", "")
+    except Exception as e:
+        print(f"[경고] 패치노트 본문 미리보기 실패 ({item['title']}): {e}")
+        return item.get("summary", "")
+
+
+def official_payload(item, text=""):
+    kind = "hotfix" if "핫픽스" in item["title"] else "patch"
+    embed = {
+        "title": _clip(item["title"], 256),
+        "url": item["url"],
+        "color": COLOR_NEWS,
+        "footer": {"text": "이터널 리턴 · 공식 홈페이지"},
+    }
+    if text:
+        embed["description"] = _clip(text, PREVIEW_CHARS)
+    if item.get("date"):
+        embed["timestamp"] = datetime.fromtimestamp(item["date"], tz=timezone.utc).isoformat()
+    if item.get("image"):
+        embed["image"] = {"url": item["image"]}
+    return {"content": say(kind, item["title"]), "embeds": [embed], "allowed_mentions": {"parse": []}}
+
+
+def collect_official(data, items):
+    """/패치 목록은 공식 홈페이지 글로 채움 (예전에 Steam에서 모은 패치 항목은 뺌)."""
+    data["patches"] = [p for p in data["patches"] if str(p.get("id", "")).startswith("official:")]
+    for i in items:
+        _upsert(data["patches"], "id", {
+            "id": f"official:{i['id']}", "title": i["title"], "url": i["url"], "date": i["date"],
+            "kind": "핫픽스" if "핫픽스" in i["title"] else "패치노트",
+        })
+
+
+def run_official(state, deliver, cfg, mode="normal", data=None):
+    """공식 홈페이지 패치노트·핫픽스 → 패치 채널. 목록을 가져오는 데 성공하면 True."""
+    try:
+        items = fetch_official_patches()
+    except Exception as e:
+        if mode == "normal":
+            state["official_fail"] += 1
+        print(f"[경고] 공식 홈페이지 패치노트를 못 가져왔어요 (연속 {state['official_fail']}번): {e}")
+        return False
+    if mode == "normal":
+        state["official_fail"] = 0
+    if data is not None:
+        collect_official(data, items)
+        if len(data["patches"]) < 30:  # 처음 한 번: /패치 목록용으로 지난 글도 채움
+            for page in (2, 3):
+                try:
+                    collect_official(data, fetch_official_patches(page))
+                except Exception as e:
+                    print(f"[경고] 공식 홈페이지 지난 패치노트({page}쪽) 실패: {e}")
+                    break
+    if not items:
+        print("공식 홈페이지: 가져온 패치노트가 없어요.")
+        return True
+
+    seen = set(state["seen_official"])
+    if mode == "check":
+        print("── 공식 홈페이지 패치노트·핫픽스 (패치 채널로)" + ("" if state["official_ready"] else "  ※ 첫 실행에서는 기록만 해요"))
+        for i in items:
+            day = datetime.fromtimestamp(i["date"], tz=timezone.utc).strftime("%m-%d")
+            print(f"  {'·  이미 봄 ' if i['id'] in seen else '✅ 보냄  '} {day} {i['title']}")
+        return True
+    if mode == "test":
+        item = items[-1]
+        send_to(deliver, official_payload(item, official_text(item)), "patch")
+        print(f"공식 패치노트 테스트 전송: {item['title']}")
+        return True
+    if not state["official_ready"]:
+        # 처음: 지금 올라와 있는 글은 기록만 (채널 도배 방지)
+        state["seen_official"] += [i["id"] for i in items]
+        state["official_ready"] = True
+        print(f"공식 홈페이지 첫 확인: 패치노트 {len(items)}개는 기록만 했어요. 다음 글부터 알림이 가요.")
+        return True
+
+    new = [i for i in items if i["id"] not in seen]
+    for item in new:
+        key = patch_key(item["title"])
+        if key and f"steam:{key}" in state["patch_sent"]:
+            print(f"공식 패치노트 건너뜀: {item['title']} (공식 홈페이지가 안 열리던 동안 Steam 공지로 이미 보냄)")
+        else:
+            send_to(deliver, official_payload(item, official_text(item)), "patch")
+            if key:
+                state["patch_sent"].append(f"official:{key}")
+            print(f"공식 패치노트 전송: {item['title']}")
+            time.sleep(1)
+        state["seen_official"].append(item["id"])
+    if not new:
+        print("공식 홈페이지: 새 패치노트 없음.")
+    return True
 
 
 # ---------------------------------------------------------------- 유튜브
@@ -694,14 +991,24 @@ def decide_video(video, cfg):
     return False, "해당 없음"
 
 
-def video_payload(video, coupons=None, mention=""):
-    kind = "쇼츠" if video["is_short"] else "영상"
-    head = f"📺 **{_clip(video['channel'], 80)}** 새 {kind}\n{_clip(video['title'], 300)}\n{video['url']}"
+def video_route(video, coupons, cfg):
+    """유튜브 영상을 어느 채널로: 쿠폰이 있으면 유튜브 채널(모두가 봐야 하니까), 스킨 영상이면 스킨 채널, 나머지는 유튜브 채널."""
+    if coupons:
+        return "video"
+    excluded = contains_any(video["title"], cfg["yt_exclude"]) if cfg.get("yt_exclude") else None
+    return "skin" if not excluded and is_skin_video(video["title"], video.get("description", "")) else "video"
+
+
+def video_payload(video, coupons=None, mention="", skin=False):
+    kind = "쇼츠가" if video["is_short"] else "영상이"
+    intro = say("skin_video" if skin and not coupons else "video", video["id"],
+                channel=_clip(video["channel"] or "이터널 리턴", 80), kind=kind)
+    head = f"{intro}\n{_clip(video['title'], 300)}\n{video['url']}"
     if not coupons:
         return {"content": head, "allowed_mentions": {"parse": []}}
     codes = ", ".join(f"`{c['code']}`" for c in coupons)
     return {
-        "content": f"{mention} 🎁 새 쿠폰: {codes}".strip() + "\n" + head,
+        "content": f"{mention} {say('coupon', coupons[0]['code'], codes=codes)}".strip() + "\n" + head,
         "embeds": [coupon_embed(coupons)],
         "allowed_mentions": {"parse": ["everyone", "roles"]} if mention else {"parse": []},
     }
@@ -737,6 +1044,8 @@ def run_youtube(state, deliver, cfg, mode="normal", data=None, notify=True, info
                 if cs:
                     send, why = True, "쿠폰 " + ", ".join(c["code"] for c in cs)
                 kind = "쇼츠" if v["is_short"] else "영상"
+                if send and video_route(v, cs, cfg) == "skin":
+                    why += " → 스킨 채널"
                 print(f"  {'✅ 보냄  ' if send else '⏭  건너뜀'} {v['published'][5:10]} [{kind}] {v['title']}   ({why})")
             continue
 
@@ -745,7 +1054,8 @@ def run_youtube(state, deliver, cfg, mode="normal", data=None, notify=True, info
                 print(f"유튜브 테스트 건너뜀: {name} 영상은 명령어 봇(Worker)이 유튜브 채널로 보내고 있어요.")
                 continue
             picked = [v for v in videos if decide_video(v, cfg)[0]] or videos
-            deliver(video_payload(picked[-1]))
+            to = video_route(picked[-1], [], cfg)
+            send_to(deliver, video_payload(picked[-1], skin=to == "skin"), to)
             print(f"유튜브 테스트 전송: {name} - {picked[-1]['title']}")
             continue
 
@@ -775,8 +1085,9 @@ def run_youtube(state, deliver, cfg, mode="normal", data=None, notify=True, info
                 send, why = True, "쿠폰 " + ", ".join(c["code"] for c in coupons)
                 state["seen_codes"] += [c["code"] for c in coupons]
             if send:
-                deliver(video_payload(v, coupons, cfg["mention"]))
-                print(f"유튜브 전송: {name} - {v['title']} ({why})")
+                to = video_route(v, coupons, cfg)
+                send_to(deliver, video_payload(v, coupons, cfg["mention"], skin=to == "skin"), to)
+                print(f"유튜브 전송: {name} - {v['title']} ({why}{' → 스킨 채널' if to == 'skin' else ''})")
                 new += 1
                 time.sleep(1)
             else:
@@ -847,7 +1158,7 @@ def _learn(data, title):
             extra.append(n)
 
 
-def collect_steam(data, items):
+def collect_steam(data, items, patches=True):
     for i in items:
         title, raw, gid = i["title"], i.get("contents", ""), i["gid"]
         text = bbcode_to_text(raw)
@@ -864,7 +1175,7 @@ def collect_steam(data, items):
                 "source": "steam", "kind": "공지", "text": _clip(text, 300),
             })
         kind = "핫픽스" if "핫픽스" in title else "패치노트" if re.search(r"패치\s*노트", title) else None
-        if kind:
+        if kind and patches:  # 패치노트를 공식 홈페이지에서 받을 땐 collect_official이 채움
             _upsert(data["patches"], "id", {"id": gid, "title": title, "url": i["url"], "date": i["date"], "kind": kind})
         for vid in youtube_ids_in(raw):
             _upsert(data["videos"], "id", {
@@ -921,10 +1232,19 @@ def tag_characters(data):
         s["chars"] = names
 
 
+def _norm_name(name):
+    return re.sub(r"[\s&·]+", "", name or "").lower()
+
+
+def alias_map():
+    """별명 → 캐릭터 이름 ('뎁마' → '데비&마를렌'). 명령어 봇의 /스킨 캐릭터 검색이 씀."""
+    return {_norm_name(a): name for name, aliases in _CHAR_ALIASES.items() for a in aliases if _norm_name(a) != _norm_name(name)}
+
+
 def save_data(data, state):
     """내용이 바뀌었을 때만 저장 (30분마다 쓸데없는 커밋 방지)."""
     tag_characters(data)
-    out = {"season": state.get("season"), "chars_extra": data.get("chars_extra", [])}
+    out = {"season": state.get("season"), "chars_extra": data.get("chars_extra", []), "aliases": alias_map()}
     for key, limit in DATA_LIMITS.items():
         out[key] = sorted(data[key], key=lambda x: x.get("date") or 0, reverse=True)[:limit]
     old = json.loads(DATA_FILE.read_text(encoding="utf-8")) if DATA_FILE.exists() else {}
@@ -997,7 +1317,7 @@ def youtube_notify(cfg, info, state):
     return not state.get("worker_youtube", False)  # Worker 확인이 잠깐 실패하면 지난번 상태대로
 
 
-def run_handoff(state, info, deliver_yt, cfg, mode="normal"):
+def run_handoff(state, info, deliver, cfg, mode="normal"):
     """Worker가 디스코드 전송에 30분 넘게 실패해서 넘긴 유튜브 영상을 여기서 대신 보냄.
     (디스코드가 Cloudflare 서버 IP를 잠시 막는 일이 있음. GitHub 서버에서는 보통 됨)"""
     done = set(state["handoff_sent"])
@@ -1011,7 +1331,8 @@ def run_handoff(state, info, deliver_yt, cfg, mode="normal"):
     for v in todo:
         video = _worker_video(v)
         coupons = video_coupons(video)
-        deliver_yt(video_payload(video, coupons, cfg["mention"]))
+        to = v.get("target") if v.get("target") in ("skin", "video") else video_route(video, coupons, cfg)
+        send_to(deliver, video_payload(video, coupons, cfg["mention"], skin=to == "skin"), to)
         state["handoff_sent"].append(v["id"])
         state["seen_codes"] += [c["code"] for c in coupons]
         print(f"유튜브 대신 전송 (Worker가 못 보낸 영상): {video['title']}")
@@ -1046,10 +1367,11 @@ def reminder_payload(c, mention="", now=None):
     lines.append(f"**마감** <t:{c['expires']}:f> (<t:{c['expires']}:R>)")
     if c.get("url"):
         lines.append(f"[{'영상 보기' if 'youtu' in c['url'] else '공지 보기'}]({c['url']})")
-    lines.append("입력: 게임 안 [옵션] → [서비스] → [쿠폰]")
+    lines.append(say("redeem"))
+    line = say("remind", c["code"], code=f"`{c['code']}`", hours=left)
     return {
-        "content": f"{mention} ⏰ 쿠폰 마감 {left}시간 전: `{c['code']}`".strip(),
-        "embeds": [{"title": "⏰ 쿠폰 마감 임박", "description": "\n".join(lines), "color": COLOR_COUPON}],
+        "content": f"{mention} {line}".strip(),
+        "embeds": [{"title": say("remind_title"), "description": "\n".join(lines), "color": COLOR_COUPON}],
         "allowed_mentions": {"parse": ["everyone", "roles"]} if mention else {"parse": []},
     }
 
@@ -1113,6 +1435,33 @@ def target_for(channel_id, token, webhook):
     if webhook:
         return ("webhook", webhook)
     return None
+
+
+class Outbox:
+    """소식 종류별로 보낼 채널을 고름. 전용 채널이 없으면: skin → video → main, patch → main."""
+
+    FALLBACK = {"skin": "video", "video": "main", "patch": "main"}
+    NAMES = {"main": "알림 채널", "patch": "패치 채널", "video": "유튜브 채널", "skin": "스킨 영상 채널"}
+
+    def __init__(self, targets, dry_run=False, profile=None):
+        self.targets = targets
+        self.dry_run = dry_run
+        self.profile = profile or {}
+
+    def resolve(self, to):
+        while to != "main" and not self.targets.get(to):
+            to = self.FALLBACK.get(to, "main")
+        return to
+
+    def route(self, payload, to="main"):
+        to = self.resolve(to)
+        if self.dry_run:
+            print(f"[{self.NAMES.get(to, to)}] " + json.dumps(payload, ensure_ascii=False, indent=2))
+        else:
+            send_discord(self.targets[to], payload, self.profile)
+
+    def __call__(self, payload):
+        self.route(payload, "main")
 
 
 def send_discord(target, payload, profile=None):
@@ -1185,14 +1534,16 @@ def load_state():
     state.setdefault("steam_ready", False)
     state.setdefault("steam_source", None)
     state.setdefault("season", {"num": 0, "since": 0})
-    for key in ("seen_gids", "seen_codes", "seen_videos", "yt_ready", "reminded", "handoff_sent"):
+    for key in ("seen_gids", "seen_codes", "seen_videos", "yt_ready", "reminded", "handoff_sent", "seen_official", "patch_sent"):
         state.setdefault(key, [])
+    state.setdefault("official_ready", False)
+    state.setdefault("official_fail", 0)
     state.setdefault("yt_ids", {})
     return state
 
 
 def save_state(state):
-    for key in ("seen_gids", "seen_codes", "seen_videos", "reminded", "handoff_sent"):
+    for key in ("seen_gids", "seen_codes", "seen_videos", "reminded", "handoff_sent", "seen_official", "patch_sent"):
         state[key] = list(dict.fromkeys(state[key]))[-MAX_SEEN:]
     STATE_FILE.write_text(json.dumps(state, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
 
@@ -1220,6 +1571,7 @@ def load_config():
         "remind_hours": remind,
         "worker_url": worker_base(os.environ.get("WORKER_URL", "")),
         "yt_notify": setting("YOUTUBE_NOTIFY").lower(),
+        "patch_source": "steam" if setting("PATCH_SOURCE").lower() in ("steam", "off", "none") else "official",
     }
 
 
@@ -1230,43 +1582,46 @@ def main(argv=None):
     ap = argparse.ArgumentParser(description="이터널 리턴 스킨·새 시즌·쿠폰 디스코드 알림")
     group = ap.add_mutually_exclusive_group()
     group.add_argument("--check", action="store_true", help="보냄/건너뜀 목록만 출력")
-    group.add_argument("--test", action="store_true", help="필터를 통과하는 최신 공지 1개 + 영상 1개를 강제로 전송")
+    group.add_argument("--test", action="store_true", help="최신 패치노트 1개 + 필터를 통과하는 최신 공지 1개 + 영상 1개를 강제로 전송")
     ap.add_argument("--dry-run", action="store_true", help="전송하지 않고 내용만 출력")
     args = ap.parse_args(argv)
     mode = "check" if args.check else "test" if args.test else "normal"
 
     token = os.environ.get("DISCORD_BOT_TOKEN", "").strip()
-    webhook = os.environ.get("DISCORD_WEBHOOK_URL", "").strip()
-    channel = os.environ.get("DISCORD_CHANNEL_ID", "").strip()
-    video_channel = os.environ.get("DISCORD_VIDEO_CHANNEL_ID", "").strip()
-    yt_webhook = os.environ.get("YOUTUBE_WEBHOOK_URL", "").strip()
-    main_target = target_for(channel, token, webhook)
-    if not main_target and not (args.dry_run or args.check):
+    env = lambda name: os.environ.get(name, "").strip()
+    targets = {
+        "main": target_for(env("DISCORD_CHANNEL_ID"), token, env("DISCORD_WEBHOOK_URL")),
+        "patch": target_for(env("DISCORD_PATCH_CHANNEL_ID"), token, env("PATCH_WEBHOOK_URL")),  # 패치노트·핫픽스·점검
+        "video": target_for(env("DISCORD_VIDEO_CHANNEL_ID"), token, env("YOUTUBE_WEBHOOK_URL")),  # 유튜브 영상
+        "skin": target_for(env("DISCORD_SKIN_CHANNEL_ID"), token, env("SKIN_WEBHOOK_URL")),  # 유튜브 스킨 영상
+    }
+    if not targets["main"] and not (args.dry_run or args.check):
         sys.exit("보낼 곳이 없어요. DISCORD_CHANNEL_ID + DISCORD_BOT_TOKEN(봇 계정으로 올리기) 또는 DISCORD_WEBHOOK_URL 을 넣어 주세요. "
                  "(--check, --dry-run 은 없이도 실행돼요)")
-    yt_target = target_for(video_channel, token, yt_webhook) or main_target  # 유튜브 채널 (없으면 원래 채널)
     cfg = load_config()
     # 웹후크로 보낼 때만: 개발자 포털 봇 이름·사진을 웹후크 글에도 똑같이
-    uses_webhook = any(t and t[0] == "webhook" for t in (main_target, yt_target))
+    uses_webhook = any(t and t[0] == "webhook" for t in targets.values())
     profile = bot_profile(token) if uses_webhook and not args.check else {}
-
-    def sender(target):
-        def deliver_to(payload):
-            if args.dry_run:
-                print(json.dumps(payload, ensure_ascii=False, indent=2))
-            else:
-                send_discord(target, payload, profile)
-        return deliver_to
-
-    deliver = sender(main_target)
-    deliver_yt = sender(yt_target)
+    deliver = Outbox(targets, args.dry_run, profile)
 
     state = load_state()
     data = load_data()
     steam_error = None
     try:
+        # 패치노트·핫픽스: 공식 홈페이지에서 (PATCH_SOURCE=steam 이면 예전처럼 Steam 공지에서)
+        patch_mode = "steam"
+        if cfg["patch_source"] == "official":
+            try:
+                official_ok = run_official(state, deliver, cfg, mode, data)
+            except Exception as e:
+                official_ok = False
+                print(f"[오류] 공식 홈페이지 패치노트: {e}")
+            patch_mode = ("official" if official_ok
+                          else "fallback" if state["official_fail"] >= OFFICIAL_FALLBACK_AFTER else "defer")
+            if patch_mode == "fallback":
+                print("  → 공식 홈페이지가 계속 안 열려서, 그동안은 Steam 패치노트 공지로 대신 보내요.")
         try:
-            run_steam(state, deliver, cfg, mode, data)
+            run_steam(state, deliver, cfg, mode, data, patch_mode)
         except Exception as e:
             steam_error = e
             print(f"[오류] Steam: {e}")
@@ -1279,7 +1634,7 @@ def main(argv=None):
         if cfg["channels"]:
             run_youtube(state, deliver, cfg, mode, data, notify=youtube_notify(cfg, info, state), info=info)
         if info is not None:
-            run_handoff(state, info, deliver_yt, cfg, mode)
+            run_handoff(state, info, deliver, cfg, mode)
     finally:
         if mode == "normal" and not args.dry_run:
             save_state(state)
