@@ -1,5 +1,5 @@
 {
- "updated": 1794535445,
+ "updated": 1794563660,
  "season": {
   "num": 13,
   "since": 1793606942
@@ -24,7 +24,7 @@
    "expires": 1795013940,
    "date": 1794369252,
    "title": "직접 등록",
-   "url": null,
+   "url": "https://www.youtube.com/shorts/x0XOA4h-t94",
    "source": "manual",
    "by": "Fablean"
   },
@@ -2932,6 +2932,13 @@
  ],
  "patches": [
   {
+   "id": "708914425087656359",
+   "title": "13.0b 핫픽스",
+   "url": "https://store.steampowered.com/news/app/1049590/view/708914425087656359?l=koreana",
+   "date": 1794563438,
+   "kind": "핫픽스"
+  },
+  {
    "id": "708914425087656018",
    "title": "13.0a 핫픽스",
    "url": "https://store.steampowered.com/news/app/1049590/view/708914425087656018?l=koreana",
@@ -3202,13 +3209,6 @@
    "title": "11.2c 핫픽스",
    "url": "https://store.steampowered.com/news/app/1049590/view/701016542742054814?l=koreana",
    "date": 1779159600,
-   "kind": "핫픽스"
-  },
-  {
-   "id": "701016542742053761",
-   "title": "11.2b 핫픽스",
-   "url": "https://store.steampowered.com/news/app/1049590/view/701016542742053761?l=koreana",
-   "date": 1778814000,
    "kind": "핫픽스"
   }
  ],
