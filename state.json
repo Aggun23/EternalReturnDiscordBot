@@ -104,5 +104,6 @@
   ],
   "patch_sent": [],
   "official_ready": true,
-  "official_fail": 0
+  "official_fail": 0,
+  "gemini_model": "gemini-3.8-flash"
 }
