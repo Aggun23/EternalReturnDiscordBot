@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-디스코드에 슬래시 명령어(/쿠폰 /스킨 /패치 /영상 /쿠폰추가 /쿠폰삭제)를 등록한다. 처음 한 번, 그리고 명령어를 바꿨을 때만 실행.
+디스코드에 슬래시 명령어(/쿠폰 /스킨 /패치 /패치노트 /영상 /쿠폰추가 /쿠폰삭제)를 등록한다. 처음 한 번, 그리고 명령어를 바꿨을 때만 실행.
 
 환경 변수
   DISCORD_APP_ID     디스코드 개발자 포털 → General Information → APPLICATION ID
@@ -32,6 +32,17 @@ COMMANDS = [
         "type": 1,
         "name": "패치",
         "description": "최근 패치노트 · 핫픽스",
+    },
+    {
+        "type": 1,
+        "name": "패치노트",
+        "description": "패치노트 요약 (이름을 넣으면 그 캐릭터·아이템·변경사항만 자세히)",
+        "options": [
+            {"type": 3, "name": "이름", "description": "캐릭터·아이템 이름 (예: 블레어) 또는 실험체 / 아이템 / 변경사항 / 핫픽스. 비워 두면 한눈에 보기",
+             "required": False, "autocomplete": True, "max_length": 100},
+            {"type": 3, "name": "버전", "description": "패치 버전 (예: 13.0). 비워 두면 가장 최근 패치",
+             "required": False, "autocomplete": True, "max_length": 20},
+        ],
     },
     {
         "type": 1,

@@ -4,6 +4,7 @@
 
 - 공식 홈페이지(playeternalreturn.com) 패치노트 게시판
   · 패치노트, 핫픽스 → 패치 채널로 보냄
+  · 최근 패치 3개의 본문을 캐릭터/아이템/변경사항으로 쪼개 patchnotes.json에 저장 (/패치노트 명령어용, AI 한 줄 요약은 선택)
   · 공식 홈페이지가 2시간 넘게 안 열리면 그동안만 Steam 패치노트 공지로 대신 (같은 패치를 두 번 보내지 않음)
 - Steam 한국어 공지 (상점 뉴스 페이지와 같은 데이터)
   · 쿠폰 코드가 있는 공지 → 항상 보냄 (코드를 따로 강조)
@@ -37,6 +38,8 @@
   DISCORD_SKIN_CHANNEL_ID   (선택) 유튜브 스킨 영상 전용 채널 ID. 없으면 유튜브 알림 채널로
   DISCORD_WEBHOOK_URL   디스코드 채널 웹후크 주소 (봇 계정으로 올리지 않을 때)
   PATCH_WEBHOOK_URL / YOUTUBE_WEBHOOK_URL / SKIN_WEBHOOK_URL  (선택) 위 전용 채널들을 웹후크로 쓸 때
+  GEMINI_API_KEY        (선택) 넣으면 /패치노트에 AI 한 줄 요약(상향·하향)을 붙임. 구글 AI Studio 무료 키
+  GEMINI_MODEL          (선택) 쓸 Gemini 모델 이름. 비워 두면 최신 Flash 모델을 알아서 고름
   PATCH_SOURCE          official(기본) = 패치노트·핫픽스를 공식 홈페이지에서 / steam = 예전처럼 Steam 공지에서
   MENTION               쿠폰 알림 때 붙일 멘션. 예: @everyone 또는 <@&역할ID>
   STEAM_KEYWORDS        제목에 이 단어가 있으면 보냄 (기본: 스킨)
@@ -68,6 +71,7 @@ import time
 import urllib.error
 import urllib.request
 import xml.etree.ElementTree as ET
+from html.parser import HTMLParser
 from datetime import datetime, timedelta, timezone
 from pathlib import Path
 
@@ -183,6 +187,17 @@ CLAN_IMAGE_BASE = "https://clan.fastly.steamstatic.com/images"
 # 공식 홈페이지 패치노트 게시판 (패치노트·핫픽스)
 OFFICIAL_NEWS_API = "https://playeternalreturn.com/api/v1/posts/news?category=patchnote&page={}&hl=ko-KR"
 OFFICIAL_POST_URL = "https://playeternalreturn.com/posts/news/{}"
+PATCHNOTES_FILE = Path(__file__).with_name("patchnotes.json")  # /패치노트 명령어가 읽는 패치노트 정리본
+PATCH_KEEP = 3  # 최근 패치 몇 개를 정리해 둘지
+PATCH_PARSER_VERSION = 1  # 쪼개는 규칙을 바꾸면 올림 → 저장된 글을 다시 정리
+GEMINI_API = "https://generativelanguage.googleapis.com/v1beta"
+GEMINI_FALLBACK_MODELS = ["gemini-flash-latest", "gemini-3.8-flash", "gemini-3.7-flash", "gemini-3.6-flash", "gemini-3.5-flash",
+                          "gemini-3.5-flash-lite", "gemini-3.1-flash-lite", "gemini-2.5-flash"]  # 모델 목록을 못 읽었을 때만 씀
+AI_CHUNK = 60  # AI 요청 한 번에 요약할 구역 수
+AI_REQUESTS_PER_RUN = 4  # 한 번 실행에 보낼 AI 요청 수 (무료 한도 보호. 나머지는 다음 실행 때)
+AI_MAX_TRIES = 6  # 글 하나를 몇 번까지 다시 시도할지
+AI_WAIT_SECONDS = 3 * 3600  # 무료 사용량이 바닥나면 이만큼 쉬었다가 다시
+AI_STYLE = 2  # 요약 말투 판. _AI_RULES(말투)를 고친 뒤 이 숫자를 올리면 이미 만든 요약도 새 말투로 다시 써요 (2 = 코렐라인 말투)
 OFFICIAL_FALLBACK_AFTER = 4  # 공식 홈페이지가 이만큼 연속으로(30분마다 → 약 2시간) 안 열리면 그동안은 Steam 패치노트로 대신
 PATCH_CHANNEL_KINDS = ("maintenance", "maintenance_done", "hotfix", "patch")  # 패치 채널로 보내는 공지 종류
 
@@ -793,9 +808,15 @@ def run_official(state, deliver, cfg, mode="normal", data=None):
     if not items:
         print("공식 홈페이지: 가져온 패치노트가 없어요.")
         return True
+    if mode == "normal":  # /패치노트 명령어용 정리본 (실패해도 알림에는 영향 없음)
+        try:
+            update_patchnotes(items, state, (data or {}).get("chars_extra", []))
+        except Exception as e:
+            print(f"[경고] 패치노트 정리 실패: {e}")
 
     seen = set(state["seen_official"])
     if mode == "check":
+        print(gemini_status(state))
         print("── 공식 홈페이지 패치노트·핫픽스 (패치 채널로)" + ("" if state["official_ready"] else "  ※ 첫 실행에서는 기록만 해요"))
         for i in items:
             day = datetime.fromtimestamp(i["date"], tz=timezone.utc).strftime("%m-%d")
@@ -828,6 +849,563 @@ def run_official(state, deliver, cfg, mode="normal", data=None):
     if not new:
         print("공식 홈페이지: 새 패치노트 없음.")
     return True
+
+
+# ---------------------------------------------------------------- 패치노트 정리 (/패치노트 명령어용)
+#
+# 공식 홈페이지 패치노트 글을 캐릭터 / 아이템 / 그 밖의 변경사항으로 쪼개서 patchnotes.json에 저장한다.
+# GEMINI_API_KEY가 있으면 구역마다 한 줄 요약(상향·하향 등)도 붙인다. AI가 실패해도 원문 정리는 그대로 남는다.
+#
+# 글 구조 (실제 글 기준): 본문 칸 안에 제목(h2~h5), 굵은 글씨 한 줄(<p><strong>니아</strong></p> = 항목 이름),
+# 설명 문단(<p>), 변경 목록(<ul><li>…<ul><li>…)이 차례로 놓여 있다.
+
+
+class _PatchHTML(HTMLParser):
+    """패치노트 본문 HTML → 블록 목록: ("h", 단계, 글) | ("b", 글) | ("p", 글) | ("li", 깊이, 글)"""
+
+    HEAD = {"h1": 1, "h2": 1, "h5": 1, "h3": 2, "h4": 3, "h6": 3}  # h5·h2가 큰 제목, h3가 중간, h4가 작은 제목
+    BREAK = {"p", "ul", "ol", "li", "table", "tr", "hr", "div", "blockquote"}
+
+    def __init__(self):
+        super().__init__(convert_charrefs=True)
+        self.blocks = []
+        self.buf = []
+        self.plain = 0  # 굵지 않은 글자 수
+        self.bold = 0  # <strong>/<b> 안인지
+        self.list_depth = 0
+        self.head = 0
+        self.skip = 0  # script/style 안
+
+    def handle_starttag(self, tag, attrs):
+        if tag in ("script", "style"):
+            self.skip += 1
+        elif tag in self.HEAD:
+            self._flush()
+            self.head = self.HEAD[tag]
+        elif tag in self.BREAK:
+            self._flush()
+            if tag in ("ul", "ol"):
+                self.list_depth += 1
+        elif tag in ("td", "th"):
+            if "".join(self.buf).strip():
+                self.buf.append(" | ")
+        elif tag == "br":
+            self.buf.append(" ")
+        elif tag in ("strong", "b"):
+            self.bold += 1
+            self.buf.append("\x01")
+        elif tag in ("del", "s", "strike"):
+            self.buf.append("\x03")
+
+    def handle_endtag(self, tag):
+        if tag in ("script", "style"):
+            self.skip = max(0, self.skip - 1)
+        elif tag in self.HEAD:
+            self._flush()
+            self.head = 0
+        elif tag in self.BREAK:
+            self._flush()
+            if tag in ("ul", "ol"):
+                self.list_depth = max(0, self.list_depth - 1)
+        elif tag in ("strong", "b"):
+            self.bold = max(0, self.bold - 1)
+            self.buf.append("\x02")
+        elif tag in ("del", "s", "strike"):
+            self.buf.append("\x04")
+
+    def handle_data(self, data):
+        if self.skip:
+            return
+        self.buf.append(data)
+        if not self.bold:
+            self.plain += len(re.sub(r"[\s​\xa0]+", "", data))
+
+    def _flush(self):
+        raw, plain_count = "".join(self.buf), self.plain
+        self.buf, self.plain = [], 0
+        raw = re.sub(r"[\s​\xa0]+", " ", raw)
+        plain = re.sub(r"[\x01-\x04]", "", raw).strip()
+        if not plain:
+            return
+        if self.head:
+            self.blocks.append(("h", self.head, plain))
+            return
+        # 굵게·취소선을 디스코드 표기로 (공백은 표시 밖으로 빼야 디스코드가 알아봄)
+        text = re.sub(r"\x01( *)([^\x01\x02]*?)( *)\x02", lambda m: f"{m.group(1)}**{m.group(2)}**{m.group(3)}" if m.group(2) else " ", raw)
+        text = re.sub(r"\x03( *)([^\x03\x04]*?)( *)\x04", lambda m: f"{m.group(1)}~~{m.group(2)}~~{m.group(3)}" if m.group(2) else " ", text)
+        text = re.sub(r"[\x01-\x04]", "", text).replace("****", "")
+        text = re.sub(r"(?<=\S)~~\*\*(?=\()", "~~ **", text)  # "~~수박~~**(삭제)**" → "~~수박~~ **(삭제)**"
+        text = re.sub(r" +", " ", text).strip()
+        if self.list_depth:
+            self.blocks.append(("li", self.list_depth, text))
+        elif plain_count == 0 and len(plain) <= 40:
+            self.blocks.append(("b", plain))  # 굵은 글씨로만 된 짧은 줄 = 항목 이름
+        else:
+            self.blocks.append(("p", text))
+
+    def close(self):
+        super().close()
+        self._flush()
+
+
+def patch_blocks(page):
+    """글 페이지 HTML에서 본문 칸만 잘라 블록 목록으로."""
+    start = page.find("er-article-detail__content")
+    if start < 0:
+        return []
+    start = page.find(">", start) + 1
+    ends = [pos for pos in (page.find(mark, start) for mark in ("er-article-detail__recent", "er-article-side", "er-recent-articles")) if pos > 0]
+    seg = page[start:min(ends)] if ends else page[start:]
+    seg = re.sub(r"<[^>]*$", "", seg)
+    parser = _PatchHTML()
+    parser.feed(seg)
+    parser.close()
+    return parser.blocks
+
+
+_ITEM_CATS = {"무기", "방어구", "음식", "음료", "소모품", "설치", "특수재료", "재료"}  # 이 제목 아래 목록은 아이템 하나씩
+_ITEM_NOTE_RE = re.compile(r"^(.*?)\s*(\((?:신규|삭제)[^)]*\))\s*$")
+_ITEM_STAT_RE = re.compile(
+    r"^(.{1,30}?)\s+((?:레벨 당 |기본 |최대 )?(?:스킬 증폭|공격력|방어력|체력|스태미나|공격 속도|치명타|생명력 흡수|모든 피해 흡혈|쿨다운|이동 속도|시야|"
+    r"방어 관통|적응형|사거리|회복량|치유|피해|조합식|고유)\b.*)$")
+_LIMITS = {"char": (500, 1600), "item": (300, 1200), "etc": (400, 800)}  # (설명, 변경 줄) 최대 글자 수
+
+
+def _plain(text):
+    return re.sub(r"\*\*|~~", "", text or "").strip()
+
+
+def split_item(text):
+    """아이템 줄 → (이름, 덧붙은 말). '프레첼 (신규 희귀 등급)' → ('프레첼', '(신규 희귀 등급)'), '드라우프니르 스킬 증폭 75 → 76' → ('드라우프니르', '스킬 증폭 75 → 76')"""
+    plain = _plain(text)
+    m = _ITEM_NOTE_RE.match(plain)
+    if m and m.group(1):
+        return m.group(1).strip(), m.group(2)
+    if "→" in plain or "조합식" in plain:
+        m = _ITEM_STAT_RE.match(plain)
+        if m:
+            rest = text[text.find(m.group(1)) + len(m.group(1)):].strip() if m.group(1) in text else m.group(2)
+            return m.group(1).strip(), rest
+    return plain, ""
+
+
+def post_label(title):
+    """'13.0 패치노트 Part.3 - 럼블 아웃 (2026.11.12)' → 'Part.3', 주제 '럼블 아웃'. 핫픽스는 ('13.0a 핫픽스', '')."""
+    m = re.search(r"Part\.?\s*(\d+)\s*[-–]\s*([^()]+)", title)
+    if m:
+        return f"Part.{m.group(1)}", m.group(2).strip()
+    key = patch_key(title) or ""
+    return (f"{key} 핫픽스" if "핫픽스" in title else f"{key} 패치노트").strip(), ""
+
+
+def build_sections(blocks, post, chars):
+    """블록 → 구역 목록. 구역: {"k": char|item|etc, "n": 이름, "w": 어디(제목 경로), "p": 글 ID, "c": 설명, "l": [변경 줄], "g": 아이템 묶음}
+    chars = {정규화한 이름: 표기} (캐릭터 이름 + 별명)"""
+    topic = post.get("topic", "")
+    prefix = [topic] if topic and topic not in ("메인", "실험체 및 아이템") else []
+    path, group, cur, sections = [], "", None, []
+
+    def where(parts):
+        out = []
+        for p in prefix + parts:
+            if p and (not out or out[-1] != p):
+                out.append(p)
+        return " › ".join(out)
+
+    def start(kind, name, parts):
+        nonlocal cur
+        cur = {"k": kind, "n": _clip(name, 60), "w": where(parts), "p": post["id"], "c": "", "l": []}
+        sections.append(cur)
+
+    for b in blocks:
+        if b[0] == "h":
+            level, title = b[1], b[2]
+            path = path[: max(0, min(level - 1, len(path)))] + [title]
+            group, cur = "", None
+            continue
+        item_cat = bool(path) and re.sub(r"\s+", "", path[0]) in _ITEM_CATS
+        if b[0] == "b":
+            name = b[1]
+            if item_cat:
+                group, cur = name, None
+                continue
+            key = _norm_name(name)
+            is_char = key in chars or any(re.sub(r"\s+", "", p) == "실험체" or "모드 보정" in p for p in path)
+            start("char" if is_char else "etc", chars.get(key, name), path)
+            continue
+        if b[0] == "li" and item_cat:
+            depth, text = b[1], b[2]
+            if depth == 1:
+                name, note = split_item(text)
+                start("item", name, path)
+                if group:
+                    cur["g"] = group
+                if note:
+                    cur["l"].append(note)
+            elif cur is not None:
+                cur["l"].append("\t" * (depth - 2) + text)
+            continue
+        if cur is None:  # 제목 바로 아래에 온 글 → 그 제목 이름의 구역
+            start("etc", path[-1] if path else post["title"], path[:-1])
+        if b[0] == "p":
+            if cur["l"]:
+                cur["l"].append(b[1])
+            else:
+                cur["c"] = (cur["c"] + "\n" + b[1]).strip()
+        else:
+            cur["l"].append("\t" * (b[1] - 1) + b[2])
+
+    for s in sections:  # 너무 긴 구역은 자름 (디스코드에 다 못 보여 주니 원문 링크로)
+        max_c, max_l = _LIMITS[s["k"]]
+        s["c"] = _clip(s["c"], max_c)
+        kept, used = [], 0
+        for line in s["l"]:
+            used += len(line) + 1
+            if used > max_l:
+                kept.append("…")
+                break
+            kept.append(line)
+        s["l"] = kept
+    return [s for s in sections if s["c"] or s["l"] or s["k"] != "etc"]
+
+
+def load_patchnotes():
+    try:
+        notes = json.loads(PATCHNOTES_FILE.read_text(encoding="utf-8"))
+        if isinstance(notes, dict) and isinstance(notes.get("patches"), list):
+            return notes
+    except (OSError, ValueError):
+        pass
+    return {"patches": []}
+
+
+def save_patchnotes(notes, chars=()):
+    notes["updated"] = int(time.time())
+    notes["aliases"] = alias_map()  # 별명 → 캐릭터 이름 (/패치노트 뎁마)
+    if chars:
+        notes["chars"] = sorted(set(chars))  # 아는 캐릭터 이름 전부 ("바뀐 게 없어"와 "모르는 이름"을 구분하는 데 씀)
+    PATCHNOTES_FILE.write_text(json.dumps(notes, ensure_ascii=False, separators=(",", ":")) + "\n", encoding="utf-8")
+    print("patchnotes.json 갱신 (/패치노트 명령어용)")
+
+
+def update_patchnotes(items, state, extra_chars=()):
+    """공식 글 목록(items)에서 최근 패치 PATCH_KEEP개를 골라, 아직 정리 안 한 글을 쪼개서 저장하고 AI 요약을 붙인다."""
+    notes = load_patchnotes()
+    groups = {}
+    for item in items:
+        key = patch_key(item["title"])
+        if key:
+            groups.setdefault(re.match(r"\d+\.\d+", key).group(0), []).append(item)
+    versions = sorted(groups, key=lambda v: max(i["date"] for i in groups[v]), reverse=True)[:PATCH_KEEP]
+    if not versions:
+        return False
+    chars = {_norm_name(n): n for n in list(CHARACTERS) + list(extra_chars)}
+    chars.update(alias_map())
+    by_ver = {p["ver"]: p for p in notes["patches"]}
+    changed = False
+    for ver in versions:
+        patch = by_ver.setdefault(ver, {"ver": ver, "date": 0, "posts": [], "sections": []})
+        for item in sorted(groups[ver], key=lambda i: i["date"]):
+            if any(p["id"] == item["id"] and p.get("pv") == PATCH_PARSER_VERSION for p in patch["posts"]):
+                continue
+            try:
+                page = http_get(item["url"] + ("&" if "?" in item["url"] else "?") + "hl=ko-KR", retries=2).decode("utf-8", "replace")
+                blocks = patch_blocks(page)
+            except Exception as e:
+                print(f"[경고] 패치노트 본문을 못 읽었어요 ({item['title']}): {e}")
+                continue
+            label, topic = post_label(item["title"])
+            post = {"id": item["id"], "title": item["title"], "url": item["url"], "date": item["date"], "label": label,
+                    "topic": topic, "hotfix": "핫픽스" in item["title"], "pv": PATCH_PARSER_VERSION}
+            sections = build_sections(blocks, post, chars)
+            patch["posts"] = sorted([p for p in patch["posts"] if p["id"] != item["id"]] + [post], key=lambda p: p["date"])
+            patch["sections"] = [s for s in patch["sections"] if s["p"] != item["id"]] + sections
+            changed = True
+            count = {k: sum(1 for s in sections if s["k"] == k) for k in ("char", "item", "etc")}
+            print(f"패치노트 정리: {item['title']} (캐릭터 {count['char']}, 아이템 {count['item']}, 그 밖 {count['etc']})")
+        patch["date"] = max([p["date"] for p in patch["posts"]] or [0])
+    notes["patches"] = sorted((by_ver[v] for v in versions if by_ver[v]["posts"]), key=lambda p: p["date"], reverse=True)
+
+    api_key = os.environ.get("GEMINI_API_KEY", "").strip()
+    if api_key:
+        try:
+            changed = summarize_pending(notes, state, api_key) or changed
+        except Exception as e:
+            print(f"[경고] AI 요약 실패 (원문 정리는 그대로 저장돼요): {e}")
+    if changed:
+        save_patchnotes(notes, chars.values())
+    return changed
+
+
+# ---------------------------------------------------------------- AI 한 줄 요약 (Gemini, 선택)
+
+_GEMINI_STABLE_RE = re.compile(r"^models/(gemini-(\d+(?:\.\d+)?)-flash(-lite)?)$")
+_AI_DIRS = ("buff", "nerf", "adjust", "new", "removed", "fix")
+
+
+class GeminiError(RuntimeError):
+    def __init__(self, status, body):
+        super().__init__(f"HTTP {status}: {' '.join(body.split())[:200]}")
+        self.status = status
+        self.body = body
+
+
+class GeminiUnavailable(RuntimeError):
+    """키가 틀렸거나 무료 사용량이 바닥나서 어떤 모델도 못 쓰는 상태 (글 탓이 아니라서 재시도 횟수에 안 셈)."""
+
+
+def gemini_request(path, api_key, payload=None):
+    req = urllib.request.Request(
+        f"{GEMINI_API}/{path}",
+        data=json.dumps(payload).encode("utf-8") if payload is not None else None,
+        method="POST" if payload is not None else "GET",
+        headers={"x-goog-api-key": api_key, "Content-Type": "application/json", "User-Agent": USER_AGENT},
+    )
+    try:
+        with urllib.request.urlopen(req, timeout=120) as resp:
+            return json.loads(resp.read().decode("utf-8"))
+    except urllib.error.HTTPError as e:
+        raise GeminiError(e.code, e.read().decode("utf-8", "replace")) from None
+
+
+_MODEL_CACHE = {}
+
+
+def gemini_models(api_key, state):
+    """쓸 모델 후보 (앞에서부터 시도). GEMINI_MODEL로 정해 두면 그것만, 아니면 지난번에 된 모델 → 목록에서 고른 최신 Flash → 예비 목록."""
+    fixed = os.environ.get("GEMINI_MODEL", "").strip()
+    if fixed:
+        return [fixed.replace("models/", "")]
+    if api_key in _MODEL_CACHE:  # 한 번 실행에 목록은 한 번만 읽음
+        rest = [m for m in _MODEL_CACHE[api_key] if m != state.get("gemini_model")]
+        return ([state["gemini_model"]] if state.get("gemini_model") else []) + rest
+    found = []
+    try:
+        listing = gemini_request("models?pageSize=200", api_key)
+        for m in listing.get("models") or []:
+            match = _GEMINI_STABLE_RE.match(m.get("name", ""))
+            methods = m.get("supportedGenerationMethods")
+            if match and (methods is None or "generateContent" in methods):
+                found.append((bool(match.group(3)), -float(match.group(2)), match.group(1)))
+    except Exception as e:
+        print(f"[경고] Gemini 모델 목록을 못 읽어서 예비 목록으로 시도해요: {e}")
+    found.sort()
+    flash = [name for lite, _, name in found if not lite][:3]
+    lite = [name for lite, _, name in found if lite][:2]
+    out = []
+    for name in [state.get("gemini_model")] + flash + lite + GEMINI_FALLBACK_MODELS:
+        if name and name not in out:
+            out.append(name)
+    _MODEL_CACHE[api_key] = out[:8]
+    return out[:8]
+
+
+def gemini_json(prompt, api_key, state):
+    """Gemini에 물어보고 답 글자를 돌려준다. 모델이 없거나 무료로 못 쓰는 모델이면 다음 후보로."""
+    last = None
+    for model in gemini_models(api_key, state):
+        body = {"contents": [{"parts": [{"text": prompt}]}], "generationConfig": {"responseMimeType": "application/json", "temperature": 0.2}}
+        for attempt in range(2):
+            try:
+                reply = gemini_request(f"models/{model}:generateContent", api_key, body)
+            except GeminiError as e:
+                last = e
+                if e.status in (401, 403) or "API_KEY_INVALID" in e.body or "API key not valid" in e.body:
+                    raise GeminiUnavailable(f"Gemini API 키를 확인해 주세요 ({e})") from None
+                if e.status == 400 and "generationConfig" in body:  # 이 모델이 JSON 응답 설정을 모르면 설정 없이 한 번 더
+                    body = {"contents": body["contents"]}
+                    continue
+                if e.status >= 500 and attempt == 0:
+                    time.sleep(3)
+                    continue
+                print(f"  Gemini {model}: {e}")
+                break
+            parts = ((reply.get("candidates") or [{}])[0].get("content") or {}).get("parts") or []
+            text = "".join(p.get("text", "") for p in parts if isinstance(p, dict))
+            if text.strip():
+                state["gemini_model"] = model
+                return text
+            last = RuntimeError("빈 응답")
+            break
+    state.pop("gemini_model", None)
+    raise GeminiUnavailable(f"지금 쓸 수 있는 Gemini 모델이 없어요 — 무료 사용량을 다 썼거나 일시적인 문제일 수 있어요 ({last})")
+
+
+def parse_ai_reply(text, count):
+    """AI 답 → (overall 줄들, {번호: (dir, 요약)}). JSON이 잘렸어도 읽을 수 있는 항목은 건짐."""
+    text = re.sub(r"^```(?:json)?|```$", "", text.strip(), flags=re.M).strip()
+    overall, items = [], []
+    try:
+        obj = json.loads(text)
+        if isinstance(obj, dict):
+            overall = obj.get("overall") or []
+            items = obj.get("items") or []
+    except ValueError:
+        for m in re.finditer(r"\{[^{}]*\}", text):
+            try:
+                items.append(json.loads(m.group(0)))
+            except ValueError:
+                pass
+        m = re.search(r'"overall"\s*:\s*(\[[^\]]*\])', text)
+        if m:
+            try:
+                overall = json.loads(m.group(1))
+            except ValueError:
+                pass
+    out = {}
+    for it in items if isinstance(items, list) else []:
+        if not isinstance(it, dict):
+            continue
+        try:
+            i = int(it.get("i"))
+        except (TypeError, ValueError):
+            continue
+        summary = re.sub(r"\s+", " ", str(it.get("sum") or "")).strip()
+        if 0 <= i < count and summary:
+            out[i] = (it.get("dir") if it.get("dir") in _AI_DIRS else "adjust", _clip(summary, 90))
+    lines = [_clip(re.sub(r"\s+", " ", str(x)).strip(), 140) for x in overall if isinstance(x, str) and x.strip()] if isinstance(overall, list) else []
+    return lines[:6], out
+
+
+_AI_RULES = """너는 게임 '이터널 리턴'의 공식 패치노트를 한국어로 요약한다. 아래는 패치노트 글 하나를 구역별로 나눈 것이다.
+
+내용 규칙
+- 원문에 있는 내용만 쓴다. 수치·이름·사실을 지어내거나 바꾸지 않는다.
+- dir 은 그 구역의 방향이다: "buff"(상향), "nerf"(하향), "adjust"(상향과 하향이 섞였거나 방향이 애매함), "new"(신규 추가), "removed"(삭제), "fix"(버그 수정).
+  쿨다운·소모값·시전 시간이 줄면 상향, 늘면 하향이다. 개발자 코멘트에 의도가 적혀 있으면 그것을 따른다.
+
+말투 규칙 (중요)
+- 글은 '코렐라인'이라는 캐릭터가 말하듯 쓴다. 거울로 진실을 비추고 유죄·무죄를 가리는, 여유롭고 장난기 있는 말투다.
+- 반말로 쓴다. 문장은 "~했어", "~됐어", "~야", "~네", "~거든" 처럼 끝낸다. 존댓말("~합니다", "~해요")과 명사로 끝나는 문장("~상향", "~추가됨")은 쓰지 않는다.
+- sum: [번호]가 붙은 구역마다, 무엇이 어떻게 바뀌었는지 한 문장으로 쓴다. 45자 안팎.
+  예: "K.O.(P) 중첩 피해랑 권총 숙련도 공격 속도가 올랐어." / "레벨 당 체력이 조금 깎였어." / "새로 생긴 전설 등급 옷이야." / "조합식에서 손목시계가 빠지고 고무가 들어갔어."
+- sum 에는 "유죄", "무죄", "상향", "하향", "버프", "너프" 라는 말을 쓰지 않는다. 판결은 dir 로 따로 표시되기 때문이다.
+- overall: 이 글에서 플레이어가 꼭 알아야 할 핵심을 3~5문장으로 쓴다. 한 문장은 60자 안팎.
+  하향된 것은 "유죄", 상향된 것은 "무죄"라고 부른다. 예: "루치아랑 유민은 유죄야. 체력이랑 피해량이 깎였어." / "마커스는 무죄. 지각변동(R)이 더 아파졌어."
+  "후훗."은 마지막 문장 끝에 한 번만 붙일 수 있다. 거울·빛·진실 같은 표현은 전체에서 한 번까지만 쓴다.
+- 말투를 살리려고 내용을 빼거나 바꾸지 않는다. 정확한 내용이 먼저다.
+
+출력: 아래 형식의 JSON 하나만 출력한다. 다른 글은 쓰지 않는다.
+{"overall": ["...", "..."], "items": [{"i": 0, "dir": "buff", "sum": "..."}]}
+"""
+
+
+def ai_prompt(post, targets, others, want_overall):
+    kind = {"char": "캐릭터", "item": "아이템"}
+    lines = [_AI_RULES, f"글 제목: {post['title']}", ""]
+    if not want_overall:
+        lines.append('(이번에는 overall 을 빈 배열 [] 로 둔다.)\n')
+    for i, s in enumerate(targets):
+        lines.append(f"[{i}] {kind.get(s['k'], '변경')} · {s['n']}" + (f" ({s['w']})" if s["w"] else ""))
+        if s["c"]:
+            lines.append("코멘트: " + _clip(_plain(s["c"]).replace("\n", " "), 400))
+        lines += ["- " + _plain(line.replace("\t", "  ")) for line in s["l"][:25]]
+        lines.append("")
+    if others:
+        lines.append("그 밖의 변경사항 (번호 없음. overall 을 쓸 때만 참고):")
+        for s in others[:90]:
+            body = _plain((s["c"] + " " + " / ".join(s["l"][:6])).replace("\t", "").replace("\n", " "))
+            lines.append(f"· {s['w'] + ' › ' if s['w'] else ''}{s['n']}: {_clip(body, 180)}")
+    return "\n".join(lines)
+
+
+def summarize_post(patch, post, state, api_key):
+    """글 하나의 캐릭터·아이템 구역에 한 줄 요약을 붙이고, 글 전체 요약(overall)을 만든다. 보낸 요청 수를 돌려준다."""
+    sections = [s for s in patch["sections"] if s["p"] == post["id"]]
+    targets = [s for s in sections if s["k"] in ("char", "item") and "s" not in s]  # 지난번에 하다 만 글은 남은 구역만
+    others = [s for s in sections if s["k"] == "etc"]
+    want_overall = not post.get("overall")
+    if not sections:
+        post["ai"] = "skip"
+        return 0
+    chunks = [targets[i:i + AI_CHUNK] for i in range(0, len(targets), AI_CHUNK)] or ([[]] if want_overall else [])
+    requests = 0
+    for n, chunk in enumerate(chunks):
+        if n:
+            time.sleep(5)
+        first = n == 0 and want_overall
+        text = gemini_json(ai_prompt(post, chunk, others if first else [], first), api_key, state)
+        requests += 1
+        overall, found = parse_ai_reply(text, len(chunk))
+        if first and overall:
+            post["overall"] = overall
+        for i, (direction, summary) in found.items():
+            chunk[i]["d"], chunk[i]["s"] = direction, summary
+        if (chunk and not found) or (not chunk and not overall):
+            raise RuntimeError("AI 답을 읽지 못했어요")
+    post["ai"] = "ok"
+    post["model"] = state.get("gemini_model", "")
+    return requests
+
+
+def reset_old_style(notes):
+    """요약 말투(AI_STYLE)가 바뀌기 전에 만든 요약은 지워서 새 말투로 다시 받게 한다. 지운 게 있으면 True."""
+    changed = False
+    for patch in notes["patches"]:
+        for post in patch["posts"]:
+            if post.get("sv", 1) == AI_STYLE:
+                continue
+            mine = [s for s in patch["sections"] if s["p"] == post["id"]]
+            if post.get("overall") or post.get("ai") or any("s" in s for s in mine):
+                for s in mine:
+                    s.pop("s", None)
+                    s.pop("d", None)
+                for key in ("overall", "ai", "tries", "model"):
+                    post.pop(key, None)
+                print(f"AI 요약: 말투가 바뀌어서 다시 써요 — {post['title']}")
+            post["sv"] = AI_STYLE
+            changed = True
+    return changed
+
+
+def summarize_pending(notes, state, api_key):
+    """아직 요약이 없는 글을 최신 글부터 요약한다 (한 번 실행에 요청 AI_REQUESTS_PER_RUN번까지, 글마다 AI_MAX_TRIES번까지 재시도)."""
+    changed = reset_old_style(notes)
+    pending = [(patch, post) for patch in notes["patches"] for post in patch["posts"]
+               if post.get("ai") not in ("ok", "skip") and post.get("tries", 0) < AI_MAX_TRIES]
+    if not pending:
+        return changed
+    wait = state.get("gemini_wait", 0) - time.time()
+    if wait > 0:
+        print(f"AI 요약: 쉬는 중 (약 {int(wait // 60) + 1}분 뒤에 다시 시도, 남은 글 {len(pending)}개)")
+        return changed
+    pending.sort(key=lambda pp: pp[1]["date"], reverse=True)
+    used = 0
+    for patch, post in pending:
+        if used >= AI_REQUESTS_PER_RUN:
+            break
+        if used:
+            time.sleep(5)
+        try:
+            used += max(1, summarize_post(patch, post, state, api_key))
+            state.pop("gemini_wait", None)
+            changed = True
+            print(f"AI 요약 완료: {post['title']} ({post.get('model', '')})")
+        except GeminiUnavailable as e:
+            state["gemini_wait"] = int(time.time()) + AI_WAIT_SECONDS
+            print(f"[경고] AI 요약을 잠시 쉬어요 ({AI_WAIT_SECONDS // 3600}시간 뒤에 다시 시도, 원문 정리는 그대로 보여요): {e}")
+            break
+        except Exception as e:
+            used += 1
+            changed = True
+            post["ai"] = "fail"
+            post["tries"] = post.get("tries", 0) + 1
+            left = AI_MAX_TRIES - post["tries"]
+            print(f"[경고] AI 요약 실패: {post['title']} — {e}" + (f" (다음 실행 때 다시, {left}번 남음)" if left > 0 else " (그만 시도해요. 원문 정리는 그대로 보여요)"))
+    return changed
+
+
+def gemini_status(state):
+    """--check 용: 키가 맞는지, 어떤 모델을 쓸지 (요약 요청은 보내지 않음)."""
+    api_key = os.environ.get("GEMINI_API_KEY", "").strip()
+    if not api_key:
+        return "AI 요약(Gemini): 꺼짐 (GEMINI_API_KEY 없음) — /패치노트는 원문 정리만 보여 줘요"
+    try:
+        gemini_request("models?pageSize=1", api_key)
+    except Exception as e:
+        return f"AI 요약(Gemini): 키 확인 실패 — {e}"
+    models = gemini_models(api_key, state)
+    return f"AI 요약(Gemini): 키 정상. 쓸 모델 후보: {', '.join(models[:4])}"
 
 
 # ---------------------------------------------------------------- 유튜브
