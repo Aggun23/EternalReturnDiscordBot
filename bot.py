@@ -193,10 +193,13 @@ PATCH_PARSER_VERSION = 1  # 쪼개는 규칙을 바꾸면 올림 → 저장된 �
 GEMINI_API = "https://generativelanguage.googleapis.com/v1beta"
 GEMINI_FALLBACK_MODELS = ["gemini-flash-latest", "gemini-3.8-flash", "gemini-3.7-flash", "gemini-3.6-flash", "gemini-3.5-flash",
                           "gemini-3.5-flash-lite", "gemini-3.1-flash-lite", "gemini-2.5-flash"]  # 모델 목록을 못 읽었을 때만 씀
-AI_CHUNK = 60  # AI 요청 한 번에 요약할 구역 수
-AI_REQUESTS_PER_RUN = 4  # 한 번 실행에 보낼 AI 요청 수 (무료 한도 보호. 나머지는 다음 실행 때)
+AI_CHUNK = 30  # AI 요청 한 번에 요약할 구역 수 (너무 많으면 답이 늦어서 시간 초과가 남)
+AI_REQUESTS_PER_RUN = 12  # 한 번 실행에 보낼 AI 요청 수 (무료 한도 보호. 나머지는 다음 실행 때)
+AI_TIME_BUDGET = 8 * 60  # 한 번 실행에서 AI 요약에 쓸 시간(초). 넘으면 나머지는 다음 실행 때
+AI_TIMEOUT = 240  # AI 답을 기다리는 시간(초)
 AI_MAX_TRIES = 6  # 글 하나를 몇 번까지 다시 시도할지
-AI_WAIT_SECONDS = 3 * 3600  # 무료 사용량이 바닥나면 이만큼 쉬었다가 다시
+AI_WAIT_SECONDS = 3 * 3600  # 하루 무료 사용량이 바닥나거나 키에 문제가 있으면 이만큼 쉬었다가 다시
+AI_SHORT_WAIT = 15 * 60  # 잠깐 붐비는 것(503)이나 분당 한도면 이만큼만 쉼
 AI_STYLE = 2  # 요약 말투 판. _AI_RULES(말투)를 고친 뒤 이 숫자를 올리면 이미 만든 요약도 새 말투로 다시 써요 (2 = 코렐라인 말투)
 OFFICIAL_FALLBACK_AFTER = 4  # 공식 홈페이지가 이만큼 연속으로(30분마다 → 약 2시간) 안 열리면 그동안은 Steam 패치노트로 대신
 PATCH_CHANNEL_KINDS = ("maintenance", "maintenance_done", "hotfix", "patch")  # 패치 채널로 보내는 공지 종류
@@ -1150,11 +1153,19 @@ class GeminiError(RuntimeError):
         self.body = body
 
 
+class GeminiTimeout(RuntimeError):
+    """정해진 시간 안에 답이 안 옴 (모델이 오래 생각하거나 서버가 붐빌 때)."""
+
+
 class GeminiUnavailable(RuntimeError):
     """키가 틀렸거나 무료 사용량이 바닥나서 어떤 모델도 못 쓰는 상태 (글 탓이 아니라서 재시도 횟수에 안 셈)."""
 
+    def __init__(self, message, wait=AI_WAIT_SECONDS):
+        super().__init__(message)
+        self.wait = wait  # 얼마나 쉬었다가 다시 시도할지(초)
 
-def gemini_request(path, api_key, payload=None):
+
+def gemini_request(path, api_key, payload=None, timeout=60):
     req = urllib.request.Request(
         f"{GEMINI_API}/{path}",
         data=json.dumps(payload).encode("utf-8") if payload is not None else None,
@@ -1162,10 +1173,12 @@ def gemini_request(path, api_key, payload=None):
         headers={"x-goog-api-key": api_key, "Content-Type": "application/json", "User-Agent": USER_AGENT},
     )
     try:
-        with urllib.request.urlopen(req, timeout=120) as resp:
+        with urllib.request.urlopen(req, timeout=timeout) as resp:
             return json.loads(resp.read().decode("utf-8"))
     except urllib.error.HTTPError as e:
         raise GeminiError(e.code, e.read().decode("utf-8", "replace")) from None
+    except (TimeoutError, urllib.error.URLError, ConnectionError) as e:
+        raise GeminiTimeout(f"{timeout}초 안에 답이 안 왔어요 ({e})") from None
 
 
 _MODEL_CACHE = {}
@@ -1200,35 +1213,61 @@ def gemini_models(api_key, state):
     return out[:8]
 
 
+def _gen_configs(model):
+    """모델에 보낼 설정 후보 (앞에서부터 쓰고, 모르는 설정이라고 400이 오면 다음 것으로).
+    요즘 Gemini는 답하기 전에 '생각'을 오래 해서, 생각을 줄여 달라고 해야 답이 제때 와요."""
+    base = {"responseMimeType": "application/json", "temperature": 0.2}
+    think = {"thinkingBudget": 0} if model.startswith("gemini-2.") else {"thinkingLevel": "low"}
+    return [dict(base, thinkingConfig=think), base, None]
+
+
 def gemini_json(prompt, api_key, state):
     """Gemini에 물어보고 답 글자를 돌려준다. 모델이 없거나 무료로 못 쓰는 모델이면 다음 후보로."""
-    last = None
+    errors = []
+    timeouts = 0
     for model in gemini_models(api_key, state):
-        body = {"contents": [{"parts": [{"text": prompt}]}], "generationConfig": {"responseMimeType": "application/json", "temperature": 0.2}}
-        for attempt in range(2):
+        configs = _gen_configs(model)
+        retried = False
+        while True:
+            body = {"contents": [{"parts": [{"text": prompt}]}]}
+            if configs[0]:
+                body["generationConfig"] = configs[0]
             try:
-                reply = gemini_request(f"models/{model}:generateContent", api_key, body)
+                reply = gemini_request(f"models/{model}:generateContent", api_key, body, timeout=AI_TIMEOUT)
+            except GeminiTimeout as e:
+                errors.append(e)
+                timeouts += 1
+                print(f"  Gemini {model}: {e}")
+                if timeouts >= 2:  # 모델을 바꿔도 늦으면 이번에는 그만 (실행 시간이 한없이 늘어나지 않게)
+                    raise RuntimeError(f"Gemini 답이 너무 늦어요 ({e})") from None
+                break
             except GeminiError as e:
-                last = e
+                errors.append(e)
                 if e.status in (401, 403) or "API_KEY_INVALID" in e.body or "API key not valid" in e.body:
                     raise GeminiUnavailable(f"Gemini API 키를 확인해 주세요 ({e})") from None
-                if e.status == 400 and "generationConfig" in body:  # 이 모델이 JSON 응답 설정을 모르면 설정 없이 한 번 더
-                    body = {"contents": body["contents"]}
+                if e.status == 400 and len(configs) > 1:  # 이 모델이 모르는 설정이면 하나씩 빼고 다시
+                    configs.pop(0)
                     continue
-                if e.status >= 500 and attempt == 0:
+                if e.status >= 500 and not retried:
+                    retried = True
                     time.sleep(3)
                     continue
                 print(f"  Gemini {model}: {e}")
                 break
             parts = ((reply.get("candidates") or [{}])[0].get("content") or {}).get("parts") or []
-            text = "".join(p.get("text", "") for p in parts if isinstance(p, dict))
+            text = "".join(p.get("text", "") for p in parts if isinstance(p, dict) and not p.get("thought"))
             if text.strip():
                 state["gemini_model"] = model
                 return text
-            last = RuntimeError("빈 응답")
+            errors.append(RuntimeError("빈 응답"))
             break
     state.pop("gemini_model", None)
-    raise GeminiUnavailable(f"지금 쓸 수 있는 Gemini 모델이 없어요 — 무료 사용량을 다 썼거나 일시적인 문제일 수 있어요 ({last})")
+    # 하루 사용량이 바닥난 거면 오래, 잠깐 붐비는 거면 짧게 쉼
+    day_quota = bool(errors) and all(isinstance(e, GeminiError) and e.status == 429 and "PerDay" in e.body for e in errors)
+    raise GeminiUnavailable(
+        f"지금 쓸 수 있는 Gemini 모델이 없어요 — {'하루 무료 사용량을 다 쓴 것 같아요' if day_quota else '서버가 붐비거나 분당 한도에 걸린 것 같아요'} ({errors[-1] if errors else '후보 없음'})",
+        wait=AI_WAIT_SECONDS if day_quota else AI_SHORT_WAIT,
+    )
 
 
 def parse_ai_reply(text, count):
@@ -1334,6 +1373,7 @@ def summarize_post(patch, post, state, api_key):
         if (chunk and not found) or (not chunk and not overall):
             raise RuntimeError("AI 답을 읽지 못했어요")
     post["ai"] = "ok"
+    post.pop("err", None)
     post["model"] = state.get("gemini_model", "")
     return requests
 
@@ -1370,9 +1410,10 @@ def summarize_pending(notes, state, api_key):
         print(f"AI 요약: 쉬는 중 (약 {int(wait // 60) + 1}분 뒤에 다시 시도, 남은 글 {len(pending)}개)")
         return changed
     pending.sort(key=lambda pp: pp[1]["date"], reverse=True)
-    used = 0
+    used, started = 0, time.time()
     for patch, post in pending:
-        if used >= AI_REQUESTS_PER_RUN:
+        if used >= AI_REQUESTS_PER_RUN or time.time() - started > AI_TIME_BUDGET:
+            print(f"AI 요약: 이번 실행은 여기까지 (요청 {used}번). 남은 글은 다음 실행 때 이어서 해요.")
             break
         if used:
             time.sleep(5)
@@ -1382,14 +1423,15 @@ def summarize_pending(notes, state, api_key):
             changed = True
             print(f"AI 요약 완료: {post['title']} ({post.get('model', '')})")
         except GeminiUnavailable as e:
-            state["gemini_wait"] = int(time.time()) + AI_WAIT_SECONDS
-            print(f"[경고] AI 요약을 잠시 쉬어요 ({AI_WAIT_SECONDS // 3600}시간 뒤에 다시 시도, 원문 정리는 그대로 보여요): {e}")
+            state["gemini_wait"] = int(time.time()) + e.wait
+            print(f"[경고] AI 요약을 잠시 쉬어요 ({e.wait // 60}분 뒤에 다시 시도, 원문 정리는 그대로 보여요): {e}")
             break
         except Exception as e:
             used += 1
             changed = True
             post["ai"] = "fail"
             post["tries"] = post.get("tries", 0) + 1
+            post["err"] = _clip(str(e), 160)  # 왜 실패했는지 (patchnotes.json에서 바로 볼 수 있게)
             left = AI_MAX_TRIES - post["tries"]
             print(f"[경고] AI 요약 실패: {post['title']} — {e}" + (f" (다음 실행 때 다시, {left}번 남음)" if left > 0 else " (그만 시도해요. 원문 정리는 그대로 보여요)"))
     return changed
@@ -1401,7 +1443,7 @@ def gemini_status(state):
     if not api_key:
         return "AI 요약(Gemini): 꺼짐 (GEMINI_API_KEY 없음) — /패치노트는 원문 정리만 보여 줘요"
     try:
-        gemini_request("models?pageSize=1", api_key)
+        gemini_request("models?pageSize=1", api_key, timeout=30)
     except Exception as e:
         return f"AI 요약(Gemini): 키 확인 실패 — {e}"
     models = gemini_models(api_key, state)
