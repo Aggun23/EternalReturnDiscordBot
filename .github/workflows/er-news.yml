@@ -39,6 +39,8 @@ jobs:
           YOUTUBE_WEBHOOK_URL: ${{ secrets.YOUTUBE_WEBHOOK_URL }}
           SKIN_WEBHOOK_URL: ${{ secrets.SKIN_WEBHOOK_URL }}
           PATCH_SOURCE: ${{ vars.PATCH_SOURCE }}
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}   # /패치노트 AI 한 줄 요약 (없으면 원문 정리만)
+          GEMINI_MODEL: ${{ vars.GEMINI_MODEL }}
           DISCORD_BOT_TOKEN: ${{ secrets.DISCORD_BOT_TOKEN }}   # 봇 계정으로 올리기 (채널 ID와 같이)
           MENTION: ${{ vars.MENTION }}
           STEAM_KEYWORDS: ${{ vars.STEAM_KEYWORDS }}
@@ -58,5 +60,5 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          for f in state.json data.json; do [ -f "$f" ] && git add "$f"; done
+          for f in state.json data.json patchnotes.json; do [ -f "$f" ] && git add "$f"; done
           git diff --cached --quiet || (git commit -m "알림 기록 갱신" && git push)
