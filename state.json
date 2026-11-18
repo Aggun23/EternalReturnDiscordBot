@@ -51,13 +51,16 @@
     "708914425087656359",
     "708914425087656649",
     "708914425087656656",
-    "708914425087656791"
+    "708914425087656791",
+    "680767470935474296",
+    "680767470935474317"
   ],
   "seen_codes": [
     "BUNNYSUA1015",
     "DEVGIFT2U",
     "SEASON13GLORY",
-    "GLORYBLAIR"
+    "GLORYBLAIR",
+    "KGA26ESPORTS"
   ],
   "seen_videos": [
     "qqyZXu0gyIQ",
@@ -78,7 +81,8 @@
     "XCGZ_f7tzyU",
     "jjW1HlevyZs",
     "MRZ9aGC54Vc",
-    "hYlYRXc4TOs"
+    "hYlYRXc4TOs",
+    "Y-GUtlyZIy8"
   ],
   "yt_ready": [
     "UCEOaB76vS9RfiAwEzxB8QGw"
@@ -107,9 +111,12 @@
     "3949",
     "3950",
     "3959",
-    "3964"
+    "3964",
+    "3969"
   ],
-  "patch_sent": [],
+  "patch_sent": [
+    "official:13.1"
+  ],
   "official_ready": true,
   "official_fail": 0,
   "gemini_model": "gemini-3.6-flash"

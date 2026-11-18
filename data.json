@@ -1,5 +1,5 @@
 {
- "updated": 1794915576,
+ "updated": 1795001223,
  "season": {
   "num": 13,
   "since": 1793606942
@@ -16,6 +16,15 @@
   "판다왔쇼우": "쇼우"
  },
  "coupons": [
+  {
+   "code": "KGA26ESPORTS",
+   "reward": "200 이벤트 NP (7일) + 시즌 조각팩 3개(즉시 개봉)",
+   "valid": "2026년 11월 27일(금) 23:59 (KST)까지",
+   "expires": 1795791540,
+   "date": 1794997543,
+   "title": "2026 대한민국 게임대상 ‘이스포츠 발전상’ 수상 기념 쿠폰",
+   "url": "https://store.steampowered.com/news/app/1049590/view/680767470935474317?l=koreana"
+  },
   {
    "code": "S13D7GLORY",
    "reward": "럭키박스 + EP부스트1일 + A-COIN + 검은상자",
@@ -2942,6 +2951,13 @@
  ],
  "patches": [
   {
+   "id": "official:3969",
+   "title": "2026.11.19 - 13.1 패치노트",
+   "url": "https://playeternalreturn.com/posts/news/3969",
+   "date": 1794988800,
+   "kind": "패치노트"
+  },
+  {
    "id": "official:3964",
    "title": "13.0b 핫픽스",
    "url": "https://playeternalreturn.com/posts/news/3964",
@@ -3213,16 +3229,17 @@
    "url": "https://playeternalreturn.com/posts/news/3595",
    "date": 1779177840,
    "kind": "핫픽스"
-  },
-  {
-   "id": "official:3589",
-   "title": "11.2b 핫픽스",
-   "url": "https://playeternalreturn.com/posts/news/3589",
-   "date": 1778837220,
-   "kind": "핫픽스"
   }
  ],
  "videos": [
+  {
+   "id": "Y-GUtlyZIy8",
+   "title": "눈이 멀었다고 앞을 볼 수 없는 건 아니지. #이터널리턴 #시즌13 #신규캐릭터",
+   "url": "https://www.youtube.com/shorts/Y-GUtlyZIy8",
+   "date": 1794970806,
+   "kind": "쇼츠",
+   "source": "youtube"
+  },
   {
    "id": "MRZ9aGC54Vc",
    "title": "럼블 아웃을 만나보세요! #이터널리턴 #시즌13 #신규모드",
@@ -3691,14 +3708,6 @@
    "id": "vUH5lLVC2uY",
    "title": "시즌11 시작! 새로운 변경들을 확인해보세요!",
    "url": "https://www.youtube.com/shorts/vUH5lLVC2uY",
-   "date": 1777604400,
-   "kind": "쇼츠",
-   "source": "youtube"
-  },
-  {
-   "id": "fPcDiGI6jrU",
-   "title": "시즌 11: 쁘띠 미뇽이 찾아옵니다. #shorts",
-   "url": "https://www.youtube.com/shorts/fPcDiGI6jrU",
    "date": 1777604400,
    "kind": "쇼츠",
    "source": "youtube"
