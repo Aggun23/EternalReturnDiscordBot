@@ -93,7 +93,7 @@ DEFAULTS = {
     "STEAM_EXCLUDE": "당첨자,오류,이상 현상",
     "SEASON_WINDOW_DAYS": "21",
     "YOUTUBE_CHANNELS": "UCEOaB76vS9RfiAwEzxB8QGw",  # 이터널 리턴 한국 채널 (@EternalReturnKR)
-    "YOUTUBE_KEYWORDS": "스킨,시즌,미리보기,미리 보기,찾아옵니다,사관후보생",
+    "YOUTUBE_KEYWORDS": "스킨,시즌,미리보기,미리 보기,찾아옵니다,사관후보생,백과사전",
     "YOUTUBE_EXCLUDE": "KEL,마스터즈,서포트 패키지,비하인드,슈퍼컵,Masters,내셔널 리그,랭크,마스터 클래스",
     "YOUTUBE_SHORTS": "on",
     "COUPON_REMIND_HOURS": "24",
