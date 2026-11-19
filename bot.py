@@ -88,7 +88,7 @@ INNERTUBE_CLIENT = {"clientName": "WEB", "clientVersion": "2.20261106.00.00", "h
 BROWSER_UA = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Safari/537.36"
 
 DEFAULTS = {
-    "STEAM_KEYWORDS": "스킨",
+    "STEAM_KEYWORDS": "스킨,실험체 관찰 보고서,누군가의 이야기",
     "STEAM_PATCH_KEYWORDS": "패치노트,핫픽스,서버 점검,점검 안내,점검 완료,임시 점검,긴급 점검",
     "STEAM_EXCLUDE": "당첨자,오류,이상 현상",
     "SEASON_WINDOW_DAYS": "21",
