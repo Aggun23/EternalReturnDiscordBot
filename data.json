@@ -1,5 +1,5 @@
 {
- "updated": 1795001223,
+ "updated": 1795082801,
  "season": {
   "num": 13,
   "since": 1793606942
@@ -16,6 +16,15 @@
   "판다왔쇼우": "쇼우"
  },
  "coupons": [
+  {
+   "code": "S13GLORYSTART",
+   "reward": "200 이벤트 NP (7일) + 연구소 데이터 박스 1개 + A-Coin 주머니 3개 + XP 부스트 7일 + A-Coin 부스트 7일 + 일반 시즌 조각팩 5개",
+   "valid": "12월 17일 09:00 (KST)",
+   "expires": 1797465600,
+   "date": 1795069225,
+   "title": "시즌 13 글로리 시즌 스타트 쿠폰 공개!",
+   "url": "https://store.steampowered.com/news/app/1049590/view/680767470935474727?l=koreana"
+  },
   {
    "code": "KGA26ESPORTS",
    "reward": "200 이벤트 NP (7일) + 시즌 조각팩 3개(즉시 개봉)",
@@ -3233,6 +3242,22 @@
  ],
  "videos": [
   {
+   "id": "-G76urb_5PQ",
+   "title": "[이터널 리턴] 시즌 13 랭크 대전이 시작됩니다! 새로운 OST를 만나보세요.",
+   "url": "https://www.youtube.com/shorts/-G76urb_5PQ",
+   "date": 1795057634,
+   "kind": "쇼츠",
+   "source": "youtube"
+  },
+  {
+   "id": "NIjiqjGB000",
+   "title": "[이터널 리턴 OST] Knights of the Dawn (feat. 최윤나)",
+   "url": "https://www.youtube.com/watch?v=NIjiqjGB000",
+   "date": 1795057244,
+   "kind": "영상",
+   "source": "steam"
+  },
+  {
    "id": "Y-GUtlyZIy8",
    "title": "눈이 멀었다고 앞을 볼 수 없는 건 아니지. #이터널리턴 #시즌13 #신규캐릭터",
    "url": "https://www.youtube.com/shorts/Y-GUtlyZIy8",
@@ -3693,22 +3718,6 @@
    "title": "꿈은 이루어지겠지..? #이터널리턴 #시즌11 #신규스킨",
    "url": "https://www.youtube.com/shorts/zV6YLdr8jyw",
    "date": 1778295600,
-   "kind": "쇼츠",
-   "source": "youtube"
-  },
-  {
-   "id": "NGKqc00ljzk",
-   "title": "시즌팩 - 쁘띠 미뇽 / 신규 지역 '바지선' / 지역별 특수 기믹 / 새로운 전술 스킬 추가 / 11.0 업데이트 / 패치노트 다이제스트",
-   "url": "https://www.youtube.com/watch?v=NGKqc00ljzk",
-   "date": 1777604400,
-   "kind": "영상",
-   "source": "youtube"
-  },
-  {
-   "id": "vUH5lLVC2uY",
-   "title": "시즌11 시작! 새로운 변경들을 확인해보세요!",
-   "url": "https://www.youtube.com/shorts/vUH5lLVC2uY",
-   "date": 1777604400,
    "kind": "쇼츠",
    "source": "youtube"
   }
