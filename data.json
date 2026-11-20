@@ -1,5 +1,5 @@
 {
- "updated": 1795082801,
+ "updated": 1795165557,
  "season": {
   "num": 13,
   "since": 1793606942
@@ -3242,6 +3242,14 @@
  ],
  "videos": [
   {
+   "id": "q9uzhmHQZU4",
+   "title": "신규 캐릭터 메이사 미리보기",
+   "url": "https://www.youtube.com/watch?v=q9uzhmHQZU4",
+   "date": 1795143613,
+   "kind": "영상",
+   "source": "youtube"
+  },
+  {
    "id": "-G76urb_5PQ",
    "title": "[이터널 리턴] 시즌 13 랭크 대전이 시작됩니다! 새로운 OST를 만나보세요.",
    "url": "https://www.youtube.com/shorts/-G76urb_5PQ",
@@ -3710,14 +3718,6 @@
    "title": "8번째 고스트헌터? #이터널리턴 #시즌11 #신규스킨",
    "url": "https://www.youtube.com/shorts/ytEomWWdtB0",
    "date": 1778382000,
-   "kind": "쇼츠",
-   "source": "youtube"
-  },
-  {
-   "id": "zV6YLdr8jyw",
-   "title": "꿈은 이루어지겠지..? #이터널리턴 #시즌11 #신규스킨",
-   "url": "https://www.youtube.com/shorts/zV6YLdr8jyw",
-   "date": 1778295600,
    "kind": "쇼츠",
    "source": "youtube"
   }
