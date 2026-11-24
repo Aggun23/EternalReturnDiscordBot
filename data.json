@@ -1,5 +1,5 @@
 {
- "updated": 1795522680,
+ "updated": 1795560131,
  "season": {
   "num": 13,
   "since": 1793606942
@@ -52,7 +52,7 @@
    "expires": 1795013940,
    "date": 1794369252,
    "title": "직접 등록",
-   "url": "https://www.youtube.com/shorts/x0XOA4h-t94",
+   "url": null,
    "source": "manual",
    "by": "Fablean"
   },
@@ -3242,6 +3242,14 @@
  ],
  "videos": [
   {
+   "id": "VotnXaeI7eg",
+   "title": "[아비게일] 루미아 마스터 클래스 시즌5 - 2회",
+   "url": "https://www.youtube.com/watch?v=VotnXaeI7eg",
+   "date": 1795525004,
+   "kind": "영상",
+   "source": "youtube"
+  },
+  {
    "id": "wrrPTzU2odw",
    "title": "[아비게일] 루미아 마스터 클래스 시즌5 - 2회",
    "url": "https://www.youtube.com/watch?v=wrrPTzU2odw",
@@ -3711,14 +3719,6 @@
    "url": "https://www.youtube.com/shorts/7x9gEU751CQ",
    "date": 1779505200,
    "kind": "쇼츠",
-   "source": "youtube"
-  },
-  {
-   "id": "CjRG20MvRZQ",
-   "title": "신규 캐릭터 비형 미리보기 #이터널리턴 #시즌11 #신규캐릭터",
-   "url": "https://www.youtube.com/watch?v=CjRG20MvRZQ",
-   "date": 1778554800,
-   "kind": "영상",
    "source": "youtube"
   }
  ]
