@@ -1,5 +1,5 @@
 {
- "updated": 1795165557,
+ "updated": 1795522680,
  "season": {
   "num": 13,
   "since": 1793606942
@@ -3242,6 +3242,14 @@
  ],
  "videos": [
   {
+   "id": "wrrPTzU2odw",
+   "title": "[아비게일] 루미아 마스터 클래스 시즌5 - 2회",
+   "url": "https://www.youtube.com/watch?v=wrrPTzU2odw",
+   "date": 1795507030,
+   "kind": "영상",
+   "source": "youtube"
+  },
+  {
    "id": "q9uzhmHQZU4",
    "title": "신규 캐릭터 메이사 미리보기",
    "url": "https://www.youtube.com/watch?v=q9uzhmHQZU4",
@@ -3711,14 +3719,6 @@
    "url": "https://www.youtube.com/watch?v=CjRG20MvRZQ",
    "date": 1778554800,
    "kind": "영상",
-   "source": "youtube"
-  },
-  {
-   "id": "ytEomWWdtB0",
-   "title": "8번째 고스트헌터? #이터널리턴 #시즌11 #신규스킨",
-   "url": "https://www.youtube.com/shorts/ytEomWWdtB0",
-   "date": 1778382000,
-   "kind": "쇼츠",
    "source": "youtube"
   }
  ]
