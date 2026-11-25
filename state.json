@@ -61,7 +61,8 @@
     "680767470935474735",
     "680767470935474802",
     "680767470935475037",
-    "680767470935475828"
+    "680767470935475828",
+    "680768104678031387"
   ],
   "seen_codes": [
     "BUNNYSUA1015",
@@ -100,7 +101,8 @@
     "zdL7KNrwq_U",
     "LlMG9zZcY0U",
     "wrrPTzU2odw",
-    "VotnXaeI7eg"
+    "VotnXaeI7eg",
+    "2G22_oC-pg8"
   ],
   "yt_ready": [
     "UCEOaB76vS9RfiAwEzxB8QGw"
@@ -130,10 +132,12 @@
     "3950",
     "3959",
     "3964",
-    "3969"
+    "3969",
+    "3982"
   ],
   "patch_sent": [
-    "official:13.1"
+    "official:13.1",
+    "official:13.2"
   ],
   "official_ready": true,
   "official_fail": 0,
