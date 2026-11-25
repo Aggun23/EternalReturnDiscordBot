@@ -40,6 +40,8 @@
   PATCH_WEBHOOK_URL / YOUTUBE_WEBHOOK_URL / SKIN_WEBHOOK_URL  (선택) 위 전용 채널들을 웹후크로 쓸 때
   GEMINI_API_KEY        (선택) 넣으면 /패치노트에 AI 한 줄 요약(상향·하향)을 붙임. 구글 AI Studio 무료 키
   GEMINI_MODEL          (선택) 쓸 Gemini 모델 이름. 비워 두면 최신 Flash 모델을 알아서 고름
+  YOUTUBE_API_KEY       (선택) YouTube Data API v3 키. 넣으면 채널의 모든 영상을 훑어서 빠진 스킨을 /스킨 모음에 채움
+                        (처음 한 번 + 스킨 판정 규칙이 바뀔 때 + 7일마다), RSS가 고장 났을 때 최근 영상 확인에도 씀
   PATCH_SOURCE          official(기본) = 패치노트·핫픽스를 공식 홈페이지에서 / steam = 예전처럼 Steam 공지에서
   MENTION               쿠폰 알림 때 붙일 멘션. 예: @everyone 또는 <@&역할ID>
   STEAM_KEYWORDS        제목에 이 단어가 있으면 보냄 (기본: 스킨)
@@ -69,6 +71,7 @@ import re
 import sys
 import time
 import urllib.error
+import urllib.parse
 import urllib.request
 import xml.etree.ElementTree as ET
 from html.parser import HTMLParser
@@ -106,13 +109,14 @@ DATA_FILE = Path(__file__).with_name("data.json")  # 디스코드 명령어 봇(
 USER_AGENT = "Mozilla/5.0 (compatible; ER-News-Discord-Bot/1.3)"
 DISCORD_USER_AGENT = "DiscordBot (https://github.com, 1.3)"
 KST = timezone(timedelta(hours=9))
-DATA_LIMITS = {"coupons": 60, "skins": 300, "patches": 40, "videos": 60}
+DATA_LIMITS = {"coupons": 60, "skins": 1000, "patches": 40, "videos": 60}
 # 스킨 모음(/스킨)에 넣을 유튜브 영상: 제목에 '스킨'이 있거나, 설명에 스킨 소개 문구가 있는 것.
 # (대회 영상 설명의 "뉴스레터 구독하고 '○○' 스킨도 받아가세요", 보상 목록의 "스킨 데이터 세트" 같은 건 안 걸리게)
 _SKIN_DESC_RE = re.compile(
     r"찾아옵니다|#신규\s*스킨|#신스킨"
     r"|(?:특별한?|보너스|영웅|신규|새로운|첫(?:\s*번째)?|두\s*번째|세\s*번째|ER\s*(?:Pass|패스)(?::\s*\w+)?의?)\s*(?:등급\s*)?스킨"
-    r"|스킨을\s*지급",
+    r"|스킨을\s*지급"
+    r"|#skins?(?![A-Za-z])|#ER\s*Pass",  # "#ERPass #skin" 같은 해시태그
     re.I,
 )
 _SKIN_TITLE_EXCLUDE = re.compile(r"신규\s*캐릭터|신규\s*실험체|실험체|신캐|\bMV\b")
@@ -172,6 +176,23 @@ def learn_characters(title):
     return [n for n in names if n not in _CHAR_STOP]
 
 
+# "사관후보생 얀을 만나보세요", "재작업된 뒷골목 에키온은 12.6 업데이트 이후 만나실 수 있습니다"처럼
+# '꾸밈말 + 실험체 이름'을 만날 수 있다고 하면 스킨 (스킨이라는 말이 없어도)
+_SKIN_MEET_RE = re.compile(
+    r"([가-힣A-Za-z0-9]{2,})\s+(?:" + "|".join(re.escape(c) for c in sorted(CHARACTERS, key=len, reverse=True)) + r")"
+    r"(?:을|를|은|는|이|가)?(?![가-힣A-Za-z0-9])[\s\S]{0,40}?만나(?:보?\s*실|\s*보세요)"
+)
+# 꾸밈말이 이 말이면 스킨이 아님 ("신규 캐릭터 메이사는 …", "함께 아야를 만나보세요")
+_SKIN_MEET_STOP = re.compile(r"^(?:신규|새로운|캐릭터|실험체|신캐|오리지널|이터널|리턴|함께|지금|바로|이제|곧|다시|직접|여러분|모두|\d*번째)$")
+
+
+SKIN_RULES_VERSION = 3  # is_skin_video 규칙을 바꾸면 1 올림 → YOUTUBE_API_KEY가 있으면 다음 실행 때 채널 전체를 다시 훑음
+
+
+def _skin_meet(text):
+    return any(not _SKIN_MEET_STOP.match(m.group(1)) for m in _SKIN_MEET_RE.finditer(text or ""))
+
+
 def is_skin_video(title, desc):
     desc = desc or ""
     if _SKIN_TITLE_EXCLUDE.search(title):
@@ -179,6 +200,8 @@ def is_skin_video(title, desc):
     if "스킨" in title:
         return True
     if _SKIN_DESC_RE.search(desc) and not _CHARACTER_DESC.search(desc):
+        return True
+    if _skin_meet(title + "\n" + desc) and not _CHARACTER_DESC.search(desc):
         return True
     return bool(re.search(r"미리\s*보기", title)) and "스킨" in desc
 CLAN_IMAGE_BASE = "https://clan.fastly.steamstatic.com/images"
@@ -1521,7 +1544,7 @@ def innertube(endpoint, body):
 
 def _to_utc_iso(s):
     try:
-        dt = datetime.fromisoformat(s)
+        dt = datetime.fromisoformat((s or "").replace("Z", "+00:00"))
     except (TypeError, ValueError):
         return ""
     if dt.tzinfo is None:
@@ -1595,8 +1618,172 @@ def fetch_videos(channel_id, worker=None):
         if worker:
             print(f"[경고] 유튜브 RSS 실패 ({e}) → 명령어 봇(Worker)이 확인한 영상 {len(worker)}개로 대신")
             return worker
+        key = os.environ.get("YOUTUBE_API_KEY", "").strip()
+        if key:
+            try:
+                videos = fetch_videos_api(channel_id, key)
+                print(f"[경고] 유튜브 RSS 실패 ({e}) → YouTube Data API로 확인")
+                return videos
+            except Exception as e2:
+                print(f"[경고] YouTube Data API도 실패: {e2}")
         print(f"[경고] 유튜브 RSS 실패 ({e}) → 예비 경로로 확인")
         return fetch_videos_fallback(channel_id)
+
+
+# ---------------------------------------------------------------- YouTube Data API (선택: YOUTUBE_API_KEY)
+YOUTUBE_API = "https://www.googleapis.com/youtube/v3/{}"
+YT_FULL_SCAN_DAYS = 7  # 채널 전체 훑기 주기 (일). 판정 규칙이 바뀌면 바로
+YT_SCAN_MAX_PAGES = 80  # 50개씩 × 80쪽 = 영상 4,000개까지
+
+
+class YouTubeAPIError(RuntimeError):
+    pass
+
+
+def yt_api(path, key, **params):
+    params["key"] = key
+    url = YOUTUBE_API.format(path) + "?" + urllib.parse.urlencode(params)
+    req = urllib.request.Request(url, headers={"User-Agent": USER_AGENT})
+    try:
+        with urllib.request.urlopen(req, timeout=30) as resp:
+            return json.loads(resp.read().decode("utf-8"))
+    except urllib.error.HTTPError as e:
+        body = e.read().decode("utf-8", "replace")
+        try:
+            err = json.loads(body).get("error") or {}
+            reason = ((err.get("errors") or [{}])[0].get("reason")) or err.get("status") or ""
+            msg = err.get("message") or body[:200]
+        except ValueError:
+            reason, msg = "", body[:200]
+        hint = {
+            "keyInvalid": "키가 틀렸어요",
+            "API_KEY_INVALID": "키가 틀렸어요",
+            "accessNotConfigured": "그 키의 Google Cloud 프로젝트에서 YouTube Data API v3를 '사용'으로 켜 주세요",
+            "SERVICE_DISABLED": "그 키의 Google Cloud 프로젝트에서 YouTube Data API v3를 '사용'으로 켜 주세요",
+            "quotaExceeded": "오늘 무료 사용량을 다 썼어요 (한국 시간 오후 4~5시쯤 초기화)",
+            "API_KEY_SERVICE_BLOCKED": "키의 'API 제한사항'에 YouTube Data API v3가 빠져 있어요",
+            "forbidden": "키의 'API 제한사항'에 YouTube Data API v3가 빠져 있어요",
+        }.get(reason, "")
+        raise YouTubeAPIError(f"YouTube API HTTP {e.code} {reason}{' — ' + hint if hint else ''} ({_clip(' '.join(msg.split()), 160)})") from None
+    except (urllib.error.URLError, TimeoutError) as e:
+        raise YouTubeAPIError(f"YouTube API 연결 실패: {e}") from None
+
+
+def _iso_duration_seconds(d):
+    m = re.fullmatch(r"P(?:(\d+)D)?T?(?:(\d+)H)?(?:(\d+)M)?(?:(\d+)S)?", d or "")
+    if not m:
+        return None
+    days, h, mi, sec = (int(x or 0) for x in m.groups())
+    return ((days * 24 + h) * 60 + mi) * 60 + sec
+
+
+def yt_api_uploads(cid, key, max_pages=YT_SCAN_MAX_PAGES):
+    """채널에 올라온 영상 전부 (최신부터). 50개당 할당량 1."""
+    out, token = [], None
+    for _ in range(max_pages):
+        params = {"part": "snippet,contentDetails", "playlistId": "UU" + cid[2:], "maxResults": 50}
+        if token:
+            params["pageToken"] = token
+        j = yt_api("playlistItems", key, **params)
+        for it in j.get("items", []):
+            sn, cd = it.get("snippet") or {}, it.get("contentDetails") or {}
+            vid = cd.get("videoId") or (sn.get("resourceId") or {}).get("videoId")
+            if not vid or sn.get("title") in ("Private video", "Deleted video"):
+                continue
+            out.append({
+                "id": vid,
+                "title": sn.get("title", ""),
+                "description": sn.get("description", ""),
+                "published": _to_utc_iso(cd.get("videoPublishedAt") or sn.get("publishedAt") or ""),
+                "channel": sn.get("videoOwnerChannelTitle") or sn.get("channelTitle") or "",
+            })
+        token = j.get("nextPageToken")
+        if not token:
+            break
+    return out
+
+
+def yt_api_mark_shorts(videos, key):
+    """영상 길이로 쇼츠인지 정함 (1분 이하 = 쇼츠). 50개당 할당량 1."""
+    for i in range(0, len(videos), 50):
+        chunk = videos[i:i + 50]
+        j = yt_api("videos", key, part="contentDetails", id=",".join(v["id"] for v in chunk), maxResults=50)
+        secs = {it["id"]: _iso_duration_seconds((it.get("contentDetails") or {}).get("duration")) for it in j.get("items", [])}
+        for v in chunk:
+            n = secs.get(v["id"])
+            v["is_short"] = n is not None and 0 < n <= 60
+            v["url"] = f"https://www.youtube.com/shorts/{v['id']}" if v["is_short"] else watch_url(v["id"])
+    return videos
+
+
+def fetch_videos_api(cid, key, limit=15):
+    """RSS가 고장 났을 때: YouTube Data API로 최근 영상 (할당량 2)."""
+    j = yt_api("playlistItems", key, part="snippet,contentDetails", playlistId="UU" + cid[2:], maxResults=limit)
+    videos = []
+    for it in j.get("items", []):
+        sn, cd = it.get("snippet") or {}, it.get("contentDetails") or {}
+        vid = cd.get("videoId")
+        if vid and sn.get("title") not in ("Private video", "Deleted video"):
+            videos.append({"id": vid, "title": sn.get("title", ""), "description": sn.get("description", ""),
+                           "published": _to_utc_iso(cd.get("videoPublishedAt") or sn.get("publishedAt") or ""),
+                           "channel": sn.get("videoOwnerChannelTitle") or sn.get("channelTitle") or ""})
+    if not videos:
+        raise YouTubeAPIError("YouTube API에서 영상을 못 받았어요")
+    return sorted(yt_api_mark_shorts(videos, key), key=lambda v: v["published"])
+
+
+def run_youtube_scan(state, data, cfg, mode="normal"):
+    """YOUTUBE_API_KEY가 있으면 채널 전체를 훑어서 빠진 스킨 영상을 /스킨 모음에 채운다.
+    처음 한 번, 스킨 판정 규칙(SKIN_RULES_VERSION)이 바뀌었을 때, 그리고 YT_FULL_SCAN_DAYS일마다."""
+    key = os.environ.get("YOUTUBE_API_KEY", "").strip()
+    scan = state.get("yt_api_scan") or {}
+    if not key:
+        if mode == "check":
+            print("── 유튜브 전체 훑기: YOUTUBE_API_KEY가 없어서 안 함")
+        return False
+    now = time.time()
+    due = scan.get("rules") != SKIN_RULES_VERSION or now - scan.get("at", 0) > YT_FULL_SCAN_DAYS * DAY
+    if mode == "check":
+        try:
+            yt_api("playlistItems", key, part="id", playlistId="UU" + resolve_channel_id(cfg["channels"][0], state["yt_ids"])[2:], maxResults=1)
+            ok = "키 정상"
+        except Exception as e:
+            ok = f"키 확인 실패: {e}"
+        last = datetime.fromtimestamp(scan["at"], KST).strftime("%m-%d %H:%M") if scan.get("at") else "아직 안 함"
+        print(f"── 유튜브 전체 훑기 (YouTube Data API): {ok} / 마지막: {last}"
+              + (f" (영상 {scan.get('videos')}개, 스킨 {scan.get('added')}개 추가)" if scan.get("at") else "")
+              + (" / 다음 실행 때 훑음" if due else ""))
+        return False
+    if mode != "normal" or not due:
+        return False
+    if now - scan.get("tried", 0) < 3600:  # 실패했으면 1시간 뒤에 다시
+        return False
+    state["yt_api_scan"] = dict(scan, tried=int(now))
+    total, added = 0, []
+    try:
+        have = {s["id"] for s in data["skins"]}
+        for spec in cfg["channels"]:
+            cid = resolve_channel_id(spec, state["yt_ids"])
+            videos = yt_api_uploads(cid, key)
+            total += len(videos)
+            found = [v for v in videos if is_skin_video(v["title"], v["description"])
+                     and not (cfg["yt_exclude"] and contains_any(v["title"], cfg["yt_exclude"]))]
+            new = yt_api_mark_shorts([v for v in found if f"yt:{v['id']}" not in have], key)
+            for v in new:
+                _learn(data, v["title"])
+                _upsert(data["skins"], "id", {
+                    "id": f"yt:{v['id']}", "title": v["title"], "url": v["url"], "date": _iso_ts(v["published"]),
+                    "source": "youtube", "kind": "쇼츠" if v["is_short"] else "영상", "text": _clip(v["description"], 300),
+                })
+                added.append(v)
+            print(f"유튜브 전체 훑기: {videos[0]['channel'] if videos else spec} 영상 {len(videos)}개 중 스킨 {len(found)}개, 새로 넣은 것 {len(new)}개")
+    except YouTubeAPIError as e:
+        print(f"[경고] 유튜브 전체 훑기 실패 (1시간 뒤 다시): {e}")
+        return False
+    for v in sorted(added, key=lambda x: x["published"])[-30:]:
+        print(f"  + {v['published'][:10]} {v['title']}")
+    state["yt_api_scan"] = {"rules": SKIN_RULES_VERSION, "at": int(now), "videos": total, "added": len(added)}
+    return bool(added)
 
 
 def decide_video(video, cfg):
@@ -1805,7 +1992,7 @@ def collect_steam(data, items, patches=True):
 
 def _iso_ts(s):
     try:
-        return int(datetime.fromisoformat(s).timestamp())
+        return int(datetime.fromisoformat((s or "").replace("Z", "+00:00")).timestamp())
     except (TypeError, ValueError):
         return 0
 
@@ -2253,6 +2440,10 @@ def main(argv=None):
         run_coupon_reminders(state, data, deliver, cfg, mode)
         if cfg["channels"]:
             run_youtube(state, deliver, cfg, mode, data, notify=youtube_notify(cfg, info, state), info=info)
+            try:
+                run_youtube_scan(state, data, cfg, mode)
+            except Exception as e:
+                print(f"[경고] 유튜브 전체 훑기: {e}")
         if info is not None:
             run_handoff(state, info, deliver, cfg, mode)
     finally:
