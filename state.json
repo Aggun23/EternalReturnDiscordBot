@@ -141,5 +141,11 @@
   ],
   "official_ready": true,
   "official_fail": 0,
-  "gemini_model": "gemini-3.6-flash"
+  "gemini_model": "gemini-3.6-flash",
+  "yt_api_scan": {
+    "rules": 3,
+    "at": 1795598319,
+    "videos": 2378,
+    "added": 161
+  }
 }
