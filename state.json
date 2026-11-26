@@ -67,7 +67,8 @@
     "680768104678031984",
     "680768104678031990",
     "680768104678031986",
-    "680768104678032077"
+    "680768104678032077",
+    "680768104678032092"
   ],
   "seen_codes": [
     "BUNNYSUA1015",
@@ -117,7 +118,8 @@
   },
   "reminded": [
     "S13D7GLORY",
-    "GLORYBLAIR"
+    "GLORYBLAIR",
+    "KGA26ESPORTS"
   ],
   "worker_youtube": true,
   "handoff_sent": [],
@@ -138,11 +140,13 @@
     "3959",
     "3964",
     "3969",
-    "3982"
+    "3982",
+    "3991"
   ],
   "patch_sent": [
     "official:13.1",
-    "official:13.2"
+    "official:13.2",
+    "official:13.2a"
   ],
   "official_ready": true,
   "official_fail": 0,
