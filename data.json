@@ -1,5 +1,5 @@
 {
- "updated": 1795719376,
+ "updated": 1795778301,
  "season": {
   "num": 13,
   "since": 1793606942
@@ -4892,6 +4892,13 @@
  ],
  "patches": [
   {
+   "id": "official:3995",
+   "title": "13.2b 핫픽스",
+   "url": "https://playeternalreturn.com/posts/news/3995",
+   "date": 1795769220,
+   "kind": "핫픽스"
+  },
+  {
    "id": "official:3991",
    "title": "13.2a 핫픽스",
    "url": "https://playeternalreturn.com/posts/news/3991",
@@ -5163,13 +5170,6 @@
    "url": "https://playeternalreturn.com/posts/news/3606",
    "date": 1779868800,
    "kind": "패치노트"
-  },
-  {
-   "id": "official:3602",
-   "title": "11.2e 핫픽스",
-   "url": "https://playeternalreturn.com/posts/news/3602",
-   "date": 1779432780,
-   "kind": "핫픽스"
   }
  ],
  "videos": [
